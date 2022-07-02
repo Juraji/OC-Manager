@@ -1,0 +1,21 @@
+spring:
+  neo4j:
+    uri: ${NEO4J_DB_URI}
+    authentication:
+      username: ${NEO4J_DB_USERNAME}
+      password: ${NEO4J_DB_PASSWORD}
+  webflux:
+    base-path: "/api"
+    multipart:
+      max-headers-size: "8MB"
+  main:
+    banner-mode: off
+
+server:
+  http2:
+    enabled: true
+
+oc:
+  configuration:
+    data-dir: "./data"
+    thumbnail-size: 250

@@ -1,0 +1,123 @@
+package nl.juraji.ocManager.api
+
+import nl.juraji.ocManager.domain.TraitService
+import nl.juraji.ocManager.domain.traits.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import javax.validation.Valid
+
+@RestController
+@RequestMapping("/traits")
+class TraitManagementController(
+    private val traitService: TraitService
+) {
+    // Body types
+    @GetMapping("/body-types")
+    fun getAllBodyTypes(): Flux<OcBodyType> = traitService.getAllBodyTypes()
+
+    @PostMapping("/body-types")
+    fun createBodyType(
+        @Valid @RequestBody trait: OcBodyType
+    ): Mono<OcBodyType> = traitService.createBodyType(trait)
+
+    @PutMapping("/body-types/{traitId})")
+    fun updateBodyType(
+        @PathVariable traitId: String,
+        @Valid @RequestBody trait: OcBodyType
+    ): Mono<OcBodyType> =
+        traitService.updateBodyType(traitId, trait)
+
+    @DeleteMapping("/body-types/{traitId}")
+    fun deleteBodyType(
+        @PathVariable traitId: String
+    ): Mono<Void> = traitService.deleteBodyType(traitId)
+
+    // Ethnicities
+    @GetMapping("/ethnicities")
+    fun getAllEthnicities(): Flux<OcEthnicity> = traitService.getAllEthnicities()
+
+    @PostMapping("/ethnicities")
+    fun createEthnicity(
+        @Valid @RequestBody trait: OcEthnicity
+    ): Mono<OcEthnicity> = traitService.createEthnicity(trait)
+
+    @PutMapping("/ethnicities/{traitId})")
+    fun updateEthnicity(
+        @PathVariable traitId: String,
+        @Valid @RequestBody trait: OcEthnicity
+    ): Mono<OcEthnicity> =
+        traitService.updateEthnicity(traitId, trait)
+
+    @DeleteMapping("/ethnicities/{traitId}")
+    fun deleteEthnicity(
+        @PathVariable traitId: String
+    ): Mono<Void> = traitService.deleteEthnicity(traitId)
+
+    // Eye colors
+    @GetMapping("/eye-colors")
+    fun getAllEyeColors(): Flux<OcEyeColor> = traitService.getAllEyeColors()
+
+    @PostMapping("/eye-colors")
+    fun createEyeColor(
+        @Valid @RequestBody trait: OcEyeColor
+    ): Mono<OcEyeColor> = traitService.createEyeColor(trait)
+
+    @PutMapping("/eye-colors/{traitId})")
+    fun updateEyeColor(
+        @PathVariable traitId: String,
+        @Valid @RequestBody trait: OcEyeColor
+    ): Mono<OcEyeColor> = traitService.updateEyeColor(traitId, trait)
+
+    @DeleteMapping("/eye-colors/{traitId}")
+    fun deleteEyeColor(
+        @PathVariable traitId: String
+    ): Mono<Void> = traitService.deleteEyeColor(traitId)
+
+    // Gender preferences
+    @GetMapping("/gender-preferences")
+    fun getAllGenderPreferences(): Flux<OcGenderPreference> = traitService.getAllGenderPreferences()
+
+    @PostMapping("/gender-preferences")
+    fun createGenderPreference(
+        @Valid @RequestBody trait: OcGenderPreference
+    ): Mono<OcGenderPreference> = traitService.createGenderPreference(trait)
+
+    @PutMapping("/gender-preferences/{traitId})")
+    fun updateGenderPreference(
+        @PathVariable traitId: String,
+        @Valid @RequestBody trait: OcGenderPreference
+    ): Mono<OcGenderPreference> = traitService.updateGenderPreference(traitId, trait)
+
+    @DeleteMapping("/gender-preferences/{traitId}")
+    fun deleteGenderPreference(
+        @PathVariable traitId: String
+    ): Mono<Void> = traitService.deleteGenderPreference(traitId)
+
+    // Hair styles
+    @GetMapping("/hairstyles")
+    fun getAllHairStyles(): Flux<OcHairStyle> = traitService.getAllHairStyles()
+
+    @PostMapping("/hairstyles")
+    fun createHairStyle(
+        @Valid @RequestBody trait: OcHairStyle
+    ): Mono<OcHairStyle> = traitService.createHairStyle(trait)
+
+    @PutMapping("/hairstyles/{traitId})")
+    fun updateHairStyle(
+        @PathVariable traitId: String,
+        @Valid @RequestBody trait: OcHairStyle
+    ): Mono<OcHairStyle> = traitService.updateHairStyle(traitId, trait)
+
+    @DeleteMapping("/hairstyles/{traitId}")
+    fun deleteHairStyle(
+        @PathVariable traitId: String
+    ): Mono<Void> = traitService.deleteHairStyle(traitId)
+}

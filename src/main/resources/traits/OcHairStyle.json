@@ -1,0 +1,279 @@
+[
+  {
+    "length": "SHAVED",
+    "baseColor": "BLONDE",
+    "variant": "Light",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHAVED",
+    "baseColor": "BLONDE",
+    "variant": "Dirty",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHAVED",
+    "baseColor": "BRUNETTE",
+    "variant": "Dark",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHAVED",
+    "baseColor": "BRUNETTE",
+    "variant": "Light",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHAVED",
+    "baseColor": "RED",
+    "variant": "Deep",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHAVED",
+    "baseColor": "RED",
+    "variant": "vibrant",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHAVED",
+    "baseColor": "BLACK",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHAVED",
+    "baseColor": "WHITE",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHAVED",
+    "baseColor": "GRAY",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "BLONDE",
+    "variant": "Light",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "BLONDE",
+    "variant": "Dirty",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "BRUNETTE",
+    "variant": "Dark",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "BRUNETTE",
+    "variant": "Light",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "RED",
+    "variant": "Deep",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "RED",
+    "variant": "vibrant",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "BLACK",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "WHITE",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "GRAY",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "MEDIUM",
+    "baseColor": "BLONDE",
+    "variant": "Light",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "MEDIUM",
+    "baseColor": "BLONDE",
+    "variant": "Dirty",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "MEDIUM",
+    "baseColor": "BRUNETTE",
+    "variant": "Dark",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "MEDIUM",
+    "baseColor": "BRUNETTE",
+    "variant": "Light",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "MEDIUM",
+    "baseColor": "RED",
+    "variant": "Deep",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "MEDIUM",
+    "baseColor": "RED",
+    "variant": "vibrant",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "MEDIUM",
+    "baseColor": "BLACK",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "MEDIUM",
+    "baseColor": "WHITE",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "MEDIUM",
+    "baseColor": "GRAY",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "LONG",
+    "baseColor": "BLONDE",
+    "variant": "Light",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "LONG",
+    "baseColor": "BLONDE",
+    "variant": "Dirty",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "LONG",
+    "baseColor": "BRUNETTE",
+    "variant": "Dark",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "LONG",
+    "baseColor": "BRUNETTE",
+    "variant": "Light",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "LONG",
+    "baseColor": "RED",
+    "variant": "Deep",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "LONG",
+    "baseColor": "RED",
+    "variant": "vibrant",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "LONG",
+    "baseColor": "BLACK",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "LONG",
+    "baseColor": "WHITE",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  },
+  {
+    "length": "LONG",
+    "baseColor": "GRAY",
+    "variant": "",
+    "dyed": false,
+    "dyeColor": null
+  }
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
