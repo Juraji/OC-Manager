@@ -1,6 +1,5 @@
 package nl.juraji.ocManager.api
 
-import nl.juraji.ocManager.domain.CharacterService
 import nl.juraji.ocManager.domain.CharacterTraitService
 import nl.juraji.ocManager.domain.traits.OcCharacterTrait
 import org.springframework.web.bind.annotation.*

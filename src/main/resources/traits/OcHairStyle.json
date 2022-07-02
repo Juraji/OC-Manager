@@ -250,6 +250,13 @@
     "variant": "",
     "dyed": false,
     "dyeColor": null
+  },
+  {
+    "length": "SHORT",
+    "baseColor": "EXOTIC",
+    "variant": "Purple",
+    "dyed": false,
+    "dyeColor": null
   }
 ]
 

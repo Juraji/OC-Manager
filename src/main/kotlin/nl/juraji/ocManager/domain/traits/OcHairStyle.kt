@@ -27,5 +27,5 @@ enum class OcHairStyleLength {
 }
 
 enum class OcHairStyleColor {
-    BLONDE, BRUNETTE, RED, BLACK, WHITE, GRAY
+    BLONDE, BRUNETTE, RED, BLACK, WHITE, GRAY, EXOTIC
 }
