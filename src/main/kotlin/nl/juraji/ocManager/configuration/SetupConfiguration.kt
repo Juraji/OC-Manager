@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import nl.juraji.ocManager.domain.SettingsService
 import nl.juraji.ocManager.domain.TraitService
+import nl.juraji.ocManager.domain.application.OcApplicationSettings
 import nl.juraji.ocManager.domain.traits.*
 import nl.juraji.ocManager.util.LoggerCompanion
+import nl.juraji.ocManager.util.orElseEntityNotFound
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 import reactor.core.publisher.Flux
+import reactor.core.scheduler.Schedulers
 import reactor.kotlin.core.publisher.toFlux
 import java.nio.file.Files
 
@@ -25,57 +28,63 @@ class SetupConfiguration(
         logger.info("OC Manager setup...")
         initializeDataDirectories()
         initializeDefaultCharacterTraits()
-
-        logger.info("OC Manager setup finished!")
     }
 
     private fun initializeDataDirectories() {
-        logger.info("Checking data directories...")
-        if (Files.notExists(configuration.dataDir)) Files.createDirectories(configuration.dataDir)
-        if (Files.notExists(configuration.thumbnailDir)) Files.createDirectories(configuration.thumbnailDir)
+        listOf(configuration.dataDir, configuration.thumbnailDir)
+            .toFlux()
+            .subscribeOn(Schedulers.boundedElastic())
+            .filter(Files::notExists)
+            .map(Files::createDirectories)
+            .doOnSubscribe { logger.info("Checking data directories...") }
+            .doOnComplete { logger.info("Data directories verified") }
+            .doOnError { logger.warn("Data directories verification failed", it) }
+            .subscribe()
     }
 
     private fun initializeDefaultCharacterTraits() {
-        val settings = settingsService.getApplicationSettings().block()!!
-        if (settings.defaultTraitsInitialized) return
-
-        logger.info("Setting up default character traits...")
-
         // Body types
-        val bodyTypes = objectMapper
+        val bodyTypes: Flux<OcCharacterTrait> = objectMapper
             .readValue<List<OcBodyType>>(ClassPathResource("traits/OcBodyType.json").file)
             .toFlux()
             .flatMap(traitService::createBodyType)
 
         // Ethnicities
-        val ethnicities = objectMapper
+        val ethnicities: Flux<OcCharacterTrait> = objectMapper
             .readValue<List<OcEthnicity>>(ClassPathResource("traits/OcEthnicity.json").file)
             .toFlux()
             .flatMap(traitService::createEthnicity)
 
         // Eye colors
-        val eyeColors = objectMapper
+        val eyeColors: Flux<OcCharacterTrait> = objectMapper
             .readValue<List<OcEyeColor>>(ClassPathResource("traits/OcEyeColor.json").file)
             .toFlux()
             .flatMap(traitService::createEyeColor)
 
         // Gender preferences
-        val genderPreferences = objectMapper
+        val genderPreferences: Flux<OcCharacterTrait> = objectMapper
             .readValue<List<OcGenderPreference>>(ClassPathResource("traits/OcGenderPreference.json").file)
             .toFlux()
             .flatMap(traitService::createGenderPreference)
 
         // Hairstyles
-        val hairstyles = objectMapper
+        val hairstyles: Flux<OcCharacterTrait> = objectMapper
             .readValue<List<OcHairStyle>>(ClassPathResource("traits/OcHairStyle.json").file)
             .toFlux()
             .flatMap(traitService::createHairStyle)
 
-        // Update app settings
-        val updateAppSettings = settingsService
-            .updateApplicationSettings(settings.copy(defaultTraitsInitialized = true))
-
-        Flux.concat(bodyTypes, ethnicities, eyeColors, genderPreferences, hairstyles, updateAppSettings)
+        settingsService
+            .getApplicationSettings()
+            .orElseEntityNotFound(OcApplicationSettings::class)
+            .filter { !it.defaultTraitsInitialized }
+            .doOnNext { logger.info("Setting up default character traits...") }
+            .flatMap {
+                Flux.concat(bodyTypes, ethnicities, eyeColors, genderPreferences, hairstyles)
+                    .collectList()
+                    .then(settingsService.updateApplicationSettings(it.copy(defaultTraitsInitialized = true)))
+            }
+            .doOnError { logger.warn("Data directories verification failed", it) }
+            .doOnNext { logger.info("Default character traits set up successfully") }
             .subscribe()
     }
 
