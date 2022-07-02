@@ -1,6 +1,5 @@
 package nl.juraji.ocManager.domain.traits
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo
 import nl.convect.cbnbackend.util.validators.RequiredIfFieldValue
 import nl.juraji.ocManager.util.persistence.StringUUIDGenerator
 import org.springframework.data.annotation.Id
@@ -13,7 +12,6 @@ import org.springframework.data.neo4j.core.schema.Node
     sourceFieldValue = RequiredIfFieldValue.BOOL_TRUE,
     targetFieldName = "dyeColor"
 )
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 data class OcHairStyle(
     @Id @GeneratedValue(StringUUIDGenerator::class)
     override val id: String? = null,
@@ -21,7 +19,7 @@ data class OcHairStyle(
     val baseColor: OcHairStyleColor,
     val variant: String,
     val dyed: Boolean,
-    val dyeColor: String?,
+    val dyeColor: String? = null,
 ) : OcCharacterTrait
 
 enum class OcHairStyleLength {
