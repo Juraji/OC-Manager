@@ -1,20 +1,20 @@
 [
   {
-    "label": "Slim / Thin"
+    "description": "Slim / Thin"
   },
   {
-    "label": "Normal"
+    "description": "Normal"
   },
   {
-    "label": "Toned"
+    "description": "Toned"
   },
   {
-    "label": "Muscular"
+    "description": "Muscular"
   },
   {
-    "label": "Stocky / Buff"
+    "description": "Stocky / Buff"
   },
   {
-    "label": "Large"
+    "description": "Large"
   }
 ]

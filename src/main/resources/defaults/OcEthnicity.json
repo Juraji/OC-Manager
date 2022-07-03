@@ -1,20 +1,20 @@
 [
   {
-    "label": "Asian"
+    "description": "Asian"
   },
   {
-    "label": "African"
+    "description": "African"
   },
   {
-    "label": "Arab"
+    "description": "Arab"
   },
   {
-    "label": "Latino / Hispanic"
+    "description": "Latino / Hispanic"
   },
   {
-    "label": "Mixed"
+    "description": "Mixed"
   },
   {
-    "label": "White"
+    "description": "White"
   }
 ]

@@ -11,5 +11,5 @@ data class OcGenderPreference(
     @Id @GeneratedValue(StringUUIDGenerator::class)
     override val id: String? = null,
     @NotBlank
-    val label: String,
+    val description: String,
 ): OcCharacterTrait

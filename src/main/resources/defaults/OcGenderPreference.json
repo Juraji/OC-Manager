@@ -1,17 +1,17 @@
 [
   {
-    "label": "Ace"
+    "description": "Ace"
   },
   {
-    "label": "Gay"
+    "description": "Gay"
   },
   {
-    "label": "Bi"
+    "description": "Bi"
   },
   {
-    "label": "Straight"
+    "description": "Straight"
   },
   {
-    "label": "Curious"
+    "description": "Curious"
   }
 ]
