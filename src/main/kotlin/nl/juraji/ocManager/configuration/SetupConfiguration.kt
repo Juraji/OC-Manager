@@ -45,31 +45,31 @@ class SetupConfiguration(
     private fun initializeDefaultCharacterTraits() {
         // Body types
         val bodyTypes: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcBodyType>>(ClassPathResource("traits/OcBodyType.json").file)
+            .readValue<List<OcBodyType>>(ClassPathResource("defaults/OcBodyType.json").file)
             .toFlux()
             .flatMap(traitService::createBodyType)
 
         // Ethnicities
         val ethnicities: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcEthnicity>>(ClassPathResource("traits/OcEthnicity.json").file)
+            .readValue<List<OcEthnicity>>(ClassPathResource("defaults/OcEthnicity.json").file)
             .toFlux()
             .flatMap(traitService::createEthnicity)
 
         // Eye colors
         val eyeColors: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcEyeColor>>(ClassPathResource("traits/OcEyeColor.json").file)
+            .readValue<List<OcEyeColor>>(ClassPathResource("defaults/OcEyeColor.json").file)
             .toFlux()
             .flatMap(traitService::createEyeColor)
 
         // Gender preferences
         val genderPreferences: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcGenderPreference>>(ClassPathResource("traits/OcGenderPreference.json").file)
+            .readValue<List<OcGenderPreference>>(ClassPathResource("defaults/OcGenderPreference.json").file)
             .toFlux()
             .flatMap(traitService::createGenderPreference)
 
         // Hairstyles
         val hairstyles: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcHairStyle>>(ClassPathResource("traits/OcHairStyle.json").file)
+            .readValue<List<OcHairStyle>>(ClassPathResource("defaults/OcHairStyle.json").file)
             .toFlux()
             .flatMap(traitService::createHairStyle)
 

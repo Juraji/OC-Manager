@@ -40,6 +40,27 @@ class TraitManagementController(
         @PathVariable traitId: String
     ): Mono<Void> = traitService.deleteBodyType(traitId)
 
+    // Custom traits
+    @GetMapping("/custom-traits")
+    fun getAllCustomTraits(): Flux<OcCustomTrait> = traitService.getAllCustomTraits()
+
+    @PostMapping("/custom-traits")
+    fun createCustomTrait(
+        @Valid @RequestBody trait: OcCustomTrait
+    ): Mono<OcCustomTrait> = traitService.createCustomTrait(trait)
+
+    @PutMapping("/custom-traits/{traitId})")
+    fun updateCustomTrait(
+        @PathVariable traitId: String,
+        @Valid @RequestBody trait: OcCustomTrait
+    ): Mono<OcCustomTrait> =
+        traitService.updateCustomTrait(traitId, trait)
+
+    @DeleteMapping("/custom-traits/{traitId}")
+    fun deleteCustomTrait(
+        @PathVariable traitId: String
+    ): Mono<Void> = traitService.deleteCustomTrait(traitId)
+
     // Ethnicities
     @GetMapping("/ethnicities")
     fun getAllEthnicities(): Flux<OcEthnicity> = traitService.getAllEthnicities()

@@ -1,6 +1,7 @@
 package nl.juraji.ocManager.domain
 
 import nl.juraji.ocManager.domain.traits.*
+import nl.juraji.ocManager.util.orElseEntityNotFound
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -8,6 +9,7 @@ import reactor.core.publisher.Mono
 @Service
 class TraitService(
     private val bodyTypeRepository: BodyTypeRepository,
+    private val customTraitRepository: CustomTraitRepository,
     private val ethnicityRepository: EthnicityRepository,
     private val eyeColorRepository: EyeColorRepository,
     private val genderPreferenceRepository: GenderPreferenceRepository,
@@ -23,11 +25,29 @@ class TraitService(
     fun updateBodyType(traitId: String, trait: OcBodyType): Mono<OcBodyType> =
         bodyTypeRepository
             .findById(traitId)
+            .orElseEntityNotFound(OcBodyType::class, traitId)
             .map { trait.copy(id = it.id) }
             .flatMap(bodyTypeRepository::save)
 
     fun deleteBodyType(traitId: String): Mono<Void> =
         bodyTypeRepository.deleteById(traitId)
+
+    // Custom traits
+    fun getAllCustomTraits(): Flux<OcCustomTrait> =
+        customTraitRepository.findAll()
+
+    fun createCustomTrait(trait: OcCustomTrait): Mono<OcCustomTrait> =
+        customTraitRepository.save(trait)
+
+    fun updateCustomTrait(traitId: String, trait: OcCustomTrait): Mono<OcCustomTrait> =
+        customTraitRepository
+            .findById(traitId)
+            .orElseEntityNotFound(OcCustomTrait::class, traitId)
+            .map { trait.copy(id = it.id) }
+            .flatMap(customTraitRepository::save)
+
+    fun deleteCustomTrait(traitId: String): Mono<Void> =
+        customTraitRepository.deleteById(traitId)
 
     // Ethnicities
     fun getAllEthnicities(): Flux<OcEthnicity> =
@@ -39,6 +59,7 @@ class TraitService(
     fun updateEthnicity(traitId: String, trait: OcEthnicity): Mono<OcEthnicity> =
         ethnicityRepository
             .findById(traitId)
+            .orElseEntityNotFound(OcEthnicity::class, traitId)
             .map { trait.copy(id = it.id) }
             .flatMap(ethnicityRepository::save)
 
@@ -55,6 +76,7 @@ class TraitService(
     fun updateEyeColor(traitId: String, trait: OcEyeColor): Mono<OcEyeColor> =
         eyeColorRepository
             .findById(traitId)
+            .orElseEntityNotFound(OcEyeColor::class, traitId)
             .map { trait.copy(id = it.id) }
             .flatMap(eyeColorRepository::save)
 
@@ -71,6 +93,7 @@ class TraitService(
     fun updateGenderPreference(traitId: String, trait: OcGenderPreference): Mono<OcGenderPreference> =
         genderPreferenceRepository
             .findById(traitId)
+            .orElseEntityNotFound(OcGenderPreference::class, traitId)
             .map { trait.copy(id = it.id) }
             .flatMap(genderPreferenceRepository::save)
 
@@ -87,6 +110,7 @@ class TraitService(
     fun updateHairStyle(traitId: String, trait: OcHairStyle): Mono<OcHairStyle> =
         hairStyleRepository
             .findById(traitId)
+            .orElseEntityNotFound(OcHairStyle::class, traitId)
             .map { trait.copy(id = it.id) }
             .flatMap(hairStyleRepository::save)
 
