@@ -1,5 +1,6 @@
 package nl.juraji.ocManager.configuration
 
+import nl.juraji.ocManager.configuration.converters.Neo4jInstantConverter
 import nl.juraji.ocManager.configuration.converters.Neo4jNioPathConverter
 import org.neo4j.driver.Driver
 import org.springframework.context.annotation.Bean
@@ -26,7 +27,8 @@ class Neo4jDataConfiguration {
     @Bean
     fun neo4jConversions(): Neo4jConversions {
         val converters = setOf(
-            Neo4jNioPathConverter()
+            Neo4jNioPathConverter(),
+            Neo4jInstantConverter()
         )
         return Neo4jConversions(converters)
     }

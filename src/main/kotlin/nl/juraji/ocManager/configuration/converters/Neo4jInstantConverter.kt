@@ -4,17 +4,17 @@ import org.neo4j.driver.Value
 import org.neo4j.driver.Values
 import org.springframework.core.convert.TypeDescriptor
 import org.springframework.core.convert.converter.GenericConverter
-import java.nio.file.Path
+import java.time.Instant
 
-class Neo4jNioPathConverter : GenericConverter {
+class Neo4jInstantConverter : GenericConverter {
     override fun getConvertibleTypes(): Set<GenericConverter.ConvertiblePair> = setOf(
-        GenericConverter.ConvertiblePair(Path::class.java, Value::class.java),
-        GenericConverter.ConvertiblePair(Value::class.java, Path::class.java),
+        GenericConverter.ConvertiblePair(Instant::class.java, Value::class.java),
+        GenericConverter.ConvertiblePair(Value::class.java, Instant::class.java),
     )
 
     override fun convert(source: Any?, sourceType: TypeDescriptor, targetType: TypeDescriptor): Any? = when (source) {
-        is Path -> Values.value(source.toString())
-        is Value -> Path.of(source.asString())
+        is Instant -> Values.value(source.epochSecond)
+        is Value -> Instant.ofEpochSecond(source.asLong())
         else -> null
     }
 }
