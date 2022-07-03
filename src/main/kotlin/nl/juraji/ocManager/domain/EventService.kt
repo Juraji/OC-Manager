@@ -24,6 +24,9 @@ class EventService(
             .findById(eventId)
             .orElseEntityNotFound(OcEvent::class, eventId)
 
+    fun getAllByCharacterId(characterId: String): Flux<OcEvent> =
+        eventRepository.findAllByCharacterId(characterId)
+
     fun createEvent(event: OcEvent): Mono<OcEvent> =
         eventRepository.save(event)
 

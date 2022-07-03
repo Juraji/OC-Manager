@@ -1,7 +1,14 @@
 node_modules
-dist
+target
 karma.conf.js
 fixtures
 coverage
 __snapshots__
+data
+.yarn
+.mvn
+.idea
+.angular
 *.html
+*.kt
+*.yaml

@@ -24,16 +24,16 @@
     ],
     "paths": {
       "#models/*": [
-        "src/main/web/app/models/*"
+        "src/web/app/models/*"
       ],
       "#core/*": [
-        "src/main/web/app/core/*"
+        "src/web/app/core/*"
       ],
       "#components/*": [
-        "src/main/web/app/components/*"
+        "src/web/app/components/*"
       ],
       "#environment": [
-        "src/main/web/environments/environment.ts"
+        "src/web/environments/environment.ts"
       ]
     }
   },
