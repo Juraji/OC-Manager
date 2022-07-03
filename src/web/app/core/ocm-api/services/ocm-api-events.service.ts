@@ -2,9 +2,10 @@ import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {iif, Observable} from 'rxjs'
 
+import {OcCharacter} from '#models/characters.model'
+import {OcEvent, OcEventSettings} from '#models/events.model'
+
 import {OcmApiService} from './ocm-api.service'
-import {OcCharacter} from '../../../models/characters.model'
-import {OcEvent, OcEventSettings} from '../../../models/events.model'
 
 @Injectable()
 export class OcmApiEventsService extends OcmApiService {

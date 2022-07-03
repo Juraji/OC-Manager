@@ -1,0 +1,22 @@
+:host {
+  display: block;
+
+  .character-details-wrapper {
+    position: relative;
+
+    .enable-edit-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      opacity: 0;
+      transition: opacity .3s ease-in-out;
+    }
+
+    &:hover {
+      .enable-edit-btn {
+        opacity: 1;
+      }
+    }
+  }
+}

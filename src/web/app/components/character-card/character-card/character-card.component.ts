@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component, Input, OnChanges} from '@angular/core';
 import {switchMap} from 'rxjs'
 
-import {OcmApiCharactersService} from '../../../core/ocm-api'
-import {filterNotNull, ObservableInputs} from '../../../core/rxjs'
-import {OcCharacter} from '../../../models/characters.model'
+import {OcmApiCharactersService} from '#core/ocm-api'
+import {filterNotNull, ObservableInputs} from '#core/rxjs'
+import {OcCharacter} from '#models/characters.model'
 
 @Component({
   selector: 'ocm-character-card',
@@ -19,7 +19,7 @@ export class CharacterCardComponent implements OnChanges {
   readonly character$ = this.inputs.observe(() => this.character)
 
   @Input()
-  editLink: Nullable<string | any[]>
+  editLink: Nullable<string | string[]>
 
   readonly thumbnailUri$ = this.character$
     .pipe(filterNotNull(), switchMap(c => this.charactersService.getCharacterThumbnailUrl(c.id)))

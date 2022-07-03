@@ -1,11 +1,19 @@
+import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
-import {OcCharacter, OcCharacterRelationship} from '../../../models/characters.model'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {OcCharacterTrait} from '../../../models/traits.model'
-import {OcEvent} from '../../../models/events.model'
-import {numberSort, strSort} from '../../../core/arrays'
-import {map, Observable} from 'rxjs'
-import {filterNotNull} from '../../../core/rxjs'
+import {map, mergeMap, Observable, tap} from 'rxjs'
+
+import {numberSort, strSort} from '#core/arrays'
+import {
+  OcmApiCharacterEventsService,
+  OcmApiCharacterRelationshipsService,
+  OcmApiCharactersService,
+  OcmApiCharacterTraitsService
+} from '#core/ocm-api'
+import {filterNotNull, once} from '#core/rxjs'
+import {OcCharacter, OcCharacterRelationship} from '#models/characters.model'
+import {OcEvent} from '#models/events.model'
+import {OcCharacterTrait} from '#models/traits.model'
 
 interface CharacterEditStoreState {
   character: Nullable<OcCharacter>
@@ -15,12 +23,13 @@ interface CharacterEditStoreState {
 }
 
 export interface CharacterEditStoreData {
-  character: OcCharacter
+  character: Nullable<OcCharacter>
   traits: OcCharacterTrait[]
   events: OcEvent[]
   relationships: OcCharacterRelationship[]
 }
 
+@Injectable()
 export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> {
 
   private readonly traitsAdapter = CharacterEditStore.createTraitsAdapter()
@@ -33,9 +42,16 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
   private readonly relationshipsSelectors = this.relationshipsAdapter.getSelectors()
 
   public readonly characterId$: Observable<string | null> = this.select(s => s.character?.id ?? null)
+  public readonly isNewCharacter: Observable<boolean> = this.characterId$.pipe(map(id => !id))
   public readonly character$: Observable<OcCharacter> = this
     .select(s => s.character)
     .pipe(filterNotNull())
+
+  public readonly thumbnailUri$: Observable<string> = this.characterId$
+    .pipe(
+      filterNotNull(),
+      mergeMap(id => this.charactersService.getCharacterThumbnailUrl(id))
+    )
 
   public readonly allTraits$: Observable<OcCharacterTrait[]> = this
     .select(s => s.traits)
@@ -49,7 +65,12 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
     .select(s => s.relationships)
     .pipe(map(this.relationshipsSelectors.selectAll))
 
-  constructor() {
+  constructor(
+    private readonly charactersService: OcmApiCharactersService,
+    private readonly characterTraitsService: OcmApiCharacterTraitsService,
+    private readonly characterEventsService: OcmApiCharacterEventsService,
+    private readonly characterRelationshipsService: OcmApiCharacterRelationshipsService
+  ) {
     super()
 
     this.setState({
@@ -67,6 +88,16 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
       events: this.eventsAdapter.setAll(data.events, s.events),
       relationships: this.relationshipsAdapter.setAll(data.relationships, s.relationships),
     }))
+  }
+
+  saveCharacter(changes: Partial<OcCharacter>): Observable<OcCharacter> {
+    return this.character$
+      .pipe(
+        once(),
+        map(character => ({...character, ...changes})),
+        mergeMap(character => this.charactersService.saveCharacter(character)),
+        tap(character => this.patchState({character}))
+      )
   }
 
   private static createTraitsAdapter() {

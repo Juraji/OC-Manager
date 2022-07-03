@@ -1,0 +1,78 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-8">
+        <ng-container [ngSwitch]="editActive$ | async">
+          <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="viewCharacterTpl"></ng-container>
+          <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="editCharacterFormTpl"></ng-container>
+        </ng-container>
+      </div>
+      <div class="col-4" *ngIf="store.isNewCharacter | async | not">
+        <img [src]="store.thumbnailUri$ | async" ocmImgSrcFallback="assets/no-image-placeholder.svg"
+             class="card-img-top character-thumbnail-img" alt="Character thumbnail">
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #viewCharacterTpl>
+  <div class="character-details-wrapper">
+    <button class="btn btn-primary enable-edit-btn" (click)="onToggleEdit()">
+      <span class="bi bi-pencil"></span>
+    </button>
+    <table class="table table-sm table-borderless" *ngIf="store.character$ | async as char">
+      <tbody>
+      <tr>
+        <th scope="row">Name</th>
+        <td>{{char.name}}</td>
+      </tr>
+      <tr *ngIf="!!char.nickname">
+        <th scope="row">Nickname</th>
+        <td>{{char.nickname}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Date of birth</th>
+        <td>{{char.dateOfBirth | date}}</td>
+      </tr>
+      <tr *ngIf="!!char.notes">
+        <th scope="row">Notes</th>
+        <td><pre>{{char.notes}}</pre></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
+<ng-template #editCharacterFormTpl>
+  <form [formGroup]="formGroup" (submit)="onSaveCharacter()">
+    <div class="mb-3">
+      <label for="nameInput" class="form-label">Name</label>
+      <input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp" formControlName="name">
+      <div id="nameHelp" class="form-text">The birth- or chosen name for this character.</div>
+    </div>
+    <div class="mb-3">
+      <label for="nicknameInput" class="form-label">Nickname</label>
+      <input type="text" class="form-control" id="nicknameInput" aria-describedby="nicknameHelp"
+             formControlName="nickname">
+      <div id="nicknameHelp" class="form-text">What does this character like (or not like) to be called?</div>
+    </div>
+    <div class="mb-3">
+      <label for="dateOfBirthInput" class="form-label">Date of birth</label><br/>
+      <ngb-datepicker id="dateOfBirthInput" [startDate]="$any(startDobValue$ | async)"
+                      (dateSelect)="onDateOfBirthSelected($event)"></ngb-datepicker>
+    </div>
+    <div class="mb-3">
+      <label for="notesInput" class="form-label">Notes</label>
+      <textarea class="form-control" id="notesInput" aria-describedby="notesHelp"
+                formControlName="notes"></textarea>
+      <div id="notesHelp" class="form-text">Dot down some traits, things that might be happening etc.</div>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button *ngIf="store.isNewCharacter | async | not" type="button" class="btn btn-outline-danger me-2"
+              (click)="onToggleEdit()">Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid">Save</button>
+    </div>
+  </form>
+  <pre>{{formGroup.value | json}}</pre>
+</ng-template>

@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core';
 import {iif, Observable, of} from 'rxjs'
 
-import {OcCharacter} from '../../../models/characters.model'
+import {OcCharacter} from '#models/characters.model'
 
 import {OcmApiService} from './ocm-api.service'
 

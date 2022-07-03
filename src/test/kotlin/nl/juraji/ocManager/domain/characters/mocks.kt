@@ -10,11 +10,8 @@ fun mockOcCharacter() = uuid().let {
         name = "Test character $it",
         nickname = "Test character nickname $it",
         dateOfBirth = Instant.EPOCH,
-        customProperties = mapOf(
-            "Test uuid" to "Uuid: $it",
-            "Fixed prop" to "Some value"
-        ),
-        thumbnail = Path.of("./non-existent_$it.jpg")
+        thumbnail = Path.of("./non-existent_$it.jpg"),
+        notes = "Some character notes"
     )
 }
 

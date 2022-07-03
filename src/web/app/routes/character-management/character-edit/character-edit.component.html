@@ -1,5 +1,16 @@
 <div class="container position-relative">
   <div class="header d-flex justify-content-between">
-    <h1>Character: TODO NAME</h1>
+    <h1>Character: {{characterTitle$ | async}}</h1>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <ocm-base-character-form></ocm-base-character-form>
+      <div *ngIf="store.isNewCharacter | async | not">Events</div>
+    </div>
+    <div class="col-md-4" *ngIf="store.isNewCharacter | async | not">
+      <div>traits</div>
+      <div>relationships</div>
+    </div>
   </div>
 </div>

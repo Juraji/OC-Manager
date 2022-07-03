@@ -4,8 +4,8 @@ export interface OcCharacter {
   id: string
   name: string
   nickname: string
-  dateOfBirth: number
-  customProperties: Record<string, string>
+  dateOfBirth: number,
+  notes: string
 }
 
 export interface OcCharacterRelationship {

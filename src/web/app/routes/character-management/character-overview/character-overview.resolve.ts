@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core'
 import {Resolve} from '@angular/router'
 import {forkJoin, Observable} from 'rxjs'
 
-import {OcmApiCharactersService} from '../../../core/ocm-api'
-import {catchToEmpty, ForkJoinSource} from '../../../core/rxjs'
+import {OcmApiCharactersService} from '#core/ocm-api'
+import {catchToEmpty, ForkJoinSource} from '#core/rxjs'
 
 import {CharacterOverviewStoreData} from './character-overview.store'
 

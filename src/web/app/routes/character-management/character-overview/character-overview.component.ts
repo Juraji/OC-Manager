@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/co
 import {ActivatedRoute} from '@angular/router'
 import {map} from 'rxjs'
 
-import {takeUntilDestroyed} from '../../../core/rxjs'
+import {takeUntilDestroyed} from '#core/rxjs'
 
 import {CharacterOverviewStore} from './character-overview.store'
 

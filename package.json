@@ -36,6 +36,7 @@
     "@angular-devkit/build-angular": "^14.0.4",
     "@angular/cli": "~14.0.4",
     "@angular/compiler-cli": "^14.0.0",
+    "@angular/localize": "14.0.4",
     "@types/jasmine": "~4.0.0",
     "@typescript-eslint/eslint-plugin": "^5.30.3",
     "@typescript-eslint/parser": "^5.30.3",

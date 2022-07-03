@@ -3,8 +3,8 @@ import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
 import {map, Observable} from 'rxjs'
 
-import {strSort} from '../../../core/arrays'
-import {OcCharacter} from '../../../models/characters.model'
+import {strSort} from '#core/arrays'
+import {OcCharacter} from '#models/characters.model'
 
 export interface CharacterOverviewStoreData {
   characters: OcCharacter[]

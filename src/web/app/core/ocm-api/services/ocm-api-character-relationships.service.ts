@@ -2,8 +2,9 @@ import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {Observable} from 'rxjs'
 
+import {OcCharacterRelationship, OcCharacterRelationshipType} from '#models/characters.model'
+
 import {OcmApiService} from './ocm-api.service'
-import {OcCharacterRelationship, OcCharacterRelationshipType} from '../../../models/characters.model'
 
 @Injectable()
 export class OcmApiCharacterRelationshipsService extends OcmApiService {

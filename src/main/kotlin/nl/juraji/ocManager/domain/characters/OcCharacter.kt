@@ -17,7 +17,7 @@ data class OcCharacter(
     val name: String,
     val nickname: String,
     val dateOfBirth: Instant,
-    val customProperties: Map<String, String> = emptyMap(),
+    val notes: String,
 
     @JsonIgnore
     val thumbnail: Path? = null,

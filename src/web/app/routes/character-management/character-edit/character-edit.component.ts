@@ -1,16 +1,22 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router'
+import {map, startWith} from 'rxjs'
+
+import {takeUntilDestroyed} from '#core/rxjs'
+
 import {CharacterEditStore} from './character-edit.store'
-import {map} from 'rxjs'
-import {takeUntilDestroyed} from '../../../core/rxjs'
 
 @Component({
   selector: 'ocm-character-edit',
   templateUrl: './character-edit.component.html',
   styleUrls: ['./character-edit.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [CharacterEditStore]
 })
 export class CharacterEditComponent implements OnInit, OnDestroy {
+
+  public readonly characterTitle$ = this.store.character$
+    .pipe(map(c => c.name), startWith('New character'))
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
