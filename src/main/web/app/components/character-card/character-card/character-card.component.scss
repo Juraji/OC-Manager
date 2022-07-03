@@ -1,4 +1,22 @@
+$block-size: 18rem;
+
 :host {
   display: block;
-  width: 18rem;
+  max-width: $block-size;
+  position: relative;
+
+  .edit-character-btn {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+  }
+
+  &:hover {
+    .edit-character-btn {
+      opacity: 1;
+    }
+  }
 }

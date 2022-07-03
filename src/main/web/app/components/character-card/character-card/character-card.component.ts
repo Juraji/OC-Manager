@@ -15,8 +15,11 @@ export class CharacterCardComponent implements OnChanges {
   private readonly inputs = new ObservableInputs()
 
   @Input()
-  character: OcCharacter | undefined
+  character: Nullable<OcCharacter>
   readonly character$ = this.inputs.observe(() => this.character)
+
+  @Input()
+  editLink: Nullable<string | any[]>
 
   readonly thumbnailUri$ = this.character$
     .pipe(filterNotNull(), switchMap(c => this.charactersService.getCharacterThumbnailUrl(c.id)))
