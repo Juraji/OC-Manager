@@ -1,0 +1,11 @@
+<div class="container position-relative">
+  <h1>Characters</h1>
+
+  <div class="character-cards">
+    <ocm-character-card *ngFor="let char of store.allCharacters$ | async" [character]="char"></ocm-character-card>
+  </div>
+
+  <a class="btn btn-primary add-character-btn" title="Add character" routerLink="../edit/new">
+    <span class="bi bi-plus"></span>
+  </a>
+</div>

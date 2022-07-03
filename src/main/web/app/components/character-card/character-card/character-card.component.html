@@ -1,0 +1,9 @@
+<div class="card shadow">
+  <img *ngIf="thumbnailUri$ | async as url"
+       [src]="url" src-fallback="assets/character-icon-1.svg"
+       class="card-img-top" alt="Character thumbnail">
+  <div class="card-body" *ngIf="character$ | async as c">
+    <h5 class="card-title">{{c.name}}</h5>
+    <p class="card-text"></p>
+  </div>
+</div>

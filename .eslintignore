@@ -1,0 +1,7 @@
+node_modules
+dist
+karma.conf.js
+fixtures
+coverage
+__snapshots__
+*.html
