@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card shadow">
   <div class="card-body">
     <div class="row">
       <div class="col-8">
@@ -20,19 +20,18 @@
     <button class="btn btn-primary enable-edit-btn" (click)="editActive$.setTrue()">
       <span class="bi bi-pencil"></span>
     </button>
+    <h1 class="card-title">{{characterTitle$ | async}}</h1>
+
     <table class="table table-sm table-borderless" *ngIf="store.character$ | async as char">
       <tbody>
-      <tr>
-        <th scope="row">Name</th>
-        <td>{{char.name}}</td>
-      </tr>
       <tr *ngIf="!!char.nickname">
         <th scope="row">Nickname</th>
         <td>{{char.nickname}}</td>
       </tr>
       <tr>
         <th scope="row">Date of birth</th>
-        <td>{{char.dateOfBirth | date}}</td>
+        <td>{{char.dateOfBirth | date}} <span
+          class="small text-muted">({{char.dateOfBirth | yearsAgo:(store.eventsDate$ | async)}}yo)</span></td>
       </tr>
       <tr *ngIf="!!char.notes">
         <th scope="row">Notes</th>

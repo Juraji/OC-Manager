@@ -6,11 +6,15 @@ import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'
 
 import {DragDropFileModule} from '#components/drag-drop-file/drag-drop-file.module'
 import {ImgSrcFallbackModule} from '#components/img-src-fallback'
+import {DatePipesModule} from '#core/date-pipes/date-pipes.module'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
 import {BaseCharacterFormComponent} from './base-character-form/base-character-form.component'
 import {CharacterEditComponent} from './character-edit.component'
 import {CharacterEditResolve} from './character-edit.resolve';
+import {CharacterEventMgmtComponent} from './character-event-mgmt/character-event-mgmt.component';
+import {CharacterRelationshipMgmtComponent} from './character-relationship-mgmt/character-relationship-mgmt.component';
+import {CharacterTraitMgmtComponent} from './character-trait-mgmt/character-trait-mgmt.component';
 
 const ROUTES: Routes = [
   {
@@ -34,11 +38,15 @@ const ROUTES: Routes = [
     ReactiveFormsModule,
     RxUtilPipesModule,
     NgbDatepickerModule,
-    DragDropFileModule
+    DragDropFileModule,
+    DatePipesModule
   ],
   declarations: [
     CharacterEditComponent,
-    BaseCharacterFormComponent
+    BaseCharacterFormComponent,
+    CharacterTraitMgmtComponent,
+    CharacterRelationshipMgmtComponent,
+    CharacterEventMgmtComponent
   ],
   providers: [
     CharacterEditResolve

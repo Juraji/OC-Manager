@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {map, mergeMap, of, repeat, Subject} from 'rxjs'
+import {map, mergeMap, of, repeat, startWith, Subject} from 'rxjs'
 
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
 import {BooleanBehaviourSubject, filterNotNull, once, takeUntilDestroyed} from '#core/rxjs'
@@ -24,6 +24,9 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
     dateOfBirth: typedFormControl(Number.NaN, [required]),
     notes: typedFormControl('', [notBlank]),
   })
+
+  public readonly characterTitle$ = this.store.character$
+    .pipe(map(c => c.name), startWith('New character'))
 
   private readonly refreshThumbnailImg$ = new Subject<void>()
   readonly thumbnailUri$ = this.store.thumbnailUri$

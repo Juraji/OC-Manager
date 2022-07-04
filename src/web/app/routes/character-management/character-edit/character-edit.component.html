@@ -1,16 +1,16 @@
 <div class="container position-relative">
   <div class="header d-flex justify-content-between">
-    <h1>Character: {{characterTitle$ | async}}</h1>
+    <h1>Edit character</h1>
   </div>
 
   <div class="row">
     <div class="col-md-8">
-      <ocm-base-character-form></ocm-base-character-form>
-      <div *ngIf="store.isNewCharacter | async | not">Events</div>
+      <ocm-base-character-form class="mb-4"></ocm-base-character-form>
+      <ocm-character-event-mgmt *ngIf="store.isNewCharacter | async | not"></ocm-character-event-mgmt>
     </div>
     <div class="col-md-4" *ngIf="store.isNewCharacter | async | not">
-      <div>traits</div>
-      <div>relationships</div>
+      <ocm-character-trait-mgmt class="d-block mb-4"></ocm-character-trait-mgmt>
+      <ocm-character-relationship-mgmt></ocm-character-relationship-mgmt>
     </div>
   </div>
 </div>
