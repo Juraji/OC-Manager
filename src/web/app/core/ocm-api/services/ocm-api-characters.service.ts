@@ -37,11 +37,11 @@ export class OcmApiCharactersService extends OcmApiService {
     return of(this.baseUri(characterId, 'thumbnail'))
   }
 
-  createCharacterThumbnail(characterId: string, file: File) {
+  createCharacterThumbnail(characterId: string, file: File): Observable<void> {
     const fd = new FormData()
     fd.set('thumbnail', file, file.name)
 
-    return this.http.post(this.baseUri(characterId, 'thumbnail'), fd)
+    return this.http.post<void>(this.baseUri(characterId, 'thumbnail'), fd)
   }
 
   protected override baseUri(...path: string[]): string {

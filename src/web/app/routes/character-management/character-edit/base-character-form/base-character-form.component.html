@@ -80,6 +80,19 @@
 </ng-template>
 
 <ng-template #characterThumbnailTpl>
-  <img [src]="store.thumbnailUri$ | async" ocmImgSrcFallback="assets/no-image-placeholder.svg"
-       class="card-img-top character-thumbnail-img" alt="Character thumbnail">
+  <label class="thumbnail-wrapper"
+         for="thumbnailFileField"
+         ocmDragDropFile
+         (filesDropped)="onSetThumbnail($event)">
+    <img [src]="thumbnailUri$ | async" ocmImgSrcFallback="assets/no-image-placeholder.svg"
+         class="card-img-top character-thumbnail-img" alt="Character thumbnail">
+    <div class="hover-active-overlay text-white d-flex flex-column justify-content-center text-center">
+      Click to select a new file or drop a file from your file browser.
+    </div>
+    <div class="drop-active-overlay text-white d-flex flex-column justify-content-center text-center">
+      Drop image file to upload as character thumbnail.
+    </div>
+  </label>
+  <input type="file" class="d-none" id="thumbnailFileField" accept="image/jpeg,image/png,image/gif,image/tiff"
+         (change)="onSetThumbnailViaFileInput($event)"/>
 </ng-template>

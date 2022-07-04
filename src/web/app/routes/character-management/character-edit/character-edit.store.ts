@@ -100,6 +100,15 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
       )
   }
 
+  setCharacterThumbnail(file: File): Observable<void> {
+    return this.characterId$
+      .pipe(
+        once(),
+        filterNotNull(),
+        mergeMap(id => this.charactersService.createCharacterThumbnail(id, file))
+      )
+  }
+
   private static createTraitsAdapter() {
     return createEntityAdapter<OcCharacterTrait>({
       selectId: e => e.id,

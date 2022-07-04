@@ -1,3 +1,5 @@
+@import "src/web/styles/variables";
+
 :host {
   display: block;
 
@@ -15,6 +17,36 @@
 
     &:hover {
       .enable-edit-btn {
+        opacity: 1;
+      }
+    }
+  }
+
+  .thumbnail-wrapper {
+    position: relative;
+    cursor: pointer;
+
+    .drop-active-overlay, .hover-active-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+
+      background-color: fade-out($gray-700, .15);
+
+      opacity: 0;
+      transition: opacity .3s ease-in-out;
+    }
+
+    &:hover {
+      .hover-active-overlay {
+        opacity: 1;
+      }
+    }
+
+    &.drop-active {
+      .drop-active-overlay {
         opacity: 1;
       }
     }

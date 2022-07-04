@@ -14,10 +14,10 @@ export class ImgSrcFallbackDirective {
   ) {
   }
 
-  @HostListener("error")
+  @HostListener('error')
   onError() {
     if (!!this.ocmImgSrcFallback) {
-      this.renderer.setAttribute(this.elementRef.nativeElement, "src", this.ocmImgSrcFallback)
+      this.renderer.setAttribute(this.elementRef.nativeElement, 'src', this.ocmImgSrcFallback)
     }
   }
 }

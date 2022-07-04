@@ -4,8 +4,8 @@ import {ReactiveFormsModule} from '@angular/forms'
 import {RouterModule, Routes} from '@angular/router';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'
 
+import {DragDropFileModule} from '#components/drag-drop-file/drag-drop-file.module'
 import {ImgSrcFallbackModule} from '#components/img-src-fallback'
-import {OcmNgbGlobalConfigurationModule} from '#core/ocm-ngb-global-configuration'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
 import {BaseCharacterFormComponent} from './base-character-form/base-character-form.component'
@@ -32,9 +32,9 @@ const ROUTES: Routes = [
     RouterModule.forChild(ROUTES),
     ImgSrcFallbackModule,
     ReactiveFormsModule,
-    OcmNgbGlobalConfigurationModule,
     RxUtilPipesModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    DragDropFileModule
   ],
   declarations: [
     CharacterEditComponent,

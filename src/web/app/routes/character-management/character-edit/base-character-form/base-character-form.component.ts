@@ -1,7 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {map, mergeMap, of, repeat, Subject} from 'rxjs'
 
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
-import {BooleanBehaviourSubject, takeUntilDestroyed} from '#core/rxjs'
+import {BooleanBehaviourSubject, filterNotNull, once, takeUntilDestroyed} from '#core/rxjs'
 import {OcCharacter} from '#models/characters.model'
 
 import {CharacterEditStore} from '../character-edit.store'
@@ -24,6 +25,13 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
     notes: typedFormControl('', [notBlank]),
   })
 
+  private readonly refreshThumbnailImg$ = new Subject<void>()
+  readonly thumbnailUri$ = this.store.thumbnailUri$
+    .pipe(
+      once(),
+      repeat({delay: () => this.refreshThumbnailImg$}),
+      map(uri => `${uri}?t=${new Date().getTime()}`)
+    )
 
   constructor(
     readonly store: CharacterEditStore
@@ -57,6 +65,18 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
           this.populateForm(c)
         })
     }
+  }
+
+  onSetThumbnail(e: FileList) {
+    of(e.item(0))
+      .pipe(filterNotNull())
+      .pipe(mergeMap(f => this.store.setCharacterThumbnail(f)))
+      .subscribe(() => this.refreshThumbnailImg$.next())
+  }
+
+  onSetThumbnailViaFileInput(e: Event) {
+    const files = (e.target as HTMLInputElement).files
+    if (!!files && files.length > 0) this.onSetThumbnail(files)
   }
 
   private populateForm(character: OcCharacter) {
