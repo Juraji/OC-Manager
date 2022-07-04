@@ -1,0 +1,12 @@
+// scss-docs-start form-validation-mixins
+@mixin form-validation-state-selector($state) {
+  @if ($state == "valid" or $state == "invalid") {
+    .was-validated #{if(&, "&", "")}.ng-#{$state} {
+      @content;
+    }
+  } @else {
+    #{if(&, "&", "")}.ng-#{$state} {
+      @content;
+    }
+  }
+}

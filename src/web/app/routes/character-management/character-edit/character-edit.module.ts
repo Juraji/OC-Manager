@@ -5,7 +5,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'
 
 import {ImgSrcFallbackModule} from '#components/img-src-fallback'
-import {RxUtilPipesModule} from '#components/rx-util-pipes/rx-util-pipes.module'
+import {OcmNgbGlobalConfigurationModule} from '#core/ocm-ngb-global-configuration'
+import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
 import {BaseCharacterFormComponent} from './base-character-form/base-character-form.component'
 import {CharacterEditComponent} from './character-edit.component'
@@ -31,8 +32,9 @@ const ROUTES: Routes = [
     RouterModule.forChild(ROUTES),
     ImgSrcFallbackModule,
     ReactiveFormsModule,
-    NgbDatepickerModule,
-    RxUtilPipesModule
+    OcmNgbGlobalConfigurationModule,
+    RxUtilPipesModule,
+    NgbDatepickerModule
   ],
   declarations: [
     CharacterEditComponent,

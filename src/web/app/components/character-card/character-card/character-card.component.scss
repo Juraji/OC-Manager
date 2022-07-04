@@ -3,20 +3,18 @@ $block-size: 18rem;
 :host {
   display: block;
   max-width: $block-size;
-  position: relative;
 
-  .edit-character-btn {
-    position: absolute;
-    top: .5rem;
-    right: .5rem;
-
-    opacity: 0;
-    transition: opacity .3s ease-in-out;
+  .character-thumbnail-img {
+    max-height: $block-size;
+    object-fit: contain;
   }
 
-  &:hover {
-    .edit-character-btn {
-      opacity: 1;
+  &[ng-reflect-router-link] {
+    cursor: pointer;
+    transition: transform .3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
     }
   }
 }

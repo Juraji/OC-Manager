@@ -18,4 +18,4 @@ server:
 oc:
   configuration:
     data-dir: "./data"
-    thumbnail-size: 250
+    thumbnail-size: 500

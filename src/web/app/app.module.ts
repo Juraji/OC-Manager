@@ -3,8 +3,9 @@ import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router'
 import {ModalsModule} from '@juraji/ng-bootstrap-modals'
 
-import {MainMenuModule} from './components/main-menu'
-import {OcmApiModule} from './core/ocm-api'
+import {MainMenuModule} from '#components/main-menu'
+import {OcmApiModule} from '#core/ocm-api'
+import {OcmNgbGlobalConfigurationModule} from '#core/ocm-ngb-global-configuration'
 
 import {AppComponent} from './app.component';
 
@@ -25,6 +26,7 @@ const ROUTES: Routes = [
     BrowserModule,
     RouterModule.forRoot(ROUTES),
     OcmApiModule.forRoot(),
+    OcmNgbGlobalConfigurationModule.forRoot(),
     ModalsModule.forRoot(),
     MainMenuModule,
   ],

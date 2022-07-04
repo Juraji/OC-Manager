@@ -2,13 +2,13 @@ import {AbstractControl, ValidationErrors, ValidatorFn, Validators} from '@angul
 
 /** ng form validator shortcuts */
 export const required: (control: AbstractControl) => (ValidationErrors | null) =
-  Validators.compose([Validators.required, c => isNaN(c.value) ? {required: true} : null]) as ValidatorFn
+  // We need to check for strictly NaN
+  // eslint-disable-next-line use-isnan
+  Validators.compose([Validators.required, c => c.value === Number.NaN ? {required: true} : null]) as ValidatorFn
 
 /** Custom validators */
 const BLANKS_PATTERN = /^\s+$/
-export const requiredNotBlank: (control: AbstractControl) => (ValidationErrors | null) = control =>
-  (!control.value && control.value !== 0) || BLANKS_PATTERN.test(control.value)
+export const notBlank: (control: AbstractControl) => (ValidationErrors | null) = control =>
+  control.value !== '' && BLANKS_PATTERN.test(control.value)
     ? {required: true}
     : null
-
-
