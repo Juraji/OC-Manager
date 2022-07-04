@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {map, mergeMap, Observable, tap} from 'rxjs'
+import {defaultIfEmpty, map, mergeMap, Observable, tap} from 'rxjs'
 
 import {numberSort, strSort} from '#core/arrays'
 import {
@@ -102,9 +102,12 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
   }
 
   saveCharacter(changes: Partial<OcCharacter>): Observable<OcCharacter> {
-    return this.character$
+    return this.characterId$
       .pipe(
         once(),
+        mergeMap(id => !!id ? this.character$ : [{} as OcCharacter]),
+        once(),
+        defaultIfEmpty({} as OcCharacter),
         map(character => ({...character, ...changes})),
         mergeMap(character => this.charactersService.saveCharacter(character)),
         tap(character => this.patchState({character}))

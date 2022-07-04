@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
 import {Modals} from '@juraji/ng-bootstrap-modals'
-import {map, mergeMap, of, repeat, startWith, Subject} from 'rxjs'
+import {map, mergeMap, of, repeat, skip, startWith, Subject} from 'rxjs'
 
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
 import {BooleanBehaviourSubject, filterNotNull, once, takeUntilDestroyed} from '#core/rxjs'
@@ -40,6 +40,7 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly modals: Modals,
     readonly store: CharacterEditStore,
   ) {
@@ -70,15 +71,16 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
         .subscribe(c => {
           this.editActive$.setFalse()
           this.populateForm(c)
+          return this.router.navigate(['..', c.id], {relativeTo: this.activatedRoute})
         })
     }
   }
 
   onDeleteCharacter() {
-    this.store.character$
+    this.characterTitle$
       .pipe(
-        once(),
-        mergeMap(c => this.modals.confirm(`Are you sure you want to delete ${c.name}?`).onResolved),
+        skip(1), once(),
+        mergeMap(name => this.modals.confirm(`Are you sure you want to delete ${name}?`).onResolved),
         mergeMap(() => this.store.deleteCharacter())
       )
       .subscribe(() => this.router.navigate(['/']))
