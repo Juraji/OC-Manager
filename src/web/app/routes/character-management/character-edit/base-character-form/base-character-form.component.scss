@@ -23,8 +23,11 @@
   }
 
   .thumbnail-wrapper {
+    display: block;
     position: relative;
     cursor: pointer;
+    border-radius: $border-radius;
+    overflow: hidden;
 
     .drop-active-overlay, .hover-active-overlay {
       position: absolute;
@@ -37,6 +40,10 @@
 
       opacity: 0;
       transition: opacity .3s ease-in-out;
+    }
+
+    .character-thumbnail-img {
+      width: 100%;
     }
 
     &:hover {
