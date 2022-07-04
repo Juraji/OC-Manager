@@ -10,21 +10,32 @@
     </button>
 
     <div class="navbar-collapse" [class.collapse]="collapsed$ | async" id="navbarContent">
-      <ul class="navbar-nav">
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/characters">Characters</a>
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/characters">Characters</a>
         </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/events">Events</a>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/events">Events</a>
         </li>
-        <li class="nav-item" ngbDropdown routerLinkActive="active">
-          <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown1" role="button">
+        <li class="nav-item" routerLinkActive="active" #ddTrigger="routerLinkActive" ngbDropdown>
+          <a class="nav-link" [class.active]="ddTrigger.isActive" tabindex="0"
+             ngbDropdownToggle id="navbarDropdown1" role="button">
             Settings
           </a>
           <div ngbDropdownMenu aria-labelledby="navbarDropdown1" class="dropdown-menu">
-            <a ngbDropdownItem href="/settings/trait-management" (click)="$event.preventDefault()">Trait Manager</a>
-            <a ngbDropdownItem href="/settings/events" (click)="$event.preventDefault()">Event Settings</a>
+            <a ngbDropdownItem routerLink="/settings/trait-management" (click)="$event.preventDefault()">Trait Manager</a>
+            <a ngbDropdownItem routerLink="/settings/events" (click)="$event.preventDefault()">Event Settings</a>
           </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="eventSettings.settings$ | async as s">
+          <a class="nav-link active" routerLink="/settings/events">
+            <ng-container [ngSwitch]="s.useFixedDate">
+              <span *ngSwitchCase="true">Using fixed event reference date: {{eventSettings.eventsDate$ | async | date}}</span>
+              <span *ngSwitchCase="false">Using today as event reference date.</span>
+            </ng-container>
+          </a>
         </li>
       </ul>
     </div>

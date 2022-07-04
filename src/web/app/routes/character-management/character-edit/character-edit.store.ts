@@ -67,13 +67,6 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
     .select(s => s.relationships)
     .pipe(map(this.relationshipsSelectors.selectAll))
 
-  public readonly eventsDate$ = this
-    .select(s => s.eventSettings)
-    .pipe(
-      filterNotNull(),
-      map(s => s.useFixedDate ? new Date(s.eventReferenceDate) : new Date())
-    )
-
   constructor(
     private readonly charactersService: OcmApiCharactersService,
     private readonly characterTraitsService: OcmApiCharacterTraitsService,

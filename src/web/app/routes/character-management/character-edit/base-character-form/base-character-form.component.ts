@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router'
 import {Modals} from '@juraji/ng-bootstrap-modals'
 import {map, mergeMap, of, repeat, skip, startWith, Subject} from 'rxjs'
 
+import {EventSettingsStore} from '#core/event-settings'
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
 import {BooleanBehaviourSubject, filterNotNull, once, takeUntilDestroyed} from '#core/rxjs'
 import {OcCharacter} from '#models/characters.model'
@@ -43,6 +44,7 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly modals: Modals,
     readonly store: CharacterEditStore,
+    readonly eventSettings: EventSettingsStore,
   ) {
     this.store.character$
       .pipe(takeUntilDestroyed(this))

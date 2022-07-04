@@ -36,7 +36,7 @@
       <tr>
         <th scope="row">Date of birth</th>
         <td>{{char.dateOfBirth | date}} <span
-          class="small text-muted">({{char.dateOfBirth | yearsAgo:(store.eventsDate$ | async)}}yo)</span></td>
+          class="small text-muted">({{char.dateOfBirth | yearsAgo:(eventSettings.eventsDate$ | async)}}yo)</span></td>
       </tr>
       <tr *ngIf="!!char.notes">
         <th scope="row">Notes</th>
