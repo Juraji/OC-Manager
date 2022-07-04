@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router'
 import {Modals} from '@juraji/ng-bootstrap-modals'
-import {map, mergeMap, of, repeat, skip, startWith, Subject} from 'rxjs'
+import {map, mergeMap, of, skip, startWith, Subject, switchMap} from 'rxjs'
 
 import {EventSettingsStore} from '#core/event-settings'
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
@@ -33,11 +33,11 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
 
   private readonly refreshThumbnailImg$ = new Subject<void>()
   readonly thumbnailUri$ = this.store.thumbnailUri$
-    .pipe(
-      once(),
-      repeat({delay: () => this.refreshThumbnailImg$}),
-      map(uri => `${uri}?t=${new Date().getTime()}`)
-    )
+    .pipe(switchMap(uri => this.refreshThumbnailImg$
+        .pipe(
+          map(() => `${uri}?t=${new Date().getTime()}`),
+          startWith(uri)
+        )))
 
   constructor(
     private readonly router: Router,
