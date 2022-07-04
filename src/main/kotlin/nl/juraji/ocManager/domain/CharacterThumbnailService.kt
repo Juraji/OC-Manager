@@ -4,7 +4,6 @@ import nl.juraji.ocManager.configuration.OcManagerConfiguration
 import nl.juraji.ocManager.domain.characters.CharacterRepository
 import nl.juraji.ocManager.domain.characters.OcCharacter
 import nl.juraji.ocManager.util.orElseEntityNotFound
-import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.PathResource
 import org.springframework.core.io.Resource
 import org.springframework.core.io.buffer.DataBuffer
@@ -76,7 +75,7 @@ class CharacterThumbnailService(
         g2.background = Color.WHITE
 
         g2.clearRect(0, 0, targetWidth, targetHeight)
-        g2.drawImage(originalImage, 0, 0, boundedSize, boundedSize, null)
+        g2.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null)
         g2.dispose()
 
         targetPath.outputStream().use {
