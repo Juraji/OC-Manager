@@ -6,6 +6,8 @@ import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'
 
 import {DragDropFileModule} from '#components/drag-drop-file/drag-drop-file.module'
 import {ImgSrcFallbackModule} from '#components/img-src-fallback'
+import {TraitCardModule} from '#components/trait-card'
+import {TraitSelectorModule} from '#components/trait-selector'
 import {DatePipesModule} from '#core/date-pipes/date-pipes.module'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
@@ -39,7 +41,9 @@ const ROUTES: Routes = [
     RxUtilPipesModule,
     NgbDatepickerModule,
     DragDropFileModule,
-    DatePipesModule
+    DatePipesModule,
+    TraitCardModule,
+    TraitSelectorModule,
   ],
   declarations: [
     CharacterEditComponent,

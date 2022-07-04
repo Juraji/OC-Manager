@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {iif, Observable} from 'rxjs'
 
-import {OcBodyType, OcEthnicity, OcEyeColor, OcGenderPreference, OcHairStyle} from '#models/traits.model'
+import {OcBodyType, OcCustomTrait, OcEthnicity, OcEyeColor, OcGenderPreference, OcHairStyle} from '#models/traits.model'
 
 import {OcmApiService} from './ocm-api.service'
 
@@ -14,8 +14,8 @@ export class OcmApiTraitsService extends OcmApiService {
   }
 
   // Body types
-  getAllBodyTypes(): Observable<OcBodyType> {
-    return this.http.get<OcBodyType>(this.baseUri('body-types'))
+  getAllBodyTypes(): Observable<OcBodyType[]> {
+    return this.http.get<OcBodyType[]>(this.baseUri('body-types'))
   }
 
   saveBodyType(trait: OcBodyType): Observable<OcBodyType> {
@@ -30,9 +30,26 @@ export class OcmApiTraitsService extends OcmApiService {
     return this.http.delete<void>(this.baseUri('body-types', traitId))
   }
 
+  // Custom traits
+  getAllCustomTraits(): Observable<OcCustomTrait[]> {
+    return this.http.get<OcCustomTrait[]>(this.baseUri('custom-traits'))
+  }
+
+  createCustomTrait(trait: OcCustomTrait): Observable<OcCustomTrait> {
+    return iif(
+      () => !!trait.id,
+      this.http.put<OcCustomTrait>(this.baseUri('custom-trait', trait.id), trait),
+      this.http.post<OcCustomTrait>(this.baseUri('custom-trait'), trait)
+    )
+  }
+
+  deleteCustomTrait(traitId: string): Observable<void> {
+    return this.http.delete<void>(this.baseUri('custom-trait', traitId))
+  }
+
   // Ethnicities
-  getAllEthnicities(): Observable<OcEthnicity> {
-    return this.http.get<OcEthnicity>(this.baseUri('ethnicities'))
+  getAllEthnicities(): Observable<OcEthnicity[]> {
+    return this.http.get<OcEthnicity[]>(this.baseUri('ethnicities'))
   }
 
   saveEthnicity(trait: OcEthnicity): Observable<OcEthnicity> {
@@ -48,8 +65,8 @@ export class OcmApiTraitsService extends OcmApiService {
   }
 
   // Eye colors
-  getAllEyeColors(): Observable<OcEyeColor> {
-    return this.http.get<OcEyeColor>(this.baseUri('eye-colors'))
+  getAllEyeColors(): Observable<OcEyeColor[]> {
+    return this.http.get<OcEyeColor[]>(this.baseUri('eye-colors'))
   }
 
   createEyeColor(trait: OcEyeColor): Observable<OcEyeColor> {
@@ -65,8 +82,8 @@ export class OcmApiTraitsService extends OcmApiService {
   }
 
   // Gender preferences
-  getAllGenderPreferences(): Observable<OcGenderPreference> {
-    return this.http.get<OcGenderPreference>(this.baseUri('gender-preferences'))
+  getAllGenderPreferences(): Observable<OcGenderPreference[]> {
+    return this.http.get<OcGenderPreference[]>(this.baseUri('gender-preferences'))
   }
 
   createGenderPreference(trait: OcGenderPreference): Observable<OcGenderPreference> {
@@ -82,8 +99,8 @@ export class OcmApiTraitsService extends OcmApiService {
   }
 
   // Hair styles
-  getAllHairStyles(): Observable<OcHairStyle> {
-    return this.http.get<OcHairStyle>(this.baseUri('hairstyles'))
+  getAllHairStyles(): Observable<OcHairStyle[]> {
+    return this.http.get<OcHairStyle[]>(this.baseUri('hairstyles'))
   }
 
   createHairStyle(trait: OcHairStyle): Observable<OcHairStyle> {

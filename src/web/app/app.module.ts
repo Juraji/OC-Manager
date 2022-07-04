@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {RouterModule, Routes} from '@angular/router'
 import {ModalsModule} from '@juraji/ng-bootstrap-modals'
 
 import {MainMenuModule} from '#components/main-menu'
-import {NgExtensionsModule} from '#core/ng-extensions/ng-extensions.module'
+import {NgExtensionsModule} from '#core/ng-extensions'
 import {OcmApiModule} from '#core/ocm-api'
 import {OcmNgbGlobalConfigurationModule} from '#core/ocm-ngb-global-configuration'
 
@@ -25,6 +26,7 @@ const ROUTES: Routes = [
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES),
     OcmApiModule.forRoot(),
     OcmNgbGlobalConfigurationModule.forRoot(),

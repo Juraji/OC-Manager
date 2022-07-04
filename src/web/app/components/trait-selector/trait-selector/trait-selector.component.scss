@@ -1,0 +1,11 @@
+@import "src/web/styles/variables";
+
+:host {
+  .character-trait-item {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $blue-100;
+    }
+  }
+}

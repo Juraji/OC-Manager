@@ -1,5 +1,19 @@
 <div class="card shadow">
   <div class="card-body">
-    <h5 class="card-title">Traits</h5>
+    <div class="header d-flex justify-content-between mb-2">
+      <h5 class="card-title">Traits</h5>
+      <button class="btn btn-primary btn-sm add-trait-btn" title="Add trait" (click)="onAddTrait()">
+        <span class="bi bi-plus"></span>
+      </button>
+    </div>
+
+    <ul class="list-unstyled">
+      <li *ngFor="let trait of store.allTraits$ | async" class="d-flex mb-1 character-trait-item">
+        <ocm-trait-card [trait]="trait" flat class="flex-grow-1 me-1"></ocm-trait-card>
+        <button class="btn btn-sm btn-outline-danger remove-trait-btn" (click)="onRemoveTrait(trait)">
+          <span class="bi bi-trash"></span>
+        </button>
+      </li>
+    </ul>
   </div>
 </div>

@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <h4 class="modal-title">Trait selection</h4>
+  <button type="button" class="btn-close" aria-label="Close" modalDismiss></button>
+</div>
+<ul ngbNav #nav="ngbNav" class="nav-tabs mt-2">
+  <li ngbNavItem="">
+    <a ngbNavLink>Body types</a>
+    <ng-template ngbNavContent>
+      <ng-container [ngTemplateOutlet]="traitListTpl"
+                    [ngTemplateOutletContext]="{$implicit: store.allBodyTypes$ | async}"></ng-container>
+    </ng-template>
+  </li>
+  <li ngbNavItem="">
+    <a ngbNavLink>Ethnicities</a>
+    <ng-template ngbNavContent>
+      <ng-container [ngTemplateOutlet]="traitListTpl"
+                    [ngTemplateOutletContext]="{$implicit: store.allEthnicities$ | async}"></ng-container>
+    </ng-template>
+  </li>
+  <li ngbNavItem="">
+    <a ngbNavLink>Eye colors</a>
+    <ng-template ngbNavContent>
+      <ng-container [ngTemplateOutlet]="traitListTpl"
+                    [ngTemplateOutletContext]="{$implicit: store.allEyeColors$ | async}"></ng-container>
+    </ng-template>
+  </li>
+  <li ngbNavItem="">
+    <a ngbNavLink>Gender preferences</a>
+    <ng-template ngbNavContent>
+      <ng-container [ngTemplateOutlet]="traitListTpl"
+                    [ngTemplateOutletContext]="{$implicit: store.allGenderPreferences$ | async}"></ng-container>
+    </ng-template>
+  </li>
+  <li ngbNavItem="">
+    <a ngbNavLink>Hair styles</a>
+    <ng-template ngbNavContent>
+      <ng-container [ngTemplateOutlet]="traitListTpl"
+                    [ngTemplateOutletContext]="{$implicit: store.allHairStyles$ | async}"></ng-container>
+    </ng-template>
+  </li>
+  <li ngbNavItem="">
+    <a ngbNavLink>Custom traits</a>
+    <ng-template ngbNavContent>
+      <ng-container [ngTemplateOutlet]="traitListTpl"
+                    [ngTemplateOutletContext]="{$implicit: store.allCustomTraits$ | async}"></ng-container>
+    </ng-template>
+  </li>
+</ul>
+<div class="modal-body" [ngbNavOutlet]="nav"></div>
+
+<ng-template #traitListTpl let-traits>
+  <ul class="list-unstyled">
+    <li *ngFor="let trait of traits"
+        class="character-trait-item"
+        [modalResolve]="trait">
+      <ocm-trait-card [trait]="trait" flat></ocm-trait-card>
+    </li>
+  </ul>
+</ng-template>

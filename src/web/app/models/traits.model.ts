@@ -1,6 +1,6 @@
 export type OcEyeColorType = 'BLUE' | 'BROWN' | 'GREEN' | 'VIOLET' | 'EXOTIC'
 export type OcHairStyleLength = 'SHAVED' | 'SHORT' | 'MEDIUM' | 'LONG'
-export type OcHairStyleColor = 'BLONDE' | 'BRUNETTE' | 'RED' | 'BLACK' | 'WHITE' | 'GRAY'
+export type OcHairStyleColor = 'BLONDE' | 'BRUNETTE' | 'RED' | 'BLACK' | 'WHITE' | 'GRAY' | 'EXOTIC'
 
 export interface OcCharacterTrait {
   readonly id: string
@@ -9,12 +9,12 @@ export interface OcCharacterTrait {
 
 export interface OcBodyType extends OcCharacterTrait {
   readonly traitType: 'OcBodyType'
-  label: string
+  description: string
 }
 
 export interface OcEthnicity extends OcCharacterTrait {
   readonly traitType: 'OcEthnicity'
-  label: string
+  description: string
 }
 
 export interface OcEyeColor extends OcCharacterTrait {
@@ -25,7 +25,7 @@ export interface OcEyeColor extends OcCharacterTrait {
 
 export interface OcGenderPreference extends OcCharacterTrait {
   readonly traitType: 'OcGenderPreference'
-  label: string
+  description: string
 }
 
 export interface OcHairStyle extends OcCharacterTrait {
@@ -35,4 +35,10 @@ export interface OcHairStyle extends OcCharacterTrait {
   variant: string
   dyed: boolean
   dyeColor?: string
+}
+
+export interface OcCustomTrait extends OcCharacterTrait {
+  readonly traitType: 'OcCustomTrait'
+  label: string
+  description: string
 }

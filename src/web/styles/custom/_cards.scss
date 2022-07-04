@@ -1,0 +1,7 @@
+@import "../variables";
+
+.card.card-sm {
+  .card-body {
+    padding: ($card-spacer-y / 2) ($card-spacer-x / 2);
+  }
+}
