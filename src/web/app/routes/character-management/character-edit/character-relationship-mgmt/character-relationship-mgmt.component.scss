@@ -1,0 +1,18 @@
+:host {
+  .remove-relationship-btn, .add-relationship-btn {
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+  }
+
+  &:hover {
+    .add-relationship-btn {
+      opacity: 1;
+    }
+  }
+
+  .character-relationship-item:hover {
+    .remove-relationship-btn {
+      opacity: 1;
+    }
+  }
+}

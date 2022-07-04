@@ -156,6 +156,32 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
       )
   }
 
+  addCharacterRelationship(relationship: OcCharacterRelationship): Observable<OcCharacterRelationship> {
+    return this.characterId$
+      .pipe(
+        once(),
+        filterNotNull(),
+        mergeMap(id => this.characterRelationshipsService
+          .createRelationship(id, relationship.targetCharacterId, relationship.type, relationship.description)),
+        tap(trait => this.patchState(s => ({
+          relationships: this.relationshipsAdapter.addOne(trait, s.relationships)
+        })))
+      )
+  }
+
+  removeCharacterRelationship(relationshipId: string): Observable<void> {
+    return this.characterId$
+      .pipe(
+        once(),
+        filterNotNull(),
+        mergeMap(id => this.characterRelationshipsService
+          .deleteRelationship(id, relationshipId)),
+        tap(() => this.patchState(s => ({
+          relationships: this.relationshipsAdapter.removeOne(relationshipId, s.relationships)
+        })))
+      )
+  }
+
   private static createTraitsAdapter() {
     return createEntityAdapter<OcCharacterTrait>({
       selectId: e => e.id,

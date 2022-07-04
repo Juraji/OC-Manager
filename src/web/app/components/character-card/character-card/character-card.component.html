@@ -1,4 +1,4 @@
-<div class="card shadow">
+<div class="card" [class.shadow]="!flat">
   <div class="card-img-top thumbnail-sq-outer-wrapper">
     <div class="thumbnail-sq-inner-wrapper">
       <img *ngIf="thumbnailUri$ | async as url"
@@ -8,6 +8,5 @@
   </div>
   <div class="card-body" *ngIf="character$ | async as c">
     <h5 class="card-title mb-0 text-overflow-ellipsis">{{c.name}}</h5>
-    <h5 class="small text-muted mb-0 text-overflow-ellipsis">{{c.nickname}}&nbsp;</h5>
   </div>
 </div>

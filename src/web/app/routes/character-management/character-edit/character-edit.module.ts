@@ -6,6 +6,7 @@ import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'
 
 import {DragDropFileModule} from '#components/drag-drop-file/drag-drop-file.module'
 import {ImgSrcFallbackModule} from '#components/img-src-fallback'
+import {RelationshipMgmtModule} from '#components/relationship-mgmt'
 import {TraitCardModule} from '#components/trait-card'
 import {TraitSelectorModule} from '#components/trait-selector'
 import {DatePipesModule} from '#core/date-pipes/date-pipes.module'
@@ -44,6 +45,7 @@ const ROUTES: Routes = [
     DatePipesModule,
     TraitCardModule,
     TraitSelectorModule,
+    RelationshipMgmtModule
   ],
   declarations: [
     CharacterEditComponent,

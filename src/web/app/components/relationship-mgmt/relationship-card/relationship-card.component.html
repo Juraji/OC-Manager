@@ -1,0 +1,17 @@
+<div class="card card-sm" *ngIf="relationship">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-4">
+        <ocm-character-card [character]="relationship.targetCharacterId" flat></ocm-character-card>
+      </div>
+      <div class="col-8">
+        <ul class="list-unstyled">
+          <li>{{relationship.type | titlecase}}</li>
+          <li *ngIf="relationship.description">
+            <pre>{{relationship.description}}</pre>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

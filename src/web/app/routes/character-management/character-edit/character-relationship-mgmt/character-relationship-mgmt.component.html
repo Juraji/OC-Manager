@@ -1,5 +1,19 @@
 <div class="card shadow">
   <div class="card-body">
-    <h5 class="card-title">Relationships</h5>
+    <div class="header d-flex justify-content-between mb-2">
+      <h5 class="card-title">Relationships</h5>
+      <button class="btn btn-primary btn-sm add-relationship-btn" title="Add relationship" (click)="onAddRelationship()">
+        <span class="bi bi-plus"></span>
+      </button>
+    </div>
+
+    <ul class="list-unstyled">
+      <li *ngFor="let rel of store.allRelationships$ | async" class="d-flex align-items-start mb-1 character-relationship-item">
+        <ocm-relationship-card [relationship]="rel" flat class="flex-grow-1 me-1"></ocm-relationship-card>
+        <button class="btn btn-sm btn-outline-danger remove-relationship-btn" (click)="onRemoveRelationship(rel)">
+          <span class="bi bi-trash"></span>
+        </button>
+      </li>
+    </ul>
   </div>
 </div>

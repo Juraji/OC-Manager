@@ -1,0 +1,10 @@
+:host {
+  display: block;
+
+  &[flat] {
+    .card {
+      border: none;
+      background-color: transparent;
+    }
+  }
+}

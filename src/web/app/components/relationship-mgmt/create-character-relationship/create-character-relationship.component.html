@@ -1,0 +1,45 @@
+<form [formGroup]="formGroup" (submit)="onSubmit()"
+      [class.needs-validation]="formGroup.pristine"
+      [class.was-validated]="formGroup.dirty">
+  <div class="modal-header">
+    <h4 class="modal-title">Create new relationship</h4>
+    <button type="button" class="btn-close" aria-label="Close" modalDismiss></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-8">
+
+        <div class="mb-3">
+          <label for="typeInput" class="form-label">Type</label>
+          <select id="typeInput" class="form-select" aria-describedby="typeHelp"
+                  formControlName="type">
+            <option value="FRIENDSHIP">Friendship</option>
+            <option value="FAMILY">Family</option>
+            <option value="ROMANTIC">Romantic</option>
+          </select>
+          <div id="typeHelp" class="form-text">The type of relationship.</div>
+        </div>
+        <div class="mb-3">
+          <label for="targetCharacterInput" class="form-label">With</label>
+          <select id="targetCharacterInput" class="form-select" aria-describedby="targetCharacterHelp"
+                  formControlName="targetCharacterId">
+            <option *ngFor="let c of store.availableTargetCharacters$ | async" [value]="c.id">{{c.name}}</option>
+          </select>
+          <div id="targetCharacterHelp" class="form-text">Who's on the other side of this relationship.</div>
+        </div>
+        <div class="mb-3">
+          <label for="descriptionInput" class="form-label">Description</label>
+          <textarea type="text" class="form-control" id="descriptionInput"
+                    aria-describedby="descriptionHelp" formControlName="description"></textarea>
+          <div id="descriptionHelp" class="form-text">Describe this relationship.</div>
+        </div>
+      </div>
+      <div class="col-4" *ngIf="!!formGroup.value.targetCharacterId">
+        <ocm-character-card [character]="formGroup.value.targetCharacterId" flat disabled></ocm-character-card>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit">Save</button>
+  </div>
+</form>
