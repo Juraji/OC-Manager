@@ -1,4 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router'
+import {Modals} from '@juraji/ng-bootstrap-modals'
 import {map, mergeMap, of, repeat, startWith, Subject} from 'rxjs'
 
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
@@ -37,7 +39,9 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
     )
 
   constructor(
-    readonly store: CharacterEditStore
+    private readonly router: Router,
+    private readonly modals: Modals,
+    readonly store: CharacterEditStore,
   ) {
     this.store.character$
       .pipe(takeUntilDestroyed(this))
@@ -68,6 +72,16 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
           this.populateForm(c)
         })
     }
+  }
+
+  onDeleteCharacter() {
+    this.store.character$
+      .pipe(
+        once(),
+        mergeMap(c => this.modals.confirm(`Are you sure you want to delete ${c.name}?`).onResolved),
+        mergeMap(() => this.store.deleteCharacter())
+      )
+      .subscribe(() => this.router.navigate(['/']))
   }
 
   onSetThumbnail(e: FileList) {

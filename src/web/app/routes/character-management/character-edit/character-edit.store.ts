@@ -111,6 +111,15 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
       )
   }
 
+  deleteCharacter() {
+    return this.characterId$
+      .pipe(
+        once(),
+        filterNotNull(),
+        mergeMap(id => this.charactersService.deleteCharacter(id))
+      )
+  }
+
   setCharacterThumbnail(file: File): Observable<void> {
     return this.characterId$
       .pipe(

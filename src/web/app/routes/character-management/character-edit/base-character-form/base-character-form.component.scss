@@ -6,7 +6,7 @@
   .character-details-wrapper {
     position: relative;
 
-    .enable-edit-btn {
+    .character-edit-buttons {
       position: absolute;
       top: 0;
       right: 0;
@@ -16,7 +16,7 @@
     }
 
     &:hover {
-      .enable-edit-btn {
+      .character-edit-buttons {
         opacity: 1;
       }
     }
