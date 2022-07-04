@@ -14,7 +14,7 @@ export class DragDropFileDirective {
   readonly dropActive = new EventEmitter()
 
   @HostBinding('class.drag-drop-file')
-  public readonly classList = true;
+  readonly classList = true;
 
   constructor() {
   }

@@ -1,9 +1,13 @@
 <div class="card shadow">
-  <img *ngIf="thumbnailUri$ | async as url"
-       [src]="url" ocmImgSrcFallback="assets/no-image-placeholder.svg"
-       class="card-img-top character-thumbnail-img" alt="Character thumbnail">
+  <div class="card-img-top thumbnail-sq-outer-wrapper">
+    <div class="thumbnail-sq-inner-wrapper">
+      <img *ngIf="thumbnailUri$ | async as url"
+           [src]="url" ocmImgSrcFallback="assets/no-image-placeholder.svg"
+           class="character-thumbnail-sq-img" alt="Character thumbnail">
+    </div>
+  </div>
   <div class="card-body" *ngIf="character$ | async as c">
-    <h5 class="card-title mb-0">{{c.name}}</h5>
-    <h5 class="small text-muted mb-0">{{c.nickname}}&nbsp;</h5>
+    <h5 class="card-title mb-0 text-overflow-ellipsis">{{c.name}}</h5>
+    <h5 class="small text-muted mb-0 text-overflow-ellipsis">{{c.nickname}}&nbsp;</h5>
   </div>
 </div>
