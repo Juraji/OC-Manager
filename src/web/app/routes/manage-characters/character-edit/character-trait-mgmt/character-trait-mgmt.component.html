@@ -1,12 +1,11 @@
 <div class="card shadow">
+  <div class="card-header d-flex justify-content-between">
+    <h5 class="card-title">Traits ({{store.allTraits$ | async | count}})</h5>
+    <button class="btn btn-primary btn-sm add-trait-btn" title="Add trait" (click)="onAddTrait()">
+      <span class="bi bi-plus"></span>
+    </button>
+  </div>
   <div class="card-body">
-    <div class="header d-flex justify-content-between mb-2">
-      <h5 class="card-title">Traits</h5>
-      <button class="btn btn-primary btn-sm add-trait-btn" title="Add trait" (click)="onAddTrait()">
-        <span class="bi bi-plus"></span>
-      </button>
-    </div>
-
     <ul class="list-unstyled">
       <li *ngFor="let trait of store.allTraits$ | async" class="d-flex align-items-start mb-1 character-trait-item">
         <ocm-trait-card [trait]="trait" flat class="flex-grow-1 me-1"></ocm-trait-card>

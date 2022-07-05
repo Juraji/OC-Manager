@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {defaultIfEmpty, map, mergeMap, Observable, tap} from 'rxjs'
+import {defaultIfEmpty, map, mergeMap, Observable, shareReplay, tap} from 'rxjs'
 
 import {numberSort, orderedSort} from '#core/arrays'
 import {
@@ -57,15 +57,15 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
 
   public readonly allTraits$: Observable<OcCharacterTrait[]> = this
     .select(s => s.traits)
-    .pipe(map(this.traitsSelectors.selectAll))
+    .pipe(map(this.traitsSelectors.selectAll), shareReplay(1))
 
   public readonly allEvents$: Observable<OcEvent[]> = this
     .select(s => s.events)
-    .pipe(map(this.eventsSelectors.selectAll))
+    .pipe(map(this.eventsSelectors.selectAll), shareReplay(1))
 
   public readonly allRelationships$: Observable<OcCharacterRelationship[]> = this
     .select(s => s.relationships)
-    .pipe(map(this.relationshipsSelectors.selectAll))
+    .pipe(map(this.relationshipsSelectors.selectAll), shareReplay(1))
 
   constructor(
     private readonly charactersService: OcmApiCharactersService,

@@ -1,4 +1,7 @@
 <div class="card shadow">
+  <div class="card-header">
+    <h1 class="card-title mb-0">{{characterTitle$ | async}}</h1>
+  </div>
   <div class="card-body">
     <div class="row">
       <div class="col-8">
@@ -16,7 +19,7 @@
 </div>
 
 <ng-template #viewCharacterTpl>
-  <div class="character-details-wrapper">
+  <div class="character-details-wrapper" *ngIf="store.character$ | async as char">
     <div class="character-edit-buttons d-flex flex-column">
       <button class="btn btn-primary btn-sm enable-edit-btn mb-1" (click)="editActive$.setTrue()">
         <span class="bi bi-pencil"></span>
@@ -25,9 +28,8 @@
         <span class="bi bi-trash"></span>
       </button>
     </div>
-    <h1 class="card-title">{{characterTitle$ | async}}</h1>
 
-    <table class="table table-sm table-borderless" *ngIf="store.character$ | async as char">
+    <table class="table table-sm table-borderless">
       <tbody>
       <tr *ngIf="!!char.nickname">
         <th scope="row">Nickname</th>

@@ -1,17 +1,23 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 
-import { NotPipe } from './not.pipe';
+import {CountPipe} from './count.pipe';
+import {EmptyPipe} from './empty.pipe';
+import {NotPipe} from './not.pipe';
 
 @NgModule({
   declarations: [
-    NotPipe
+    NotPipe,
+    CountPipe,
+    EmptyPipe
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    NotPipe
+    NotPipe,
+    CountPipe,
+    EmptyPipe
   ]
 })
 export class RxUtilPipesModule {
