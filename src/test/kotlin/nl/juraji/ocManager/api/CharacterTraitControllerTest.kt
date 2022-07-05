@@ -27,7 +27,7 @@ internal class CharacterTraitControllerTest : BaseControllerTest() {
             mockOcBodyType(),
             mockOcEthnicity(),
             mockOcHairStyle(),
-            mockOcGenderPreference(),
+            mockOcGender(),
             mockOcEyeColor()
         )
 

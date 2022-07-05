@@ -5,15 +5,24 @@ import {map, mergeMap, tap} from 'rxjs'
 
 import {chainSort, strSort} from '#core/arrays'
 import {OcmApiTraitsService} from '#core/ocm-api'
-import {OcBodyType, OcCustomTrait, OcEthnicity, OcEyeColor, OcGenderPreference, OcHairStyle} from '#models/traits.model'
+import {
+  OcBodyType,
+  OcCustomTrait,
+  OcEthnicity,
+  OcEyeColor,
+  OcGender,
+  OcHairStyle,
+  OcSexuality
+} from '#models/traits.model'
 
 interface TraitSelectorStoreState {
   bodyTypes: EntityState<OcBodyType>
   ethnicities: EntityState<OcEthnicity>
   eyeColors: EntityState<OcEyeColor>
-  genderPreferences: EntityState<OcGenderPreference>
+  genders: EntityState<OcGender>
   hairStyles: EntityState<OcHairStyle>
   customTraits: EntityState<OcCustomTrait>
+  sexualities: EntityState<OcSexuality>
 }
 
 @Injectable()
@@ -27,14 +36,17 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
   private readonly eyeColorAdapter = TraitSelectorStore.createEyeColorAdapter()
   private readonly eyeColorSelectors = this.eyeColorAdapter.getSelectors()
 
-  private readonly genderPreferenceAdapter = TraitSelectorStore.createGenderPreferenceAdapter()
-  private readonly genderPreferenceSelectors = this.genderPreferenceAdapter.getSelectors()
+  private readonly genderAdapter = TraitSelectorStore.createGenderAdapter()
+  private readonly genderSelectors = this.genderAdapter.getSelectors()
 
   private readonly hairStyleAdapter = TraitSelectorStore.createHairStyleAdapter()
   private readonly hairStyleSelectors = this.hairStyleAdapter.getSelectors()
 
   private readonly customTraitAdapter = TraitSelectorStore.createCustomTraitAdapter()
   private readonly customTraitSelectors = this.customTraitAdapter.getSelectors()
+
+  private readonly sexualityAdapter = TraitSelectorStore.createSexualityAdapter()
+  private readonly sexualitySelectors = this.sexualityAdapter.getSelectors()
 
   public allBodyTypes$ = this
     .select(s => s.bodyTypes)
@@ -48,9 +60,9 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
     .select(s => s.eyeColors)
     .pipe(map(this.eyeColorSelectors.selectAll))
 
-  public allGenderPreferences$ = this
-    .select(s => s.genderPreferences)
-    .pipe(map(this.genderPreferenceSelectors.selectAll))
+  public allGender$ = this
+    .select(s => s.genders)
+    .pipe(map(this.genderSelectors.selectAll))
 
   public allHairStyles$ = this
     .select(s => s.hairStyles)
@@ -59,6 +71,10 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
   public allCustomTraits$ = this
     .select(s => s.customTraits)
     .pipe(map(this.customTraitSelectors.selectAll))
+
+  public allSexualities$ = this
+    .select(s => s.sexualities)
+    .pipe(map(this.sexualitySelectors.selectAll))
 
   constructor(
     private readonly service: OcmApiTraitsService,
@@ -69,9 +85,10 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
       bodyTypes: this.bodyTypeAdapter.getInitialState(),
       ethnicities: this.ethnicityAdapter.getInitialState(),
       eyeColors: this.eyeColorAdapter.getInitialState(),
-      genderPreferences: this.genderPreferenceAdapter.getInitialState(),
+      genders: this.genderAdapter.getInitialState(),
       hairStyles: this.hairStyleAdapter.getInitialState(),
       customTraits: this.customTraitAdapter.getInitialState(),
+      sexualities: this.sexualityAdapter.getInitialState()
     })
 
     this.loadTraits()
@@ -81,9 +98,10 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
     this.loadBodyTypes(omitTraitIds)
     this.loadEthnicities(omitTraitIds)
     this.loadEyeColors(omitTraitIds)
-    this.loadGenderPreferences(omitTraitIds)
+    this.loadGenders(omitTraitIds)
     this.loadHairStyles(omitTraitIds)
     this.loadCustomTraits(omitTraitIds)
+    this.loadSexualities(omitTraitIds)
   }
 
   private readonly loadBodyTypes = this.effect<string[]>($ => $.pipe(
@@ -113,12 +131,12 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
     })))
   ))
 
-  private readonly loadGenderPreferences = this.effect<string[]>($ => $.pipe(
+  private readonly loadGenders = this.effect<string[]>($ => $.pipe(
     mergeMap(omitIds => this.service
-      .getAllGenderPreferences()
+      .getAllGenders()
       .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
     tap(traits => this.patchState(s => ({
-      genderPreferences: this.genderPreferenceAdapter.setAll(traits, s.genderPreferences)
+      genders: this.genderAdapter.setAll(traits, s.genders)
     })))
   ))
 
@@ -137,6 +155,15 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
       .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
     tap(traits => this.patchState(s => ({
       customTraits: this.customTraitAdapter.setAll(traits, s.customTraits)
+    })))
+  ))
+
+  private readonly loadSexualities = this.effect<string[]>($ => $.pipe(
+    mergeMap(omitIds => this.service
+      .getAllSexualities()
+      .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
+    tap(traits => this.patchState(s => ({
+      sexualities: this.sexualityAdapter.setAll(traits, s.sexualities)
     })))
   ))
 
@@ -161,8 +188,8 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
     })
   }
 
-  private static createGenderPreferenceAdapter() {
-    return createEntityAdapter<OcGenderPreference>({
+  private static createGenderAdapter() {
+    return createEntityAdapter<OcGender>({
       selectId: e => e.id,
       sortComparer: strSort(e => e.description)
     })
@@ -179,6 +206,13 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
     return createEntityAdapter<OcCustomTrait>({
       selectId: e => e.id,
       sortComparer: chainSort(strSort(e => e.label), strSort(e => e.description))
+    })
+  }
+
+  private static createSexualityAdapter() {
+    return createEntityAdapter<OcSexuality>({
+      selectId: e => e.id,
+      sortComparer: strSort(e => e.description)
     })
   }
 }

@@ -4,5 +4,5 @@ import org.springframework.data.neo4j.repository.ReactiveNeo4jRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface GenderPreferenceRepository: ReactiveNeo4jRepository<OcGenderPreference, String> {
+interface GenderRepository: ReactiveNeo4jRepository<OcGender, String> {
 }

@@ -6,8 +6,8 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue
 import org.springframework.data.neo4j.core.schema.Node
 import javax.validation.constraints.NotBlank
 
-@Node("OcGenderPreference", "OcCharacterTrait")
-data class OcGenderPreference(
+@Node("OcGender", "OcCharacterTrait")
+data class OcGender(
     @Id @GeneratedValue(StringUUIDGenerator::class)
     override val id: String? = null,
     @NotBlank

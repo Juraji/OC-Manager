@@ -12,8 +12,9 @@ class TraitService(
     private val customTraitRepository: CustomTraitRepository,
     private val ethnicityRepository: EthnicityRepository,
     private val eyeColorRepository: EyeColorRepository,
-    private val genderPreferenceRepository: GenderPreferenceRepository,
+    private val genderRepository: GenderRepository,
     private val hairStyleRepository: HairStyleRepository,
+    private val sexualityRepository: SexualityRepository,
 ) {
     // Body types
     fun getAllBodyTypes(): Flux<OcBodyType> =
@@ -84,21 +85,21 @@ class TraitService(
         eyeColorRepository.deleteById(traitId)
 
     // Gender preferences
-    fun getAllGenderPreferences(): Flux<OcGenderPreference> =
-        genderPreferenceRepository.findAll()
+    fun getAllGenders(): Flux<OcGender> =
+        genderRepository.findAll()
 
-    fun createGenderPreference(trait: OcGenderPreference): Mono<OcGenderPreference> =
-        genderPreferenceRepository.save(trait)
+    fun createGender(trait: OcGender): Mono<OcGender> =
+        genderRepository.save(trait)
 
-    fun updateGenderPreference(traitId: String, trait: OcGenderPreference): Mono<OcGenderPreference> =
-        genderPreferenceRepository
+    fun updateGender(traitId: String, trait: OcGender): Mono<OcGender> =
+        genderRepository
             .findById(traitId)
-            .orElseEntityNotFound(OcGenderPreference::class, traitId)
+            .orElseEntityNotFound(OcGender::class, traitId)
             .map { trait.copy(id = it.id) }
-            .flatMap(genderPreferenceRepository::save)
+            .flatMap(genderRepository::save)
 
-    fun deleteGenderPreference(traitId: String): Mono<Void> =
-        genderPreferenceRepository.deleteById(traitId)
+    fun deleteGender(traitId: String): Mono<Void> =
+        genderRepository.deleteById(traitId)
 
     // Hair styles
     fun getAllHairStyles(): Flux<OcHairStyle> =
@@ -116,4 +117,21 @@ class TraitService(
 
     fun deleteHairStyle(traitId: String): Mono<Void> =
         hairStyleRepository.deleteById(traitId)
+
+    // Sexuality
+    fun getAllSexualities(): Flux<OcSexuality> =
+        sexualityRepository.findAll()
+
+    fun createSexuality(trait: OcSexuality): Mono<OcSexuality> =
+        sexualityRepository.save(trait)
+
+    fun updateSexuality(traitId: String, trait: OcSexuality): Mono<OcSexuality> =
+        sexualityRepository
+            .findById(traitId)
+            .orElseEntityNotFound(OcSexuality::class, traitId)
+            .map { trait.copy(id = it.id) }
+            .flatMap(sexualityRepository::save)
+
+    fun deleteSexuality(traitId: String): Mono<Void> =
+        sexualityRepository.deleteById(traitId)
 }

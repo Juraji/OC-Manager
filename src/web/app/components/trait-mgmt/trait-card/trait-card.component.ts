@@ -7,8 +7,8 @@ import {
   OcCustomTrait,
   OcEthnicity,
   OcEyeColor,
-  OcGenderPreference,
-  OcHairStyle
+  OcGender,
+  OcHairStyle, OcSexuality
 } from '#models/traits.model'
 
 @Component({
@@ -41,8 +41,12 @@ export class TraitCardComponent {
     return trait as OcEyeColor
   }
 
-  asGenderPreference(trait: Nullable<OcCharacterTrait>): OcGenderPreference {
-    return trait as OcGenderPreference
+  asGender(trait: Nullable<OcCharacterTrait>): OcGender {
+    return trait as OcGender
+  }
+
+  asSexuality(trait: Nullable<OcCharacterTrait>): OcSexuality {
+    return trait as OcSexuality
   }
 
   asHairStyle(trait: Nullable<OcCharacterTrait>): OcHairStyle {

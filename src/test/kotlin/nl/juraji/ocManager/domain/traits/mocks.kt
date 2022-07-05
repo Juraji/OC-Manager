@@ -5,14 +5,14 @@ import nl.juraji.ocManager.util.uuid
 fun mockOcBodyType() = uuid().let {
     OcBodyType(
         id = it,
-        label = "Test body type $it"
+        description = "Test body type $it"
     )
 }
 
 fun mockOcEthnicity() = uuid().let {
     OcEthnicity(
         id = it,
-        label = "Test ethnicity $it"
+        description = "Test ethnicity $it"
     )
 }
 
@@ -24,10 +24,10 @@ fun mockOcEyeColor() = uuid().let {
     )
 }
 
-fun mockOcGenderPreference() = uuid().let {
-    OcGenderPreference(
+fun mockOcGender() = uuid().let {
+    OcGender(
         id = it,
-        label = "Test gender preference $it"
+        description = "Test gender preference $it"
     )
 }
 

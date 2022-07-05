@@ -23,8 +23,8 @@ export interface OcEyeColor extends OcCharacterTrait {
   variant: string
 }
 
-export interface OcGenderPreference extends OcCharacterTrait {
-  readonly traitType: 'OcGenderPreference'
+export interface OcGender extends OcCharacterTrait {
+  readonly traitType: 'OcGender'
   description: string
 }
 
@@ -40,5 +40,10 @@ export interface OcHairStyle extends OcCharacterTrait {
 export interface OcCustomTrait extends OcCharacterTrait {
   readonly traitType: 'OcCustomTrait'
   label: string
+  description: string
+}
+
+export interface OcSexuality extends OcCharacterTrait {
+  readonly traitType: 'OcSexuality'
   description: string
 }

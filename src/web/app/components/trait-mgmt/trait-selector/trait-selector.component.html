@@ -25,10 +25,17 @@
     </ng-template>
   </li>
   <li ngbNavItem="">
-    <a ngbNavLink>Gender &amp; Preferences</a>
+    <a ngbNavLink>Genders</a>
     <ng-template ngbNavContent>
       <ng-container [ngTemplateOutlet]="traitListTpl"
-                    [ngTemplateOutletContext]="{$implicit: store.allGenderPreferences$ | async}"></ng-container>
+                    [ngTemplateOutletContext]="{$implicit: store.allGender$ | async}"></ng-container>
+    </ng-template>
+  </li>
+  <li ngbNavItem="">
+    <a ngbNavLink>Sexualities</a>
+    <ng-template ngbNavContent>
+      <ng-container [ngTemplateOutlet]="traitListTpl"
+                    [ngTemplateOutletContext]="{$implicit: store.allSexualities$ | async}"></ng-container>
     </ng-template>
   </li>
   <li ngbNavItem="">

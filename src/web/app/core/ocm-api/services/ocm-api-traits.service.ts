@@ -2,7 +2,15 @@ import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {iif, Observable} from 'rxjs'
 
-import {OcBodyType, OcCustomTrait, OcEthnicity, OcEyeColor, OcGenderPreference, OcHairStyle} from '#models/traits.model'
+import {
+  OcBodyType,
+  OcCustomTrait,
+  OcEthnicity,
+  OcEyeColor,
+  OcGender,
+  OcHairStyle,
+  OcSexuality
+} from '#models/traits.model'
 
 import {OcmApiService} from './ocm-api.service'
 
@@ -82,20 +90,20 @@ export class OcmApiTraitsService extends OcmApiService {
   }
 
   // Gender preferences
-  getAllGenderPreferences(): Observable<OcGenderPreference[]> {
-    return this.http.get<OcGenderPreference[]>(this.baseUri('gender-preferences'))
+  getAllGenders(): Observable<OcGender[]> {
+    return this.http.get<OcGender[]>(this.baseUri('genders'))
   }
 
-  createGenderPreference(trait: OcGenderPreference): Observable<OcGenderPreference> {
+  createGender(trait: OcGender): Observable<OcGender> {
     return iif(
       () => !!trait.id,
-      this.http.put<OcGenderPreference>(this.baseUri('gender-preferences', trait.id), trait),
-      this.http.post<OcGenderPreference>(this.baseUri('gender-preferences'), trait)
+      this.http.put<OcGender>(this.baseUri('genders', trait.id), trait),
+      this.http.post<OcGender>(this.baseUri('genders'), trait)
     )
   }
 
-  deleteGenderPreference(): Observable<void> {
-    return this.http.delete<void>(this.baseUri('gender-preferences'))
+  deleteGender(): Observable<void> {
+    return this.http.delete<void>(this.baseUri('genders'))
   }
 
   // Hair styles
@@ -113,6 +121,23 @@ export class OcmApiTraitsService extends OcmApiService {
 
   deleteHairStyle(): Observable<void> {
     return this.http.delete<void>(this.baseUri('hairstyles'))
+  }
+
+  // Hair styles
+  getAllSexualities(): Observable<OcSexuality[]> {
+    return this.http.get<OcSexuality[]>(this.baseUri('sexualities'))
+  }
+
+  createSexuality(trait: OcSexuality): Observable<OcSexuality> {
+    return iif(
+      () => !!trait.id,
+      this.http.put<OcSexuality>(this.baseUri('sexualities', trait.id), trait),
+      this.http.post<OcSexuality>(this.baseUri('sexualities'), trait)
+    )
+  }
+
+  deleteSexuality(): Observable<void> {
+    return this.http.delete<void>(this.baseUri('sexualities'))
   }
 
   protected override baseUri(...path: string[]): string {

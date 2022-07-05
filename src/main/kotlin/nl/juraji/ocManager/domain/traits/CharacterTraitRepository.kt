@@ -17,8 +17,9 @@ class CharacterTraitRepository(
     private val ocBodyTypeMapper = Neo4jDataClassMapper(OcBodyType::class)
     private val ocEthnicityMapper = Neo4jDataClassMapper(OcEthnicity::class)
     private val ocEyeColorMapper = Neo4jDataClassMapper(OcEyeColor::class)
-    private val ocGenderPreferenceMapper = Neo4jDataClassMapper(OcGenderPreference::class)
+    private val ocGenderMapper = Neo4jDataClassMapper(OcGender::class)
     private val ocHairStyleMapper = Neo4jDataClassMapper(OcHairStyle::class)
+    private val ocSexualityMapper = Neo4jDataClassMapper(OcSexuality::class)
 
     fun findAllByCharacterId(characterId: String): Flux<OcCharacterTrait> = neo4jClient
         .query(
@@ -37,7 +38,7 @@ class CharacterTraitRepository(
             """
             MATCH (character:OcCharacter {id: $ characterId})
             MATCH (trait:OcCharacterTrait {id: $ traitId})
-            
+
             OPTIONAL MATCH (character)-[existingTraitRel:HAS_TRAIT]->(existingTrait:OcCharacterTrait)
               WHERE labels(trait) = labels(existingTrait)
             DELETE existingTraitRel
@@ -73,8 +74,9 @@ class CharacterTraitRepository(
             "OcBodyType" -> ocBodyTypeMapper.mapFrom(node.asMap())
             "OcEthnicity" -> ocEthnicityMapper.mapFrom(node.asMap())
             "OcEyeColor" -> ocEyeColorMapper.mapFrom(node.asMap())
-            "OcGenderPreference" -> ocGenderPreferenceMapper.mapFrom(node.asMap())
+            "OcGender" -> ocGenderMapper.mapFrom(node.asMap())
             "OcHairStyle" -> ocHairStyleMapper.mapFrom(node.asMap())
+            "OcSexuality" -> ocSexualityMapper.mapFrom(node.asMap())
             else -> throw IllegalArgumentException("No mapper defined for trait label \"$traitLabel\"")
         }
     }

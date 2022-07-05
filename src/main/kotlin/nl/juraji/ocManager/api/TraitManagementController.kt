@@ -103,24 +103,24 @@ class TraitManagementController(
     ): Mono<Void> = traitService.deleteEyeColor(traitId)
 
     // Gender preferences
-    @GetMapping("/gender-preferences")
-    fun getAllGenderPreferences(): Flux<OcGenderPreference> = traitService.getAllGenderPreferences()
+    @GetMapping("/genders")
+    fun getAllGenders(): Flux<OcGender> = traitService.getAllGenders()
 
-    @PostMapping("/gender-preferences")
-    fun createGenderPreference(
-        @Valid @RequestBody trait: OcGenderPreference
-    ): Mono<OcGenderPreference> = traitService.createGenderPreference(trait)
+    @PostMapping("/genders")
+    fun createGender(
+        @Valid @RequestBody trait: OcGender
+    ): Mono<OcGender> = traitService.createGender(trait)
 
-    @PutMapping("/gender-preferences/{traitId})")
-    fun updateGenderPreference(
+    @PutMapping("/genders/{traitId})")
+    fun updateGender(
         @PathVariable traitId: String,
-        @Valid @RequestBody trait: OcGenderPreference
-    ): Mono<OcGenderPreference> = traitService.updateGenderPreference(traitId, trait)
+        @Valid @RequestBody trait: OcGender
+    ): Mono<OcGender> = traitService.updateGender(traitId, trait)
 
-    @DeleteMapping("/gender-preferences/{traitId}")
+    @DeleteMapping("/genders/{traitId}")
     fun deleteGenderPreference(
         @PathVariable traitId: String
-    ): Mono<Void> = traitService.deleteGenderPreference(traitId)
+    ): Mono<Void> = traitService.deleteGender(traitId)
 
     // Hair styles
     @GetMapping("/hairstyles")
@@ -141,4 +141,24 @@ class TraitManagementController(
     fun deleteHairStyle(
         @PathVariable traitId: String
     ): Mono<Void> = traitService.deleteHairStyle(traitId)
+
+    // Sexualities
+    @GetMapping("/sexualities")
+    fun getAllSexualities(): Flux<OcSexuality> = traitService.getAllSexualities()
+
+    @PostMapping("/sexualities")
+    fun createSexuality(
+        @Valid @RequestBody trait: OcSexuality
+    ): Mono<OcSexuality> = traitService.createSexuality(trait)
+
+    @PutMapping("/sexualities/{traitId})")
+    fun updateSexuality(
+        @PathVariable traitId: String,
+        @Valid @RequestBody trait: OcSexuality
+    ): Mono<OcSexuality> = traitService.updateSexuality(traitId, trait)
+
+    @DeleteMapping("/sexualities/{traitId}")
+    fun deleteSexuality(
+        @PathVariable traitId: String
+    ): Mono<Void> = traitService.deleteSexuality(traitId)
 }

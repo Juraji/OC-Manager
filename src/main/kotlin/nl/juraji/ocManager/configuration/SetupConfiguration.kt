@@ -61,11 +61,17 @@ class SetupConfiguration(
             .toFlux()
             .flatMap(traitService::createEyeColor)
 
-        // Gender preferences
-        val genderPreferences: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcGenderPreference>>(ClassPathResource("defaults/OcGenderPreference.json").file)
+        // Genders
+        val genders: Flux<OcCharacterTrait> = objectMapper
+            .readValue<List<OcGender>>(ClassPathResource("defaults/OcGender.json").file)
             .toFlux()
-            .flatMap(traitService::createGenderPreference)
+            .flatMap(traitService::createGender)
+
+        // Sexualities
+        val sexualities: Flux<OcCharacterTrait> = objectMapper
+            .readValue<List<OcSexuality>>(ClassPathResource("defaults/OcSexuality.json").file)
+            .toFlux()
+            .flatMap(traitService::createSexuality)
 
         // Hairstyles
         val hairstyles: Flux<OcCharacterTrait> = objectMapper
@@ -79,7 +85,7 @@ class SetupConfiguration(
             .filter { !it.defaultTraitsInitialized }
             .doOnNext { logger.info("Setting up default character traits...") }
             .flatMap {
-                Flux.concat(bodyTypes, ethnicities, eyeColors, genderPreferences, hairstyles)
+                Flux.concat(bodyTypes, ethnicities, eyeColors, genders, sexualities, hairstyles)
                     .collectList()
                     .then(settingsService.updateApplicationSettings(it.copy(defaultTraitsInitialized = true)))
             }
