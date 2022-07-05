@@ -47,11 +47,7 @@ class CharacterTraitRepository(
         .one()
 
     fun save(trait: OcCharacterTrait): Mono<OcCharacterTrait> {
-        val traitProperties = trait.toMap("id")
-            .mapValues { (_, value) ->
-                if (value is Enum<*>) value.name
-                else value
-            }
+        val traitProperties = trait.toMap("id", stringifyEnums = true)
 
         val traitId = trait.id ?: UUID.randomUUID().toString()
         val traitLabel = trait::class.simpleName

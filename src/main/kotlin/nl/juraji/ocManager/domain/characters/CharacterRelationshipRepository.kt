@@ -45,7 +45,7 @@ class CharacterRelationshipRepository(
             )
             .`in`(databaseSelectionProvider.databaseSelection.value)
             .bind(UUID.randomUUID().toString()).to("relId")
-            .bind(relationship.toMap()).to("relationship")
+            .bind(relationship.toMap(stringifyEnums = true)).to("relationship")
             .fetch().one()
             .map(mapper::mapFrom)
 
