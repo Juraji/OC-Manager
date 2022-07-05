@@ -1,86 +1,16 @@
 <div class="card card-sm" *ngIf="trait">
-  <ng-container [ngSwitch]="trait.traitType">
-    <ng-container *ngSwitchCase="'OcBodyType'"
-                  [ngTemplateOutlet]="ocBodyTypeTraitTpl"></ng-container>
-    <ng-container *ngSwitchCase="'OcEthnicity'"
-                  [ngTemplateOutlet]="ocEthnicityTraitTpl"></ng-container>
-    <ng-container *ngSwitchCase="'OcEyeColor'"
-                  [ngTemplateOutlet]="ocEyeColorTraitTpl"></ng-container>
-    <ng-container *ngSwitchCase="'OcGender'"
-                  [ngTemplateOutlet]="ocGenderTraitTpl"></ng-container>
-    <ng-container *ngSwitchCase="'OcSexuality'"
-                  [ngTemplateOutlet]="ocSexualityTraitTpl"></ng-container>
-    <ng-container *ngSwitchCase="'OcHairStyle'"
-                  [ngTemplateOutlet]="ocHairStyleTraitTpl"></ng-container>
-    <ng-container *ngSwitchCase="'OcCustomTrait'"
-                  [ngTemplateOutlet]="ocCustomTraitTpl"></ng-container>
-  </ng-container>
-</div>
-
-<ng-template #ocBodyTypeTraitTpl>
   <div class="card-body" *ngIf="asBodyType(trait) as t">
     <div class="d-flex">
-      <span class="bi bi-person-circle me-2"></span>
-      <span>Body type: {{t.description}}</span>
+      <ng-container [ngSwitch]="trait.traitType">
+        <span *ngSwitchCase="'OcBodyType'" class="bi bi-person-circle me-2"></span>
+        <span *ngSwitchCase="'OcEthnicity'" class="bi bi-sun me-2"></span>
+        <span *ngSwitchCase="'OcEyeColor'" class="bi bi-eye me-2"></span>
+        <span *ngSwitchCase="'OcGender'" class="bi bi-gender-ambiguous me-2"></span>
+        <span *ngSwitchCase="'OcSexuality'" class="bi bi-hearts me-2"></span>
+        <span *ngSwitchCase="'OcHairStyle'" class="bi bi-palette me-2"></span>
+        <span *ngSwitchCase="'OcCustomTrait'" class="bi bi-emoji-laughing me-2"></span>
+      </ng-container>
+      <span>{{t | traitLabel}}</span>
     </div>
   </div>
-</ng-template>
-
-<ng-template #ocEthnicityTraitTpl>
-  <div class="card-body" *ngIf="asEthnicity(trait) as t">
-    <div class="d-flex">
-      <span class="bi bi-sun me-2"></span>
-      <span>Ethnicity: {{t.description}}</span>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #ocEyeColorTraitTpl>
-  <div class="card-body" *ngIf="asEyeColor(trait) as t">
-    <div class="d-flex">
-      <span class="bi bi-eye me-2"></span>
-      <span *ngIf="t.variant">Eye color: {{t.variant}} ({{t.type | titlecase}})</span>
-      <span *ngIf="!t.variant">Eye color: {{t.type | titlecase}}</span>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #ocGenderTraitTpl>
-  <div class="card-body" *ngIf="asGender(trait) as t">
-    <div class="d-flex">
-      <span class="bi bi-gender-ambiguous me-2"></span>
-      <span>Gender: {{t.description}}</span>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #ocSexualityTraitTpl>
-  <div class="card-body" *ngIf="asSexuality(trait) as t">
-    <div class="d-flex">
-      <span class="bi bi-hearts me-2"></span>
-      <span>Sexuality: {{t.description}}</span>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #ocHairStyleTraitTpl>
-  <div class="card-body" *ngIf="asHairStyle(trait) as t">
-    <div class="d-flex">
-      <span class="bi bi-palette me-2"></span>
-      <div>
-        <span *ngIf="t.variant">Hair: {{t.length | titlecase}} ({{t.baseColor | titlecase}}) {{t.variant}}</span>
-        <span *ngIf="!t.variant">Hair: {{t.length | titlecase}} {{t.baseColor | titlecase}}</span>
-        <span *ngIf="t.dyed">Dyed: {{t.dyeColor}}</span>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #ocCustomTraitTpl>
-  <div class="card-body" *ngIf="asCustomTrait(trait) as t">
-    <div class="d-flex">
-      <span class="bi bi-emoji-laughing me-2"></span>
-      <span>{{t.label}}: {{t.description}}</span>
-    </div>
-  </div>
-</ng-template>
+</div>

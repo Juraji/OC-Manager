@@ -24,5 +24,5 @@ const ROUTES: Routes = [
   ],
   declarations: []
 })
-export class CharacterManagementModule {
+export class ManageCharactersModule {
 }

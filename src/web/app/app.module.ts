@@ -15,11 +15,15 @@ import {AppComponent} from './app.component';
 const ROUTES: Routes = [
   {
     path: 'characters',
-    loadChildren: () => import('./routes/character-management/character-management.module').then(m => m.CharacterManagementModule)
+    loadChildren: () => import('./routes/manage-characters/manage-characters.module').then(m => m.ManageCharactersModule)
   },
   {
     path: 'settings/events',
     loadChildren: () => import('./routes/event-settings/event-settings.module').then(m => m.EventSettingsModule)
+  },
+  {
+    path: 'settings/traits',
+    loadChildren: () => import('./routes/manage-traits/manage-traits.module').then(m => m.ManageTraitsModule)
   },
   {
     path: '**',

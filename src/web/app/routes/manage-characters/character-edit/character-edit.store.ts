@@ -178,8 +178,7 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
   private static createTraitsAdapter() {
     return createEntityAdapter<OcCharacterTrait>({
       selectId: e => e.id,
-      sortComparer: orderedSort(e => e.traitType, 'OcBodyType', 'OcEthnicity', 'OcEyeColor', 'OcHairStyle', 'OcGender', 'OcSexuality', 'OcCustomTrait'
-      )
+      sortComparer: orderedSort(e => e.traitType, 'OcBodyType', 'OcEthnicity', 'OcEyeColor', 'OcHairStyle', 'OcGender', 'OcSexuality', 'OcCustomTrait')
     })
   }
 

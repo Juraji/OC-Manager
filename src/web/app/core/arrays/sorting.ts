@@ -30,3 +30,6 @@ export const strSort = <T>(mapper: (o: T) => string | null | undefined, desc = f
 
 export const numberSort = <T>(mapper: (o: T) => number, desc = false): SortFn<T> =>
   mappedSort(mapper, (a, b) => desc ? b - a : a - b);
+
+export const ifSort = <T, K extends keyof T, V extends T[K]>(key: K, equalsTo: V, sortFn: SortFn<T>): SortFn<T> => (a, b) =>
+  a == b ? 0 : a[key] === equalsTo && b[key] === equalsTo ? sortFn(a, b) : 0

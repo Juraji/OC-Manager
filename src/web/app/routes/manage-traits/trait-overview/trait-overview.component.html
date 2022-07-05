@@ -1,0 +1,49 @@
+<div class="container position-relative">
+  <div class="header d-flex justify-content-between">
+    <h1>Character traits</h1>
+    <div class="pt-2">
+      <button class="btn btn-primary shadow add-trait-btn" title="Add new trait" routerLink="../edit/new">
+        <span class="bi bi-plus"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <label for="traitTypeInput">Filter</label>
+          <select id="traitTypeInput" class="form-select trait-type-select"
+                  (change)="onTypeFilterSelect($any($event.target).value)">
+            <option value="ALL">All trait types</option>
+            <option value="OcBodyType">Body types</option>
+            <option value="OcEthnicity">Ethnicities</option>
+            <option value="OcEyeColor">Eye colors</option>
+            <option value="OcGender">Genders</option>
+            <option value="OcHairStyle">Hair styles</option>
+            <option value="OcSexuality">Sexualities</option>
+            <option value="OcCustomTrait">Custom traits</option>
+          </select>
+        </div>
+      </div>
+
+      <table class="table table-striped table-hover">
+        <tbody>
+        <tr *ngFor="let trait of filteredTraits$ | async">
+          <td>
+            <ocm-trait-card [trait]="trait" flat></ocm-trait-card>
+          </td>
+          <td class="text-end">
+            <button class="btn btn-primary btn-sm me-1" [routerLink]="['../edit', trait.id]">
+              <span class="bi bi-pencil"></span>
+            </button>
+            <button class="btn btn-outline-danger btn-sm" (click)="onDeleteTrait(trait)">
+              <span class="bi bi-trash"></span>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
