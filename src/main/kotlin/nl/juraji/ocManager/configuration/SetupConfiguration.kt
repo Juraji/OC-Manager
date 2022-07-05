@@ -2,8 +2,8 @@ package nl.juraji.ocManager.configuration
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import nl.juraji.ocManager.domain.CharacterTraitService
 import nl.juraji.ocManager.domain.SettingsService
-import nl.juraji.ocManager.domain.TraitService
 import nl.juraji.ocManager.domain.application.OcApplicationSettings
 import nl.juraji.ocManager.domain.traits.*
 import nl.juraji.ocManager.util.LoggerCompanion
@@ -21,7 +21,7 @@ class SetupConfiguration(
     private val configuration: OcManagerConfiguration,
     private val settingsService: SettingsService,
     private val objectMapper: ObjectMapper,
-    private val traitService: TraitService,
+    private val traitService: CharacterTraitService,
 ) : InitializingBean {
 
     override fun afterPropertiesSet() {
@@ -43,41 +43,10 @@ class SetupConfiguration(
     }
 
     private fun initializeDefaultCharacterTraits() {
-        // Body types
-        val bodyTypes: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcBodyType>>(ClassPathResource("defaults/OcBodyType.json").file)
+        val characterTraits: Flux<OcCharacterTrait> = objectMapper
+            .readValue<List<OcCharacterTrait>>(ClassPathResource("default-character-traits.json").file)
             .toFlux()
-            .flatMap(traitService::createBodyType)
-
-        // Ethnicities
-        val ethnicities: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcEthnicity>>(ClassPathResource("defaults/OcEthnicity.json").file)
-            .toFlux()
-            .flatMap(traitService::createEthnicity)
-
-        // Eye colors
-        val eyeColors: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcEyeColor>>(ClassPathResource("defaults/OcEyeColor.json").file)
-            .toFlux()
-            .flatMap(traitService::createEyeColor)
-
-        // Genders
-        val genders: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcGender>>(ClassPathResource("defaults/OcGender.json").file)
-            .toFlux()
-            .flatMap(traitService::createGender)
-
-        // Sexualities
-        val sexualities: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcSexuality>>(ClassPathResource("defaults/OcSexuality.json").file)
-            .toFlux()
-            .flatMap(traitService::createSexuality)
-
-        // Hairstyles
-        val hairstyles: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcHairStyle>>(ClassPathResource("defaults/OcHairStyle.json").file)
-            .toFlux()
-            .flatMap(traitService::createHairStyle)
+            .flatMap(traitService::createCharacterTrait)
 
         settingsService
             .getApplicationSettings()
@@ -85,7 +54,7 @@ class SetupConfiguration(
             .filter { !it.defaultTraitsInitialized }
             .doOnNext { logger.info("Setting up default character traits...") }
             .flatMap {
-                Flux.concat(bodyTypes, ethnicities, eyeColors, genders, sexualities, hairstyles)
+                characterTraits
                     .collectList()
                     .then(settingsService.updateApplicationSettings(it.copy(defaultTraitsInitialized = true)))
             }

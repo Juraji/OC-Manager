@@ -7,7 +7,6 @@ import {OcmApiCharacterRelationshipsService} from './services/ocm-api-character-
 import {OcmApiCharacterTraitsService} from './services/ocm-api-character-traits.service'
 import {OcmApiCharactersService} from './services/ocm-api-characters.service'
 import {OcmApiEventsService} from './services/ocm-api-events.service'
-import {OcmApiTraitsService} from './services/ocm-api-traits.service'
 
 
 @NgModule({
@@ -29,7 +28,6 @@ export class OcmApiModule {
         OcmApiCharacterTraitsService,
         OcmApiCharactersService,
         OcmApiEventsService,
-        OcmApiTraitsService
       ]
     }
   }

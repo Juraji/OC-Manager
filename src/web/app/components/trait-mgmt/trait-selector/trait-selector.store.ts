@@ -4,7 +4,7 @@ import {createEntityAdapter, EntityState} from '@ngrx/entity'
 import {map, mergeMap, tap} from 'rxjs'
 
 import {chainSort, strSort} from '#core/arrays'
-import {OcmApiTraitsService} from '#core/ocm-api'
+import {OcmApiCharacterTraitsService} from '#core/ocm-api'
 import {
   OcBodyType,
   OcCustomTrait,
@@ -77,7 +77,7 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
     .pipe(map(this.sexualitySelectors.selectAll))
 
   constructor(
-    private readonly service: OcmApiTraitsService,
+    private readonly service: OcmApiCharacterTraitsService,
   ) {
     super()
 
@@ -90,80 +90,43 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
       customTraits: this.customTraitAdapter.getInitialState(),
       sexualities: this.sexualityAdapter.getInitialState()
     })
-
-    this.loadTraits()
   }
 
-  loadTraits(omitTraitIds: string[] = []) {
-    this.loadBodyTypes(omitTraitIds)
-    this.loadEthnicities(omitTraitIds)
-    this.loadEyeColors(omitTraitIds)
-    this.loadGenders(omitTraitIds)
-    this.loadHairStyles(omitTraitIds)
-    this.loadCustomTraits(omitTraitIds)
-    this.loadSexualities(omitTraitIds)
-  }
-
-  private readonly loadBodyTypes = this.effect<string[]>($ => $.pipe(
-    mergeMap(omitIds => this.service
-      .getAllBodyTypes()
-      .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
-    tap(traits => this.patchState(s => ({
-      bodyTypes: this.bodyTypeAdapter.setAll(traits, s.bodyTypes)
-    })))
-  ))
-
-  private readonly loadEthnicities = this.effect<string[]>($ => $.pipe(
-    mergeMap(omitIds => this.service
-      .getAllEthnicities()
-      .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
-    tap(traits => this.patchState(s => ({
-      ethnicities: this.ethnicityAdapter.setAll(traits, s.ethnicities)
-    })))
-  ))
-
-  private readonly loadEyeColors = this.effect<string[]>($ => $.pipe(
-    mergeMap(omitIds => this.service
-      .getAllEyeColors()
-      .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
-    tap(traits => this.patchState(s => ({
-      eyeColors: this.eyeColorAdapter.setAll(traits, s.eyeColors)
-    })))
-  ))
-
-  private readonly loadGenders = this.effect<string[]>($ => $.pipe(
-    mergeMap(omitIds => this.service
-      .getAllGenders()
-      .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
-    tap(traits => this.patchState(s => ({
-      genders: this.genderAdapter.setAll(traits, s.genders)
-    })))
-  ))
-
-  private readonly loadHairStyles = this.effect<string[]>($ => $.pipe(
-    mergeMap(omitIds => this.service
-      .getAllHairStyles()
-      .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
-    tap(traits => this.patchState(s => ({
-      hairStyles: this.hairStyleAdapter.setAll(traits, s.hairStyles)
-    })))
-  ))
-
-  private readonly loadCustomTraits = this.effect<string[]>($ => $.pipe(
-    mergeMap(omitIds => this.service
-      .getAllCustomTraits()
-      .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
-    tap(traits => this.patchState(s => ({
-      customTraits: this.customTraitAdapter.setAll(traits, s.customTraits)
-    })))
-  ))
-
-  private readonly loadSexualities = this.effect<string[]>($ => $.pipe(
-    mergeMap(omitIds => this.service
-      .getAllSexualities()
-      .pipe(map(traits => traits.filter(t => !omitIds.includes(t.id))))),
-    tap(traits => this.patchState(s => ({
-      sexualities: this.sexualityAdapter.setAll(traits, s.sexualities)
+  readonly loadTraits: (omitTraitIds?: string[]) => void = this.effect<(string[] | undefined)>($ => $.pipe(
+    mergeMap(omitIds => !!omitIds
+      ? this.service.getAllTraits()
+        .pipe(map(ts => ts.filter(t => !omitIds.includes(t.id))))
+      : this.service.getAllTraits()
+    ),
+    tap(allTraits => this.patchState(s => ({
+      bodyTypes: this.bodyTypeAdapter.setAll(
+        allTraits.filter(t => t.traitType === 'OcBodyType') as OcBodyType[],
+        s.bodyTypes
+      ),
+      ethnicities: this.ethnicityAdapter.setAll(
+        allTraits.filter(t => t.traitType === 'OcEthnicity') as OcEthnicity[],
+        s.ethnicities
+      ),
+      eyeColors: this.eyeColorAdapter.setAll(
+        allTraits.filter(t => t.traitType === 'OcEyeColor') as OcEyeColor[],
+        s.eyeColors
+      ),
+      genders: this.genderAdapter.setAll(
+        allTraits.filter(t => t.traitType === 'OcGender') as OcGender[],
+        s.genders
+      ),
+      hairStyles: this.hairStyleAdapter.setAll(
+        allTraits.filter(t => t.traitType === 'OcHairStyle') as OcHairStyle[],
+        s.hairStyles
+      ),
+      customTraits: this.customTraitAdapter.setAll(
+        allTraits.filter(t => t.traitType === 'OcCustomTrait') as OcCustomTrait[],
+        s.customTraits
+      ),
+      sexualities: this.sexualityAdapter.setAll(
+        allTraits.filter(t => t.traitType === 'OcSexuality') as OcSexuality[],
+        s.sexualities
+      ),
     })))
   ))
 

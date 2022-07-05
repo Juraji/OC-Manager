@@ -21,10 +21,102 @@ internal class CharacterTraitRepositoryTest {
     private lateinit var neo4jClient: ReactiveNeo4jClient
 
     @Test
-    fun `should set character trait`() {
+    fun `should find all`() {
+        val expected1 = OcEthnicity(id = "trait#1", description = "Trait 1")
+        val expected2 = OcEthnicity(id = "trait#2", description = "Trait 2")
+        val expected3 = OcBodyType(id = "trait#3", description = "Trait 3")
+
+        repository
+            .findAll()
+            .stepVerifier()
+            .expectNext(expected1, expected2, expected3)
+            .verifyComplete()
+    }
+
+    @Test
+    fun `should find by id`() {
+        val expected = OcBodyType(id = "trait#3", description = "Trait 3")
+
+        repository
+            .findById("trait#3")
+            .stepVerifier()
+            .expectNext(expected)
+            .verifyComplete()
+    }
+
+    @Test
+    fun `should save`() {
+        val input = OcCustomTrait(label = "Trait label", description = "Trait description")
+
+        repository
+            .save(input)
+            .stepVerifier()
+            .expectNextMatches {
+                it is OcCustomTrait
+                    && it.label == input.label
+                    && it.description == input.description
+                    && it.id != null
+            }
+            .verifyComplete()
+
+        neo4jClient
+            .query(
+                """
+                  OPTIONAL MATCH (t:OcCharacterTrait:OcCustomTrait {label: 'Trait label', description: 'Trait description'})
+                  RETURN t IS NOT NULL
+                """.trimIndent()
+            )
+            .fetchAs<Boolean>()
+            .one()
+            .stepVerifier()
+            .expectNext(true)
+            .verifyComplete()
+    }
+
+    @Test
+    fun `should delete by id`() {
+        val deletable = OcCustomTrait(id = "DELETE_ME", label = "Delete me", description = "???")
+
+        repository
+            .save(deletable)
+            .then(repository.deleteById(deletable.id!!))
+            .stepVerifier()
+            .expectComplete()
+            .verify()
+
+        neo4jClient
+            .query(
+                """
+                    OPTIONAL MATCH (t:OcCharacterTrait:OcCustomTrait {id: $ id})
+                    RETURN t IS NULL
+                """.trimIndent()
+            )
+            .bind(deletable.id).to("id")
+            .fetchAs<Boolean>()
+            .one()
+            .stepVerifier()
+            .expectNext(true)
+            .verifyComplete()
+    }
+
+    @Test
+    fun `should find all by character id`() {
+        val characterId = "character#3"
+        val expectedTrait1 = OcBodyType(id = "trait#3", description = "Trait 3")
+        val expectedTrait2 = OcEthnicity(id = "trait#1", description = "Trait 1")
+
+        repository
+            .findAllByCharacterId(characterId)
+            .stepVerifier()
+            .expectNext(expectedTrait1, expectedTrait2)
+            .verifyComplete()
+    }
+
+    @Test
+    fun `should add trait to character`() {
         val characterId = "character#1"
         val traitId = "trait#2"
-        val expected = OcEthnicity(id = "trait#2", label = "Trait 2")
+        val expected = OcEthnicity(id = "trait#2", description = "Trait 2")
 
         repository
             .addTraitToCharacter(characterId, traitId)
@@ -41,24 +133,10 @@ internal class CharacterTraitRepositoryTest {
             .stepVerifier()
             .expectNext(true)
             .verifyComplete()
-
-        neo4jClient
-            .query(
-                """
-                    MATCH (:OcCharacter {id: $ charId})-[rel:HAS_TRAIT]->(:OcEthnicity)
-                    RETURN count(rel)
-                """.trimIndent()
-            )
-            .bind(characterId).to("charId")
-            .fetchAs<Int>()
-            .one()
-            .stepVerifier()
-            .expectNext(1)
-            .verifyComplete()
     }
 
     @Test
-    fun `should remove character trait`() {
+    fun `should remove trait from character`() {
         val characterId = "character#2"
         val traitId = "trait#2"
 
@@ -78,19 +156,6 @@ internal class CharacterTraitRepositoryTest {
             .verifyComplete()
     }
 
-    @Test
-    fun `should get all character traits`() {
-        val characterId = "character#3"
-        val expectedTrait1 = OcBodyType(id = "trait#3", label = "Trait 3")
-        val expectedTrait2 = OcEthnicity(id = "trait#1", label = "Trait 1")
-
-        repository
-            .findAllByCharacterId(characterId)
-            .stepVerifier()
-            .expectNext(expectedTrait1, expectedTrait2)
-            .verifyComplete()
-    }
-
     @TestConfiguration
     class TestHarnessConfiguration : BaseTestHarnessConfiguration() {
 
@@ -98,25 +163,25 @@ internal class CharacterTraitRepositoryTest {
         override fun fixture(): String = """
             CREATE (trait1:OcCharacterTrait:OcEthnicity {
               id: 'trait#1',
-              label: 'Trait 1'
+              description: 'Trait 1'
             })
-            
+
             CREATE (trait2:OcEthnicity:OcCharacterTrait {
               id: 'trait#2',
-              label: 'Trait 2'
+              description: 'Trait 2'
             })
-            
+
             CREATE (trait3:OcCharacterTrait:OcBodyType {
               id: 'trait#3',
-              label: 'Trait 3'
+              description: 'Trait 3'
             })
-            
+
             CREATE (character1:OcCharacter {id: 'character#1'})
             CREATE (character1)-[:HAS_TRAIT]->(trait1)
-            
+
             CREATE (character2:OcCharacter {id: 'character#2'})
             CREATE (character2)-[:HAS_TRAIT]->(trait2)
-            
+
             CREATE (character3:OcCharacter {id: 'character#3'})
             CREATE (character3)-[:HAS_TRAIT]->(trait1)
             CREATE (character3)-[:HAS_TRAIT]->(trait3)

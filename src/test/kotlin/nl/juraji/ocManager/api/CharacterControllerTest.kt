@@ -75,7 +75,8 @@ internal class CharacterControllerTest : BaseControllerTest() {
         val input = OcCharacter(
             name = "New character",
             nickname = "Test C",
-            dateOfBirth = Instant.now()
+            dateOfBirth = Instant.now(),
+            notes = ""
         )
 
         val expected = input.copy(id = uuid())

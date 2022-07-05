@@ -8,6 +8,7 @@ import nl.juraji.ocManager.domain.CharacterRelationshipService
 import nl.juraji.ocManager.domain.characters.OcCharacterRelationship
 import nl.juraji.ocManager.domain.characters.OcCharacterRelationshipType
 import nl.juraji.ocManager.domain.characters.mockOcCharacterRelationship
+import nl.juraji.ocManager.util.returnsEmptyMono
 import nl.juraji.ocManager.util.returnsFluxOf
 import nl.juraji.ocManager.util.returnsMonoOf
 import nl.juraji.ocManager.util.uuid
@@ -64,9 +65,10 @@ internal class CharacterRelationshipControllerTest : BaseControllerTest() {
         webTestClient.post()
             .uri { builder ->
                 builder
-                    .path("/characters/$targetCharacterId/relationships")
+                    .path("/characters/$sourceCharacterId/relationships")
                     .queryParam("type", type.name)
                     .queryParam("description", description)
+                    .queryParam("targetCharacterId", targetCharacterId)
                     .build()
             }
             .exchange()
@@ -107,7 +109,7 @@ internal class CharacterRelationshipControllerTest : BaseControllerTest() {
         val characterId = uuid()
         val relationshipId = uuid()
 
-        every { relationshipService.deleteRelationship(any()) }
+        every { relationshipService.deleteRelationship(any()) }.returnsEmptyMono()
 
         webTestClient.delete()
             .uri("/characters/$characterId/relationships/$relationshipId")

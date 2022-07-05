@@ -1,6 +1,7 @@
 package nl.juraji.ocManager.domain.traits
 
 import nl.juraji.ocManager.util.Neo4jDataClassMapper
+import nl.juraji.ocManager.util.toMap
 import org.neo4j.driver.Record
 import org.springframework.data.neo4j.core.DatabaseSelectionProvider
 import org.springframework.data.neo4j.core.ReactiveNeo4jClient
@@ -8,6 +9,7 @@ import org.springframework.data.neo4j.core.mappedBy
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import java.util.*
 
 @Repository
 class CharacterTraitRepository(
@@ -20,6 +22,58 @@ class CharacterTraitRepository(
     private val ocGenderMapper = Neo4jDataClassMapper(OcGender::class)
     private val ocHairStyleMapper = Neo4jDataClassMapper(OcHairStyle::class)
     private val ocSexualityMapper = Neo4jDataClassMapper(OcSexuality::class)
+    private val ocCustomTraitMapper = Neo4jDataClassMapper(OcCustomTrait::class)
+
+    fun findAll(): Flux<OcCharacterTrait> = neo4jClient
+        .query("MATCH (trait:OcCharacterTrait) RETURN trait")
+        .`in`(databaseSelectionProvider.databaseSelection.value)
+        .mappedBy { _, record -> mapRecordAsTrait(record) }
+        .all()
+
+    fun findById(traitId: String): Mono<OcCharacterTrait> = neo4jClient
+        .query("MATCH (trait:OcCharacterTrait {id: $ traitId}) RETURN trait")
+        .`in`(databaseSelectionProvider.databaseSelection.value)
+        .bind(traitId).to("traitId")
+        .mappedBy { _, record -> mapRecordAsTrait(record) }
+        .one()
+
+    fun save(trait: OcCharacterTrait): Mono<OcCharacterTrait> {
+        val traitProperties = trait.toMap("id")
+            .mapValues { (_, value) ->
+                if (value is Enum<*>) value.name
+                else value
+            }
+
+        val traitId = trait.id ?: UUID.randomUUID().toString()
+        val traitLabel = trait::class.simpleName
+
+        return neo4jClient
+            .query(
+                """
+                    MERGE (trait:OcCharacterTrait {id: $ traitId})
+                    ON CREATE SET trait:$traitLabel
+                    SET trait += $ traitProperties
+                    RETURN trait
+                """.trimIndent()
+            )
+            .`in`(databaseSelectionProvider.databaseSelection.value)
+            .bind(traitId).to("traitId")
+            .bind(traitProperties).to("traitProperties")
+            .mappedBy { _, record -> mapRecordAsTrait(record) }
+            .one()
+    }
+
+    fun deleteById(traitId: String): Mono<Void> = neo4jClient
+        .query(
+            """
+                MATCH (trait:OcCharacterTrait {id: $ traitId})
+                DETACH DELETE trait
+            """.trimIndent()
+        )
+        .`in`(databaseSelectionProvider.databaseSelection.value)
+        .bind(traitId).to("traitId")
+        .run()
+        .then()
 
     fun findAllByCharacterId(characterId: String): Flux<OcCharacterTrait> = neo4jClient
         .query(
@@ -38,10 +92,6 @@ class CharacterTraitRepository(
             """
             MATCH (character:OcCharacter {id: $ characterId})
             MATCH (trait:OcCharacterTrait {id: $ traitId})
-
-            OPTIONAL MATCH (character)-[existingTraitRel:HAS_TRAIT]->(existingTrait:OcCharacterTrait)
-              WHERE labels(trait) = labels(existingTrait)
-            DELETE existingTraitRel
 
             MERGE (character)-[:HAS_TRAIT]->(trait)
             RETURN trait
@@ -77,6 +127,7 @@ class CharacterTraitRepository(
             "OcGender" -> ocGenderMapper.mapFrom(node.asMap())
             "OcHairStyle" -> ocHairStyleMapper.mapFrom(node.asMap())
             "OcSexuality" -> ocSexualityMapper.mapFrom(node.asMap())
+            "OcCustomTrait" -> ocCustomTraitMapper.mapFrom(node.asMap())
             else -> throw IllegalArgumentException("No mapper defined for trait label \"$traitLabel\"")
         }
     }

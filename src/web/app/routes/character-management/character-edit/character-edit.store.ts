@@ -3,7 +3,7 @@ import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
 import {defaultIfEmpty, map, mergeMap, Observable, tap} from 'rxjs'
 
-import {numberSort, strSort} from '#core/arrays'
+import {numberSort, orderedSort} from '#core/arrays'
 import {
   OcmApiCharacterEventsService,
   OcmApiCharacterRelationshipsService,
@@ -178,7 +178,8 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
   private static createTraitsAdapter() {
     return createEntityAdapter<OcCharacterTrait>({
       selectId: e => e.id,
-      sortComparer: strSort(e => e.traitType)
+      sortComparer: orderedSort(e => e.traitType, 'OcBodyType', 'OcEthnicity', 'OcEyeColor', 'OcHairStyle', 'OcGender', 'OcSexuality', 'OcCustomTrait'
+      )
     })
   }
 
@@ -192,7 +193,7 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
   private static createRelationshipsAdapter() {
     return createEntityAdapter<OcCharacterRelationship>({
       selectId: e => e.id,
-      sortComparer: strSort(e => e.type)
+      sortComparer: orderedSort(e => e.type, 'FAMILY', 'ROMANTIC', 'FRIENDSHIP')
     })
   }
 }

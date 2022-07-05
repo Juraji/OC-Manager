@@ -1,0 +1,295 @@
+[
+  {
+    "traitType": "OcBodyType",
+    "description": "Slim / Thin"
+  },
+  {
+    "traitType": "OcBodyType",
+    "description": "Normal"
+  },
+  {
+    "traitType": "OcBodyType",
+    "description": "Toned"
+  },
+  {
+    "traitType": "OcBodyType",
+    "description": "Muscular"
+  },
+  {
+    "traitType": "OcBodyType",
+    "description": "Stocky / Buff"
+  },
+  {
+    "traitType": "OcBodyType",
+    "description": "Large"
+  },
+  {
+    "traitType": "OcEthnicity",
+    "description": "Asian"
+  },
+  {
+    "traitType": "OcEthnicity",
+    "description": "African"
+  },
+  {
+    "traitType": "OcEthnicity",
+    "description": "Arab"
+  },
+  {
+    "traitType": "OcEthnicity",
+    "description": "Latino / Hispanic"
+  },
+  {
+    "traitType": "OcEthnicity",
+    "description": "Mixed"
+  },
+  {
+    "traitType": "OcEthnicity",
+    "description": "White"
+  },
+  {
+    "traitType": "OcEyeColor",
+    "type": "BLUE",
+    "variant": ""
+  },
+  {
+    "traitType": "OcEyeColor",
+    "type": "BROWN",
+    "variant": ""
+  },
+  {
+    "traitType": "OcEyeColor",
+    "type": "GREEN",
+    "variant": ""
+  },
+  {
+    "traitType": "OcEyeColor",
+    "type": "VIOLET",
+    "variant": ""
+  },
+  {
+    "traitType": "OcEyeColor",
+    "type": "EXOTIC",
+    "variant": "Red"
+  },
+  {
+    "traitType": "OcEyeColor",
+    "type": "EXOTIC",
+    "variant": "Black"
+  },
+  {
+    "traitType": "OcGender",
+    "description": "Non-binary"
+  },
+  {
+    "traitType": "OcGender",
+    "description": "Male"
+  },
+  {
+    "traitType": "OcGender",
+    "description": "Female"
+  },
+  {
+    "traitType": "OcGender",
+    "description": "Trans FTM"
+  },
+  {
+    "traitType": "OcGender",
+    "description": "Trans MTF"
+  },
+  {
+    "traitType": "OcSexuality",
+    "description": "Ace"
+  },
+  {
+    "traitType": "OcSexuality",
+    "description": "Gay"
+  },
+  {
+    "traitType": "OcSexuality",
+    "description": "Bi"
+  },
+  {
+    "traitType": "OcSexuality",
+    "description": "Straight"
+  },
+  {
+    "traitType": "OcSexuality",
+    "description": "Curious"
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHAVED",
+    "baseColor": "BLONDE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHAVED",
+    "baseColor": "BRUNETTE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHAVED",
+    "baseColor": "RED",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHAVED",
+    "baseColor": "BLACK",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHAVED",
+    "baseColor": "WHITE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHAVED",
+    "baseColor": "GRAY",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHORT",
+    "baseColor": "BLONDE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHORT",
+    "baseColor": "BRUNETTE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHORT",
+    "baseColor": "RED",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHORT",
+    "baseColor": "BLACK",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHORT",
+    "baseColor": "WHITE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHORT",
+    "baseColor": "GRAY",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "MEDIUM",
+    "baseColor": "BLONDE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "MEDIUM",
+    "baseColor": "BRUNETTE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "MEDIUM",
+    "baseColor": "RED",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "MEDIUM",
+    "baseColor": "BLACK",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "MEDIUM",
+    "baseColor": "WHITE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "MEDIUM",
+    "baseColor": "GRAY",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "LONG",
+    "baseColor": "BLONDE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "LONG",
+    "baseColor": "BRUNETTE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "LONG",
+    "baseColor": "RED",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "LONG",
+    "baseColor": "BLACK",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "LONG",
+    "baseColor": "WHITE",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "LONG",
+    "baseColor": "GRAY",
+    "variant": "",
+    "dyed": false
+  },
+  {
+    "traitType": "OcHairStyle",
+    "length": "SHORT",
+    "baseColor": "EXOTIC",
+    "variant": "Purple",
+    "dyed": false
+  }
+]

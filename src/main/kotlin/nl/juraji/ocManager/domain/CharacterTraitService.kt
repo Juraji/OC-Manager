@@ -11,6 +11,25 @@ import reactor.core.publisher.Mono
 class CharacterTraitService(
     private val characterTraitRepository: CharacterTraitRepository,
 ) {
+    fun getAllCharacterTraits(): Flux<OcCharacterTrait> =
+        characterTraitRepository.findAll()
+
+    fun getCharacterTraitsById(traitId: String): Mono<OcCharacterTrait> =
+        characterTraitRepository
+            .findById(traitId)
+            .orElseEntityNotFound(OcCharacterTrait::class, traitId)
+
+    fun createCharacterTrait(trait: OcCharacterTrait): Mono<OcCharacterTrait> =
+        characterTraitRepository.save(trait)
+
+    fun updateCharacterTrait(traitId: String, trait: OcCharacterTrait): Mono<OcCharacterTrait> =
+        getCharacterTraitsById(traitId)
+            // TODO: Should copy trait to db entity, protecting id (no data class copy on interface?)
+            .flatMap { characterTraitRepository.save(trait) }
+
+    fun deleteCharacterTrait(traitId: String): Mono<Void> =
+        characterTraitRepository.deleteById(traitId)
+
     fun getAllCharacterTraits(characterId: String): Flux<OcCharacterTrait> =
         characterTraitRepository.findAllByCharacterId(characterId)
 
