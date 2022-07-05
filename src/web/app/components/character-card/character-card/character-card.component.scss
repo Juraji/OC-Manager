@@ -3,6 +3,7 @@ $block-size: 18rem;
 
 :host {
   display: block;
+  width: 100%;
 
   &:not([disabled]) {
     cursor: pointer;

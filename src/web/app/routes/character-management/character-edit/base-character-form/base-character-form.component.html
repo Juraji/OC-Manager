@@ -66,6 +66,7 @@
     </div>
     <div class="mb-3">
       <label for="dateOfBirthInput" class="form-label">Date of birth</label><br/>
+      <span class="text-muted" *ngIf="formGroup.value.dateOfBirth">Current: {{formGroup.value.dateOfBirth | date}}</span><br/>
       <ngb-datepicker id="dateOfBirthInput" formControlName="dateOfBirth"></ngb-datepicker>
     </div>
     <div class="mb-3">

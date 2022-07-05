@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Modals} from '@juraji/ng-bootstrap-modals'
 import {mergeMap} from 'rxjs'
 
-import {TraitSelectorComponent} from '#components/trait-selector/trait-selector/trait-selector.component'
+import {TraitSelectorComponent} from '#components/trait-mgmt/trait-selector/trait-selector.component'
 import {once} from '#core/rxjs'
 import {OcCharacterTrait} from '#models/traits.model'
 

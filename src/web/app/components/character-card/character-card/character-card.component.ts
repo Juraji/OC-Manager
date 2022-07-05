@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component, HostListener, Input, OnChanges} from '@angular/core';
 import {Router} from '@angular/router'
-import {switchMap} from 'rxjs'
+import {map, switchMap} from 'rxjs'
 
 import {BooleanInput} from '#core/ng-extensions'
 import {OcmApiCharactersService} from '#core/ocm-api'
-import {filterNotNull, ObservableInputs} from '#core/rxjs'
+import {filterNotEmpty, filterNotNull, ObservableInputs, once} from '#core/rxjs'
 import {OcCharacter} from '#models/characters.model'
 
 @Component({
@@ -18,8 +18,12 @@ export class CharacterCardComponent implements OnChanges {
 
   @Input()
   character: Nullable<OcCharacter | string>
+  readonly characterId$ = this.inputs.observe(() => this.character)
+    .pipe(map(c => typeof c === 'string' ? c : c?.id))
   readonly character$ = this.inputs.observe(() => this.character)
     .pipe(switchMap(c => typeof c === 'string' ? this.charactersService.getCharacterById(c as string) : [c]))
+  readonly thumbnailUri$ = this.characterId$
+    .pipe(filterNotNull(), filterNotEmpty(), switchMap(id => this.charactersService.getCharacterThumbnailUrl(id)))
 
   @Input()
   @BooleanInput()
@@ -27,10 +31,11 @@ export class CharacterCardComponent implements OnChanges {
 
   @Input()
   @BooleanInput()
-  disabled: boolean | string = false
+  hideName: boolean | string = false
 
-  readonly thumbnailUri$ = this.character$
-    .pipe(filterNotNull(), switchMap(c => this.charactersService.getCharacterThumbnailUrl(c.id)))
+  @Input()
+  @BooleanInput()
+  disabled: boolean | string = false
 
   constructor(
     private readonly router: Router,
@@ -44,9 +49,10 @@ export class CharacterCardComponent implements OnChanges {
 
   @HostListener('click')
   onClick() {
-    if(!this.disabled) {
-      const targetId = typeof this.character === 'string' ? this.character : this.character?.id
-      this.router.navigate(['/characters/edit', targetId])
+    if (!this.disabled) {
+      this.characterId$
+        .pipe(once(), filterNotNull())
+        .subscribe(id => this.router.navigate(['/characters/edit', id]))
     }
   }
 

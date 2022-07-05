@@ -6,7 +6,7 @@
            class="character-thumbnail-sq-img" alt="Character thumbnail">
     </div>
   </div>
-  <div class="card-body" *ngIf="character$ | async as c">
-    <h5 class="card-title mb-0 text-overflow-ellipsis">{{c.name}}</h5>
+  <div class="card-body" *ngIf="!hideName">
+    <h5 class="card-title mb-0 text-overflow-ellipsis">{{((character$ | async))?.name}}</h5>
   </div>
 </div>

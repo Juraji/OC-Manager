@@ -34,8 +34,12 @@
           <div id="descriptionHelp" class="form-text">Describe this relationship.</div>
         </div>
       </div>
-      <div class="col-4" *ngIf="!!formGroup.value.targetCharacterId">
-        <ocm-character-card [character]="formGroup.value.targetCharacterId" flat disabled></ocm-character-card>
+      <div class="col-4">
+        <div class="d-flex flex-column align-items-center">
+          <ocm-character-card [character]="formGroup.value.sourceCharacterId" flat hideName disabled></ocm-character-card>
+          <span class="bi bi-arrow-down-up my-3"></span>
+          <ocm-character-card [character]="formGroup.value.targetCharacterId" flat hideName disabled></ocm-character-card>
+        </div>
       </div>
     </div>
   </div>

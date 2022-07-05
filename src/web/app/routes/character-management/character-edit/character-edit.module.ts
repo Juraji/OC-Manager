@@ -4,12 +4,11 @@ import {ReactiveFormsModule} from '@angular/forms'
 import {RouterModule, Routes} from '@angular/router';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'
 
-import {DragDropFileModule} from '#components/drag-drop-file/drag-drop-file.module'
+import {DragDropFileModule} from '#components/drag-drop-file'
 import {ImgSrcFallbackModule} from '#components/img-src-fallback'
 import {RelationshipMgmtModule} from '#components/relationship-mgmt'
-import {TraitCardModule} from '#components/trait-card'
-import {TraitSelectorModule} from '#components/trait-selector'
-import {DatePipesModule} from '#core/date-pipes/date-pipes.module'
+import {TraitMgmtModule} from '#components/trait-mgmt'
+import {DatePipesModule} from '#core/date-pipes'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
 import {BaseCharacterFormComponent} from './base-character-form/base-character-form.component'
@@ -43,9 +42,8 @@ const ROUTES: Routes = [
     NgbDatepickerModule,
     DragDropFileModule,
     DatePipesModule,
-    TraitCardModule,
-    TraitSelectorModule,
-    RelationshipMgmtModule
+    RelationshipMgmtModule,
+    TraitMgmtModule
   ],
   declarations: [
     CharacterEditComponent,

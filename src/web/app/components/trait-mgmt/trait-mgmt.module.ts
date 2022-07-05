@@ -3,25 +3,25 @@ import {NgModule} from '@angular/core';
 import {ModalsModule} from '@juraji/ng-bootstrap-modals'
 import {NgbNavModule} from '@ng-bootstrap/ng-bootstrap'
 
-import {TraitCardModule} from '#components/trait-card'
-
-import {TraitSelectorComponent} from './trait-selector/trait-selector.component';
+import {TraitCardComponent} from './trait-card/trait-card.component'
+import {TraitSelectorComponent} from './trait-selector/trait-selector.component'
 
 
 @NgModule({
-  declarations: [
-    TraitSelectorComponent
-  ],
   imports: [
     CommonModule,
     ModalsModule,
     NgbNavModule,
-    TraitCardModule
+  ],
+  declarations: [
+    TraitCardComponent,
+    TraitSelectorComponent
   ],
   exports: [
     ModalsModule,
+    TraitCardComponent,
     TraitSelectorComponent
   ]
 })
-export class TraitSelectorModule {
+export class TraitMgmtModule {
 }
