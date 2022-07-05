@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {Observable} from 'rxjs'
 
-import {OcCharacterRelationship, OcCharacterRelationshipType} from '#models/characters.model'
+import {OcCharacterRelationship} from '#models/characters.model'
 
 import {OcmApiService} from './ocm-api.service'
 
@@ -19,22 +19,9 @@ export class OcmApiCharacterRelationshipsService extends OcmApiService {
 
   createRelationship(
     characterId: string,
-    targetCharacterId: string,
-    type: OcCharacterRelationshipType,
-    description: string
+    relationship: OcCharacterRelationship,
   ): Observable<OcCharacterRelationship> {
-    const params = {type, description, targetCharacterId}
-    return this.http.post<OcCharacterRelationship>(this.baseUri(characterId), null, {params})
-  }
-
-  updateRelationship(
-    characterId: string,
-    relationshipId: string,
-    type: OcCharacterRelationshipType,
-    description: string
-  ): Observable<OcCharacterRelationship> {
-    const params = {type, description}
-    return this.http.put<OcCharacterRelationship>(this.baseUri(characterId, relationshipId), null, {params})
+    return this.http.post<OcCharacterRelationship>(this.baseUri(characterId), relationship)
   }
 
   deleteRelationship(characterId: string, relationshipId: string,): Observable<void> {

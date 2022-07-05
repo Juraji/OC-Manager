@@ -154,8 +154,8 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
       .pipe(
         once(),
         filterNotNull(),
-        mergeMap(id => this.characterRelationshipsService
-          .createRelationship(id, relationship.targetCharacterId, relationship.type, relationship.description)),
+        mergeMap(sourceCharacterId => this.characterRelationshipsService
+          .createRelationship(sourceCharacterId, {...relationship, sourceCharacterId})),
         tap(trait => this.patchState(s => ({
           relationships: this.relationshipsAdapter.addOne(trait, s.relationships)
         })))

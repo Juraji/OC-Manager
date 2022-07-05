@@ -1,6 +1,7 @@
 package nl.juraji.ocManager.domain.characters
 
 import nl.juraji.ocManager.util.Neo4jDataClassMapper
+import nl.juraji.ocManager.util.toMap
 import org.springframework.data.neo4j.core.DatabaseSelectionProvider
 import org.springframework.data.neo4j.core.ReactiveNeo4jClient
 import org.springframework.stereotype.Repository
@@ -28,62 +29,23 @@ class CharacterRelationshipRepository(
             .fetch().all()
             .map(mapper::mapFrom)
 
-    fun findById(relationshipId: String): Mono<OcCharacterRelationship> =
+    fun create(relationship: OcCharacterRelationship): Mono<OcCharacterRelationship> =
         neo4jClient
             .query(
                 """
-                    MATCH (source:OcCharacter {id: $ relId})-[rel:RELATED_TO]-(target:OcCharacter)
-                    $RELATIONSHIP_RETURN_STMT
-                """.trimIndent()
-            )
-            .`in`(databaseSelectionProvider.databaseSelection.value)
-            .bind(relationshipId).to("relId")
-            .fetch().one()
-            .map(mapper::mapFrom)
+                    MATCH (source:OcCharacter {id: $ relationship.sourceCharacterId})
+                    MATCH (target:OcCharacter {id: $ relationship.targetCharacterId})
 
-    fun create(
-        sourceCharacterId: String,
-        targetCharacterId: String,
-        type: OcCharacterRelationshipType,
-        description: String
-    ): Mono<OcCharacterRelationship> =
-        neo4jClient
-            .query(
-                """
-                    MATCH (source:OcCharacter {id: $ sourceId})
-                    MATCH (target:OcCharacter {id: $ targetId})
-                    
                     MERGE (source)-[rel:RELATED_TO {id: $ relId}]->(target)
-                    SET rel.type = $ type, rel.description = $ description
-                    $RELATIONSHIP_RETURN_STMT
-                """.trimIndent()
-            )
-            .`in`(databaseSelectionProvider.databaseSelection.value)
-            .bind(UUID.randomUUID().toString()).to("relId")
-            .bind(type.name).to("type")
-            .bind(description).to("description")
-            .bind(sourceCharacterId).to("sourceId")
-            .bind(targetCharacterId).to("targetId")
-            .fetch().one()
-            .map(mapper::mapFrom)
+                    SET rel.type = $ relationship.type,
+                        rel.description = $ relationship.description
 
-    fun updateById(
-        relationshipId: String,
-        type: OcCharacterRelationshipType,
-        description:String
-    ): Mono<OcCharacterRelationship> =
-        neo4jClient
-            .query(
-                """
-                    MATCH (source:OcCharacter)-[rel:RELATED_TO {id: $ relId}]->(target:OcCharacter)
-                    SET rel.type = $ type, rel.description = $ description
                     $RELATIONSHIP_RETURN_STMT
                 """.trimIndent()
             )
             .`in`(databaseSelectionProvider.databaseSelection.value)
             .bind(UUID.randomUUID().toString()).to("relId")
-            .bind(type.name).to("type")
-            .bind(description).to("description")
+            .bind(relationship.toMap()).to("relationship")
             .fetch().one()
             .map(mapper::mapFrom)
 
