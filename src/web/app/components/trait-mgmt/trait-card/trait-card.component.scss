@@ -1,3 +1,5 @@
+@import "src/web/styles/variables";
+
 :host {
   display: block;
 
@@ -5,6 +7,15 @@
     .card {
       border: none;
       background-color: transparent;
+    }
+  }
+
+  &:not([disabled]) {
+    cursor: pointer;
+
+    .trait-label:hover {
+      color: $link-hover-color;
+      transition: color .3s ease-in-out;
     }
   }
 }

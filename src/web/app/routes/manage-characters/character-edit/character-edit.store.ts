@@ -44,7 +44,7 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
   private readonly relationshipsSelectors = this.relationshipsAdapter.getSelectors()
 
   public readonly characterId$: Observable<string | null> = this.select(s => s.character?.id ?? null)
-  public readonly isNewCharacter: Observable<boolean> = this.characterId$.pipe(map(id => !id))
+  public readonly isNewCharacter$: Observable<boolean> = this.characterId$.pipe(map(id => !id))
   public readonly character$: Observable<OcCharacter> = this
     .select(s => s.character)
     .pipe(filterNotNull())

@@ -1,6 +1,6 @@
 <div class="card card-sm" *ngIf="trait">
-  <div class="card-body" *ngIf="asBodyType(trait) as t">
-    <div class="d-flex">
+  <div class="card-body">
+    <div class="d-flex trait-label">
       <ng-container [ngSwitch]="trait.traitType">
         <span *ngSwitchCase="'OcBodyType'" class="bi bi-person-circle me-2"></span>
         <span *ngSwitchCase="'OcEthnicity'" class="bi bi-sun me-2"></span>
@@ -10,7 +10,7 @@
         <span *ngSwitchCase="'OcHairStyle'" class="bi bi-palette me-2"></span>
         <span *ngSwitchCase="'OcCustomTrait'" class="bi bi-emoji-laughing me-2"></span>
       </ng-container>
-      <span>{{t | traitLabel}}</span>
+      <span>{{trait | traitLabel}}</span>
     </div>
   </div>
 </div>

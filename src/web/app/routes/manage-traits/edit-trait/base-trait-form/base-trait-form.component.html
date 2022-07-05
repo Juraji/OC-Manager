@@ -1,0 +1,167 @@
+<div class="card shadow">
+  <div class="card-header">
+    <h4 class="mb-0">{{traitTitle$ | async}}</h4>
+  </div>
+  <div class="card-body">
+    <ng-container [ngSwitch]="editActive$ | async">
+      <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="viewTraitTpl"></ng-container>
+      <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="editTraitFormTpl"></ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #viewTraitTpl>
+  <div class="trait-details-wrapper">
+    <div class="trait-edit-buttons d-flex flex-column">
+      <button class="btn btn-primary btn-sm enable-edit-btn mb-1" (click)="editActive$.setTrue()">
+        <span class="bi bi-pencil"></span>
+      </button>
+      <button class="btn btn-outline-danger btn-sm delete-character-btn" (click)="onDeleteTrait()">
+        <span class="bi bi-trash"></span>
+      </button>
+    </div>
+
+    <table class="table table-sm table-borderless" *ngIf="store.trait$ | async as trait">
+      <tbody>
+      <tr>
+        <th scope="row">Type:</th>
+        <td>{{trait | traitTypeLabel}}</td>
+      </tr>
+      <ng-container [ngSwitch]="trait.traitType">
+        <ng-container *ngSwitchCase="'OcEyeColor'">
+          <tr>
+            <th scope="row">Color:</th>
+            <td>{{$any(trait).type | titlecase}}</td>
+          </tr>
+          <tr *ngIf="$any(trait).variant">
+            <th scope="row">Variant:</th>
+            <td>{{$any(trait).variant}}</td>
+          </tr>
+        </ng-container>
+        <ng-container *ngSwitchCase="'OcHairStyle'">
+          <tr>
+            <th scope="row">Length:</th>
+            <td>{{$any(trait).length | titlecase}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Base color:</th>
+            <td>{{$any(trait).baseColor | titlecase}}</td>
+          </tr>
+          <tr *ngIf="$any(trait).variant">
+            <th scope="row">Variant:</th>
+            <td>{{$any(trait).variant}}</td>
+          </tr>
+          <tr *ngIf="$any(trait).dyed">
+            <th scope="row">Dyed:</th>
+            <td>{{$any(trait).dyeColor}}</td>
+          </tr>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <tr>
+            <th scope="row">Description:</th>
+            <td>{{$any(trait).description}}</td>
+          </tr>
+        </ng-container>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
+<ng-template #editTraitFormTpl>
+
+  <form [formGroup]="formGroup" (submit)="onSaveTrait()"
+        [class.needs-validation]="formGroup.pristine"
+        [class.was-validated]="formGroup.dirty">
+    <div class="mb-3">
+      <label for="traitTypeInput" class="form-label">Trait type</label>
+      <select id="traitTypeInput" class="form-select" formControlName="traitType">
+        <option *ngFor="let t of traitTypes" [value]="t">{{t | traitTypeLabel}}</option>
+      </select>
+      <div id="nameHelp" class="form-text">What kind of trait are we editing.</div>
+    </div>
+
+    <ng-container formGroupName="trait">
+      <ng-container [ngSwitch]="formGroup.value.trait.traitType">
+        <ng-container *ngSwitchCase="'OcEyeColor'">
+          <div class="mb-3">
+            <label for="eyeColorTypeInput" class="form-label">Base color</label>
+            <select id="eyeColorTypeInput" class="form-select" formControlName="type"
+                    aria-describedby="eyeColorTypeHelp">
+              <option *ngFor="let t of eyeColorTypes" [value]="t">{{t | titlecase}}</option>
+            </select>
+            <div id="eyeColorTypeHelp" class="form-text">The base eye color group.</div>
+          </div>
+          <div class="mb-3">
+            <label for="eyeColorVariantInput" class="form-label">Variant</label>
+            <input type="text" class="form-control" id="eyeColorVariantInput" aria-describedby="eyeColorVariantHelp"
+                   formControlName="variant">
+            <div id="eyeColorVariantHelp" class="form-text">Eye color variation, optional, something like "hazel" or
+              "deep".
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'OcHairStyle'">
+          <div class="mb-3">
+            <label for="hairStyleLengthInput" class="form-label">Base color</label>
+            <select id="hairStyleLengthInput" class="form-select" formControlName="length"
+                    aria-describedby="hairStyleLengthHelp">
+              <option *ngFor="let t of hairStyleLengths" [value]="t">{{t | titlecase}}</option>
+            </select>
+            <div id="hairStyleLengthHelp" class="form-text">
+              <1mm is shaved, <10cm is short, <40cm is medium, >40cm long, but the specifics are up to you of course.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="hairStyleBaseColorInput" class="form-label">Base color</label>
+            <select id="hairStyleBaseColorInput" class="form-select" formControlName="baseColor"
+                    aria-describedby="hairStyleBaseColorHelp">
+              <option *ngFor="let t of ocHairStyleColors" [value]="t">{{t | titlecase}}</option>
+            </select>
+            <div id="hairStyleBaseColorHelp" class="form-text">
+              The base/natural hair color. Use Exotic with a variant for special colors.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="hairStyleVariantInput" class="form-label">Variant</label>
+            <input type="text" class="form-control" id="hairStyleVariantInput" aria-describedby="hairStyleVariantHelp"
+                   formControlName="variant">
+            <div id="hairStyleVariantHelp" class="form-text">Hair color variation, optional, something like "Dirty" or
+              "Light".
+            </div>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="hairStyleDyedInput"
+                   aria-describedby="hairStyleDyedHelp"
+                   formControlName="dyed">
+            <label class="form-check-label" for="hairStyleDyedInput">Dyed</label>
+            <div id="hairStyleDyedHelp" class="form-text">
+              Enable this to be able to enter a dyed hair color.
+            </div>
+          </div>
+          <div class="mb-3" *ngIf="$any(formGroup.value.trait).dyed">
+            <label for="hairStyleDyeColorInput" class="form-label">Dye color</label>
+            <input type="text" class="form-control" id="hairStyleDyeColorInput" aria-describedby="hairStyleDyeColorHelp"
+                   formControlName="dyeColor">
+            <div id="hairStyleDyeColorHelp" class="form-text">Dye color.</div>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <div class="mb-3">
+            <label for="descriptionInput" class="form-label">Description</label>
+            <input type="text" class="form-control" id="descriptionInput" aria-describedby="descriptionHelp"
+                   formControlName="description">
+            <div id="descriptionHelp" class="form-text">Describe this trait in a short form.</div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <div class="d-flex justify-content-end">
+      <button *ngIf="store.isNewTrait$ | async | not" type="button"
+              class="btn btn-outline-danger me-2"
+              (click)="editActive$.setFalse()">Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid">Save</button>
+    </div>
+  </form>
+</ng-template>

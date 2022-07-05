@@ -6,9 +6,9 @@
   <div class="row">
     <div class="col-md-8">
       <ocm-base-character-form class="mb-4"></ocm-base-character-form>
-      <ocm-character-event-mgmt class="mb-4" *ngIf="store.isNewCharacter | async | not"></ocm-character-event-mgmt>
+      <ocm-character-event-mgmt class="mb-4" *ngIf="store.isNewCharacter$ | async | not"></ocm-character-event-mgmt>
     </div>
-    <div class="col-md-4" *ngIf="store.isNewCharacter | async | not">
+    <div class="col-md-4" *ngIf="store.isNewCharacter$ | async | not">
       <ocm-character-trait-mgmt class="mb-4"></ocm-character-trait-mgmt>
       <ocm-character-relationship-mgmt class="mb-4"></ocm-character-relationship-mgmt>
     </div>

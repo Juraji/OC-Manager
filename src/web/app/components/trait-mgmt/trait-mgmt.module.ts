@@ -4,7 +4,7 @@ import {ModalsModule} from '@juraji/ng-bootstrap-modals'
 import {NgbNavModule} from '@ng-bootstrap/ng-bootstrap'
 
 import {TraitCardComponent} from './trait-card/trait-card.component'
-import { TraitLabelPipe } from './trait-label.pipe'
+import {TraitLabelPipe, TraitTypeLabelPipe} from './trait-label.pipe'
 import {TraitSelectorComponent} from './trait-selector/trait-selector.component';
 
 
@@ -17,13 +17,15 @@ import {TraitSelectorComponent} from './trait-selector/trait-selector.component'
   declarations: [
     TraitCardComponent,
     TraitSelectorComponent,
-    TraitLabelPipe
+    TraitLabelPipe,
+    TraitTypeLabelPipe
   ],
   exports: [
     ModalsModule,
     TraitCardComponent,
     TraitSelectorComponent,
-    TraitLabelPipe
+    TraitLabelPipe,
+    TraitTypeLabelPipe
   ]
 })
 export class TraitMgmtModule {

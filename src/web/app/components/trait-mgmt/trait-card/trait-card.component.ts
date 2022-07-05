@@ -1,15 +1,8 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostListener, Input} from '@angular/core';
+import {Router} from '@angular/router'
 
 import {BooleanInput} from '#core/ng-extensions'
-import {
-  OcBodyType,
-  OcCharacterTrait,
-  OcCustomTrait,
-  OcEthnicity,
-  OcEyeColor,
-  OcGender,
-  OcHairStyle, OcSexuality
-} from '#models/traits.model'
+import {OcCharacterTrait} from '#models/traits.model'
 
 @Component({
   selector: 'ocm-trait-card',
@@ -18,7 +11,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitCardComponent {
-
   @Input()
   trait: Nullable<OcCharacterTrait>
 
@@ -26,34 +18,19 @@ export class TraitCardComponent {
   @BooleanInput()
   flat: boolean | string = false;
 
-  constructor() {
+  @Input()
+  @BooleanInput()
+  disabled: boolean | string = false
+
+  constructor(
+    private readonly router: Router
+  ) {
   }
 
-  asBodyType(trait: Nullable<OcCharacterTrait>): OcBodyType {
-    return trait as OcBodyType
-  }
-
-  asEthnicity(trait: Nullable<OcCharacterTrait>): OcEthnicity {
-    return trait as OcEthnicity
-  }
-
-  asEyeColor(trait: Nullable<OcCharacterTrait>): OcEyeColor {
-    return trait as OcEyeColor
-  }
-
-  asGender(trait: Nullable<OcCharacterTrait>): OcGender {
-    return trait as OcGender
-  }
-
-  asSexuality(trait: Nullable<OcCharacterTrait>): OcSexuality {
-    return trait as OcSexuality
-  }
-
-  asHairStyle(trait: Nullable<OcCharacterTrait>): OcHairStyle {
-    return trait as OcHairStyle
-  }
-
-  asCustomTrait(trait: Nullable<OcCharacterTrait>): OcCustomTrait {
-    return trait as OcCustomTrait
+  @HostListener('click')
+  onClick() {
+    if (!this.disabled && !!this.trait?.id) {
+      this.router.navigate(['/settings/traits/edit', this.trait.id])
+    }
   }
 }

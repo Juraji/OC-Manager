@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {iif, Observable} from 'rxjs'
 
+import {OcCharacter} from '#models/characters.model'
 import {OcCharacterTrait} from '#models/traits.model'
 
 import {OcmApiService} from './ocm-api.service'
@@ -31,6 +32,10 @@ export class OcmApiCharacterTraitsService extends OcmApiService {
 
   deleteTrait(traitId: string): Observable<void> {
     return this.http.delete<void>(this.baseUri(traitId))
+  }
+
+  getAllCharactersWithTrait(traitId: string): Observable<OcCharacter[]> {
+    return this.http.get<OcCharacter[]>(this.baseUri(traitId, 'characters'))
   }
 
   getAllCharacterTraits(characterId: string): Observable<OcCharacterTrait[]> {

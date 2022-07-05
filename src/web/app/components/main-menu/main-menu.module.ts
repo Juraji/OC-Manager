@@ -1,7 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router'
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap'
 
 import {MainMenuComponent} from './main-menu.component';
 
@@ -13,7 +12,6 @@ import {MainMenuComponent} from './main-menu.component';
   imports: [
     CommonModule,
     RouterModule,
-    NgbDropdownModule
   ],
   exports: [
     MainMenuComponent

@@ -1,0 +1,22 @@
+:host {
+  display: block;
+
+  .trait-details-wrapper {
+    position: relative;
+
+    .trait-edit-buttons {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      opacity: 0;
+      transition: opacity .3s ease-in-out;
+    }
+
+    &:hover {
+      .trait-edit-buttons {
+        opacity: 1;
+      }
+    }
+  }
+}

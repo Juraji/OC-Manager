@@ -1,0 +1,14 @@
+<div class="card shadow">
+  <div class="card-header">
+    <h4 class="card-title mb-0">Characters with this trait</h4>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <ocm-character-card
+        *ngFor="let c of store.characters$ | async"
+        [character]="c" flat
+        class="col-3 mb-4"
+      ></ocm-character-card>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, HostListener, Input, OnChanges} from '@angular/core';
 import {Router} from '@angular/router'
-import {map, switchMap} from 'rxjs'
+import {map, startWith, switchMap} from 'rxjs'
 
 import {BooleanInput} from '#core/ng-extensions'
 import {OcmApiCharactersService} from '#core/ocm-api'
@@ -23,7 +23,12 @@ export class CharacterCardComponent implements OnChanges {
   readonly character$ = this.inputs.observe(() => this.character)
     .pipe(switchMap(c => typeof c === 'string' ? this.charactersService.getCharacterById(c as string) : [c]))
   readonly thumbnailUri$ = this.characterId$
-    .pipe(filterNotNull(), filterNotEmpty(), switchMap(id => this.charactersService.getCharacterThumbnailUrl(id)))
+    .pipe(
+      filterNotNull(),
+      filterNotEmpty(),
+      switchMap(id => this.charactersService.getCharacterThumbnailUrl(id)),
+      startWith('assets/no-image-placeholder.svg')
+    )
 
   @Input()
   @BooleanInput()

@@ -50,7 +50,7 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntilDestroyed(this))
       .subscribe(c => this.populateForm(c))
 
-    this.store.isNewCharacter
+    this.store.isNewCharacter$
       .pipe(takeUntilDestroyed(this))
       .subscribe(it => this.editActive$.next(it))
   }

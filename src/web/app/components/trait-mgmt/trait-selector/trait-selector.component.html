@@ -67,7 +67,7 @@
     <li *ngFor="let trait of traits"
         class="character-trait-item"
         [modalResolve]="trait">
-      <ocm-trait-card [trait]="trait" flat></ocm-trait-card>
+      <ocm-trait-card [trait]="trait" flat disabled></ocm-trait-card>
     </li>
   </ul>
 </ng-template>

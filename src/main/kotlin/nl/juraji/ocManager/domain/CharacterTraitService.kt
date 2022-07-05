@@ -1,7 +1,9 @@
 package nl.juraji.ocManager.domain
 
+import nl.juraji.ocManager.domain.characters.OcCharacter
 import nl.juraji.ocManager.domain.traits.CharacterTraitRepository
 import nl.juraji.ocManager.domain.traits.OcCharacterTrait
+import nl.juraji.ocManager.domain.traits.TraitCharactersRepository
 import nl.juraji.ocManager.util.orElseEntityNotFound
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -10,6 +12,7 @@ import reactor.core.publisher.Mono
 @Service
 class CharacterTraitService(
     private val characterTraitRepository: CharacterTraitRepository,
+    private val traitCharactersRepository: TraitCharactersRepository,
 ) {
     fun getAllCharacterTraits(): Flux<OcCharacterTrait> =
         characterTraitRepository.findAll()
@@ -40,4 +43,7 @@ class CharacterTraitService(
 
     fun removeTraitFromCharacter(characterId: String, traitId: String): Mono<Void> =
         characterTraitRepository.removeTraitFromCharacter(characterId, traitId)
+
+    fun getCharactersWithTrait(traitId: String): Flux<OcCharacter> =
+        traitCharactersRepository.findAllCharactersWithTrait(traitId)
 }
