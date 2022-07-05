@@ -27,6 +27,7 @@
     position: relative;
     cursor: pointer;
     border-radius: $border-radius;
+    border: $card-border-width solid $card-border-color;
     overflow: hidden;
 
     .drop-active-overlay, .hover-active-overlay {

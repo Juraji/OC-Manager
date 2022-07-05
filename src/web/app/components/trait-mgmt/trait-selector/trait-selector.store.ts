@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {map, mergeMap, tap} from 'rxjs'
+import {combineLatest, map, mergeMap, tap} from 'rxjs'
 
-import {chainSort, strSort} from '#core/arrays'
+import {chainSort, orderedSort, strSort} from '#core/arrays'
 import {OcmApiCharacterTraitsService} from '#core/ocm-api'
 import {
   OcBodyType,
@@ -48,33 +48,38 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
   private readonly sexualityAdapter = TraitSelectorStore.createSexualityAdapter()
   private readonly sexualitySelectors = this.sexualityAdapter.getSelectors()
 
-  public allBodyTypes$ = this
+  readonly bodyTypes$ = this
     .select(s => s.bodyTypes)
     .pipe(map(this.bodyTypeSelectors.selectAll))
 
-  public allEthnicities$ = this
+  readonly ethnicities$ = this
     .select(s => s.ethnicities)
     .pipe(map(this.ethnicitySelectors.selectAll))
 
-  public allEyeColors$ = this
+  readonly eyeColors$ = this
     .select(s => s.eyeColors)
     .pipe(map(this.eyeColorSelectors.selectAll))
 
-  public allGender$ = this
-    .select(s => s.genders)
-    .pipe(map(this.genderSelectors.selectAll))
-
-  public allHairStyles$ = this
+  readonly hairStyles$ = this
     .select(s => s.hairStyles)
     .pipe(map(this.hairStyleSelectors.selectAll))
 
-  public allCustomTraits$ = this
+  readonly genders$ = this
+    .select(s => s.genders)
+    .pipe(map(this.genderSelectors.selectAll))
+
+  readonly sexualities$ = this
+    .select(s => s.sexualities)
+    .pipe(map(this.sexualitySelectors.selectAll))
+
+  readonly customTraits$ = this
     .select(s => s.customTraits)
     .pipe(map(this.customTraitSelectors.selectAll))
 
-  public allSexualities$ = this
-    .select(s => s.sexualities)
-    .pipe(map(this.sexualitySelectors.selectAll))
+  readonly allTraits$ = combineLatest([
+    this.bodyTypes$, this.ethnicities$, this.eyeColors$, this.hairStyles$,
+    this.genders$, this.sexualities$, this.customTraits$
+  ]).pipe(map(x => x.flat()))
 
   constructor(
     private readonly service: OcmApiCharacterTraitsService,
@@ -161,7 +166,7 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
   private static createHairStyleAdapter() {
     return createEntityAdapter<OcHairStyle>({
       selectId: e => e.id,
-      sortComparer: chainSort(strSort(e => e.length), strSort(e => e.baseColor))
+      sortComparer: chainSort(orderedSort(e => e.length, 'SHAVED', 'SHORT', 'MEDIUM', 'LONG'), strSort(e => e.baseColor))
     })
   }
 

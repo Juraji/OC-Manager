@@ -4,52 +4,59 @@
 </div>
 <ul ngbNav #nav="ngbNav" class="nav-tabs mt-2">
   <li ngbNavItem="">
+    <a ngbNavLink>All</a>
+    <ng-template ngbNavContent>
+      <ng-container [ngTemplateOutlet]="traitListTpl"
+                    [ngTemplateOutletContext]="{$implicit: store.allTraits$ | async}"></ng-container>
+    </ng-template>
+  </li>
+  <li ngbNavItem="">
     <a ngbNavLink>Body types</a>
     <ng-template ngbNavContent>
       <ng-container [ngTemplateOutlet]="traitListTpl"
-                    [ngTemplateOutletContext]="{$implicit: store.allBodyTypes$ | async}"></ng-container>
+                    [ngTemplateOutletContext]="{$implicit: store.bodyTypes$ | async}"></ng-container>
     </ng-template>
   </li>
   <li ngbNavItem="">
     <a ngbNavLink>Ethnicities</a>
     <ng-template ngbNavContent>
       <ng-container [ngTemplateOutlet]="traitListTpl"
-                    [ngTemplateOutletContext]="{$implicit: store.allEthnicities$ | async}"></ng-container>
+                    [ngTemplateOutletContext]="{$implicit: store.ethnicities$ | async}"></ng-container>
     </ng-template>
   </li>
   <li ngbNavItem="">
     <a ngbNavLink>Eye colors</a>
     <ng-template ngbNavContent>
       <ng-container [ngTemplateOutlet]="traitListTpl"
-                    [ngTemplateOutletContext]="{$implicit: store.allEyeColors$ | async}"></ng-container>
+                    [ngTemplateOutletContext]="{$implicit: store.eyeColors$ | async}"></ng-container>
     </ng-template>
   </li>
   <li ngbNavItem="">
     <a ngbNavLink>Genders</a>
     <ng-template ngbNavContent>
       <ng-container [ngTemplateOutlet]="traitListTpl"
-                    [ngTemplateOutletContext]="{$implicit: store.allGender$ | async}"></ng-container>
+                    [ngTemplateOutletContext]="{$implicit: store.genders$ | async}"></ng-container>
     </ng-template>
   </li>
   <li ngbNavItem="">
     <a ngbNavLink>Sexualities</a>
     <ng-template ngbNavContent>
       <ng-container [ngTemplateOutlet]="traitListTpl"
-                    [ngTemplateOutletContext]="{$implicit: store.allSexualities$ | async}"></ng-container>
+                    [ngTemplateOutletContext]="{$implicit: store.sexualities$ | async}"></ng-container>
     </ng-template>
   </li>
   <li ngbNavItem="">
     <a ngbNavLink>Hair styles</a>
     <ng-template ngbNavContent>
       <ng-container [ngTemplateOutlet]="traitListTpl"
-                    [ngTemplateOutletContext]="{$implicit: store.allHairStyles$ | async}"></ng-container>
+                    [ngTemplateOutletContext]="{$implicit: store.hairStyles$ | async}"></ng-container>
     </ng-template>
   </li>
   <li ngbNavItem="">
-    <a ngbNavLink>Custom traits</a>
+    <a ngbNavLink>Custom</a>
     <ng-template ngbNavContent>
       <ng-container [ngTemplateOutlet]="traitListTpl"
-                    [ngTemplateOutletContext]="{$implicit: store.allCustomTraits$ | async}"></ng-container>
+                    [ngTemplateOutletContext]="{$implicit: store.customTraits$ | async}"></ng-container>
     </ng-template>
   </li>
 </ul>
