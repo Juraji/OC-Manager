@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {defaultIfEmpty, map, mergeMap, Observable, switchMap, tap} from 'rxjs'
+import {defaultIfEmpty, map, mergeMap, Observable, tap} from 'rxjs'
 
 import {booleanSort, chainSort, strSort} from '#core/arrays'
 import {OcmApiPortfoliosService} from '#core/ocm-api'
@@ -10,8 +10,8 @@ import {OcPortfolio} from '#models/portfolios.model'
 
 interface PortfoliosStoreState {
   portfolios: EntityState<OcPortfolio>
-  selectedPortfolioId: Nullable<string>
-  defaultPortfolioId: Nullable<string>
+  selectedPortfolio: Nullable<OcPortfolio>
+  defaultPortfolio: Nullable<OcPortfolio>
 }
 
 @Injectable()
@@ -31,11 +31,10 @@ export class PortfoliosStore extends ComponentStore<PortfoliosStoreState> {
       map(pfs => pfs[id] ?? null)
     )
 
-  public readonly selectedPortfolioId$: Observable<Nullable<string>> = this
-    .select(s => s.selectedPortfolioId)
+  public readonly selectedPortfolio$ = this.select(s => s.selectedPortfolio)
 
-  public readonly selectedPortfolio$ = this.selectedPortfolioId$
-    .pipe(filterNotNull(), switchMap(id => this.portFolioById$(id)))
+  public readonly selectedPortfolioId$: Observable<Nullable<string>> = this.selectedPortfolio$
+    .pipe(map(p => p?.id))
 
   constructor(
     private readonly service: OcmApiPortfoliosService,
@@ -44,8 +43,8 @@ export class PortfoliosStore extends ComponentStore<PortfoliosStoreState> {
 
     this.setState({
       portfolios: this.portfolioAdapter.getInitialState(),
-      selectedPortfolioId: null,
-      defaultPortfolioId: null
+      selectedPortfolio: null,
+      defaultPortfolio: null
     })
   }
 
@@ -53,17 +52,20 @@ export class PortfoliosStore extends ComponentStore<PortfoliosStoreState> {
     return this.service
       .getAllPortfolios()
       .pipe(tap(pfs => {
-        const defaultPortfolioId = pfs.find(p => p.default)?.id
+        const defaultPortfolio = pfs.find(p => p.default)
         this.setState(s => ({
           portfolios: this.portfolioAdapter.setAll(pfs, s.portfolios),
-          selectedPortfolioId: defaultPortfolioId,
-          defaultPortfolioId
+          selectedPortfolio: defaultPortfolio,
+          defaultPortfolio
         }))
       }))
   }
 
   readonly setSelectedPortfolioById: (portfolioId: string) => void = this.effect<string>($ => $.pipe(
-    tap(selectedPortfolioId => this.patchState({selectedPortfolioId}))
+    mergeMap(id => this.portFolioById$(id)),
+    once(),
+    filterNotNull(),
+    tap(selectedPortfolio => this.patchState({selectedPortfolio}))
   ))
 
   savePortFolio(portfolio: Partial<OcPortfolio>): Observable<OcPortfolio> {
@@ -85,16 +87,16 @@ export class PortfoliosStore extends ComponentStore<PortfoliosStoreState> {
       .deletePortfolio(portfolioId)
       .pipe(tap(() => this.patchState(s => ({
         portfolios: this.portfolioAdapter.removeOne(portfolioId, s.portfolios),
-        selectedPortfolioId: portfolioId === s.selectedPortfolioId
-          ? s.defaultPortfolioId
-          : s.selectedPortfolioId
+        selectedPortfolioId: portfolioId === s.selectedPortfolio?.id
+          ? s.defaultPortfolio
+          : s.selectedPortfolio
       }))))
   }
 
   private static createPortfolioAdapter() {
     return createEntityAdapter<OcPortfolio>({
       selectId: e => e.id,
-      sortComparer: chainSort(strSort(e => e.name), booleanSort(e => e.default))
+      sortComparer: chainSort(booleanSort(e => e.default), strSort(e => e.name))
     })
   }
 }

@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 data class EntityNotFoundException(
     val entityName: String,
     val entityId: String
-) : ResponseStatusException(HttpStatus.NOT_FOUND, "Entity of type $entityName(id = $entityId) with id not found") {
+) : ResponseStatusException(HttpStatus.NOT_FOUND, "Entity of type $entityName(id = $entityId) not found") {
     constructor(entity: KClass<*>, entityId: String) : this(entity.simpleName!!, entityId)
 }
 

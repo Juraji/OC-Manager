@@ -34,10 +34,10 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
   private readonly refreshThumbnailImg$ = new Subject<void>()
   readonly thumbnailUri$ = this.store.thumbnailUri$
     .pipe(switchMap(uri => this.refreshThumbnailImg$
-        .pipe(
-          map(() => `${uri}?t=${new Date().getTime()}`),
-          startWith(uri)
-        )))
+      .pipe(
+        map(() => `${uri}?t=${new Date().getTime()}`),
+        startWith(uri)
+      )))
 
   constructor(
     private readonly router: Router,
@@ -70,7 +70,8 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
         .subscribe(c => {
           this.editActive$.setFalse()
           this.populateForm(c)
-          return this.router.navigate(['..', c.id], {relativeTo: this.activatedRoute})
+          return this.router.navigate(['..', c.id],
+            {relativeTo: this.activatedRoute, replaceUrl: true})
         })
     }
   }

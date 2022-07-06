@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router'
 
 import {CharacterCardModule} from '#components/character-card'
+import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
 import {CharacterOverviewComponent} from './character-overview.component';
 import {CharacterOverviewResolve} from './character-overview.resolve'
@@ -19,11 +20,12 @@ const ROUTES: Routes = [
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(ROUTES),
-    CharacterCardModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(ROUTES),
+        CharacterCardModule,
+        RxUtilPipesModule
+    ],
   declarations: [
     CharacterOverviewComponent
   ],

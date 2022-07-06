@@ -20,7 +20,7 @@ export const orderedSort = <T, R>(mapper: (o: T) => R, ...order: R[]): SortFn<T>
   });
 
 export const booleanSort = <T>(mapper: (o: T) => boolean, desc = false): SortFn<T> =>
-  orderedSort(mapper, desc, !desc)
+  orderedSort(mapper, !desc, desc)
 
 const intlCollatorOpts: Intl.CollatorOptions = {numeric: true, sensitivity: 'base'};
 export const strSort = <T>(mapper: (o: T) => string | null | undefined, desc = false): SortFn<T> =>
