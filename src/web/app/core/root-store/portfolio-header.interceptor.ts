@@ -2,7 +2,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Injectable} from '@angular/core';
 import {map, mergeMap, Observable} from 'rxjs';
 
-import {PortfoliosStore} from '#core/root-store/portfolios.store'
+import {PortfoliosStore} from '#core/root-store'
 import {once} from '#core/rxjs'
 
 const HEADER_PORTFOLIO = 'X-OC-Context-Portfolio'

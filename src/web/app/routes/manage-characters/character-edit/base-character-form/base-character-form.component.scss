@@ -1,26 +1,8 @@
-@import "src/web/styles/variables";
+@import "src/web/styles/edit-buttons.mixin";
 
 :host {
   display: block;
-
-  .character-details-wrapper {
-    position: relative;
-
-    .character-edit-buttons {
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      opacity: 0;
-      transition: opacity .3s ease-in-out;
-    }
-
-    &:hover {
-      .character-edit-buttons {
-        opacity: 1;
-      }
-    }
-  }
+  @include edit-buttons('character');
 
   .thumbnail-wrapper {
     display: block;

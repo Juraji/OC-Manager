@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/co
 import {ActivatedRoute, Router} from '@angular/router'
 import {map, skip} from 'rxjs'
 
-import {PortfoliosStore} from '#core/root-store/portfolios.store'
+import {PortfoliosStore} from '#core/root-store'
 import {takeUntilDestroyed} from '#core/rxjs'
 
 import {CharacterEditStore} from './character-edit.store'

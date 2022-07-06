@@ -5,7 +5,7 @@ import {map, mergeMap, Observable, skip, switchMap, tap} from 'rxjs'
 
 import {strSort} from '#core/arrays'
 import {OcmApiCharactersService} from '#core/ocm-api'
-import {PortfoliosStore} from '#core/root-store/portfolios.store'
+import {PortfoliosStore} from '#core/root-store'
 import {OcCharacter} from '#models/characters.model'
 
 export interface CharacterOverviewStoreData {

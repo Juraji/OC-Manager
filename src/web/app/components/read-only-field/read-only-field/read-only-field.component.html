@@ -1,1 +1,3 @@
-<p>read-only-field works!</p>
+<div class="field-title">{{label}}</div>
+<div class="field-value" *ngIf="!!value">{{value}}</div>
+<div class="field-value placeholder text-muted small" *ngIf="hideWhenEmpty && !value">{{!placeholder}}</div>

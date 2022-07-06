@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {defaultIfEmpty, map, mergeMap, Observable, tap} from 'rxjs'
+import {defaultIfEmpty, map, mergeMap, Observable, switchMap, tap} from 'rxjs'
 
 import {booleanSort, chainSort, strSort} from '#core/arrays'
 import {OcmApiPortfoliosService} from '#core/ocm-api'
@@ -24,15 +24,18 @@ export class PortfoliosStore extends ComponentStore<PortfoliosStoreState> {
     .select(s => s.portfolios)
     .pipe(map(this.portfolioSelectors.selectAll))
 
-  public readonly selectedPortfolioId$: Observable<Nullable<string>> = this
-    .select(s => s.selectedPortfolioId)
-
   public readonly portFolioById$: (id: string) => Observable<OcPortfolio | null> = (id: string) => this
     .select(s => s.portfolios)
     .pipe(
       map(this.portfolioSelectors.selectEntities),
       map(pfs => pfs[id] ?? null)
     )
+
+  public readonly selectedPortfolioId$: Observable<Nullable<string>> = this
+    .select(s => s.selectedPortfolioId)
+
+  public readonly selectedPortfolio$ = this.selectedPortfolioId$
+    .pipe(filterNotNull(), switchMap(id => this.portFolioById$(id)))
 
   constructor(
     private readonly service: OcmApiPortfoliosService,

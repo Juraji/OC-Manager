@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 
-import {PortfoliosStore} from '#core/root-store/portfolios.store'
+import {PortfoliosStore} from '#core/root-store'
 
 @Component({
   selector: 'ocm-portfolio-selector',

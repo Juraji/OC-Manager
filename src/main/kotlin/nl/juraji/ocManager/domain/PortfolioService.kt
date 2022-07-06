@@ -30,7 +30,7 @@ class PortfolioService(
         portfolio: OcPortfolio
     ): Mono<OcPortfolio> =
         getPortfolioById(portfolioId)
-            .map { portfolio.copy(id = it.id) }
+            .map { portfolio.copy(id = it.id, default = it.default) }
             .flatMap(portfolioRepository::save)
 
     fun deletePortfolio(portfolioId: String): Mono<Void> =

@@ -1,0 +1,11 @@
+:host {
+  display: block;
+
+  .field-title {
+    font-weight: 700;
+  }
+
+  .field-value {
+    white-space: pre-line;
+  }
+}

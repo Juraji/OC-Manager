@@ -18,6 +18,10 @@ const ROUTES: Routes = [
     loadChildren: () => import('./routes/manage-characters/manage-characters.module').then(m => m.ManageCharactersModule)
   },
   {
+    path: 'portfolios',
+    loadChildren: () => import('./routes/manage-portfolios/manage-portfolios.module').then(m => m.ManagePortfoliosModule)
+  },
+  {
     path: 'settings/events',
     loadChildren: () => import('./routes/event-settings/event-settings.module').then(m => m.EventSettingsModule)
   },

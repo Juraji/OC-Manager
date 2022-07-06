@@ -63,10 +63,7 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
 
   onSaveCharacter() {
     if (this.formGroup.valid) {
-      const fv = this.formGroup.value;
-      const update: Partial<OcCharacter> = {
-        ...fv,
-      }
+      const update = this.formGroup.value;
 
       this.store
         .saveCharacter(update)

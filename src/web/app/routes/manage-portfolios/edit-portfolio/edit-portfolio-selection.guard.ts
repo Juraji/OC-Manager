@@ -1,14 +1,21 @@
-import { Injectable } from '@angular/core';
-import { CanLoad, Route, UrlSegment, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate} from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class EditPortfolioSelectionGuard implements CanLoad {
-  canLoad(
-    route: Route,
-    segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
+import {PortfoliosStore} from '#core/root-store'
+
+@Injectable()
+export class EditPortfolioSelectionGuard implements CanActivate {
+  constructor(private readonly store: PortfoliosStore) {
+  }
+
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    const portfolioId = route.paramMap.get('portfolioId')
+
+    if (!!portfolioId) {
+      this.store.setSelectedPortfolioById(portfolioId)
+      return true;
+    }
+
+    return false;
   }
 }

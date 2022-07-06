@@ -1,0 +1,6 @@
+@import "src/web/styles/edit-buttons.mixin";
+
+:host {
+  display: block;
+  @include edit-buttons('portfolio');
+}

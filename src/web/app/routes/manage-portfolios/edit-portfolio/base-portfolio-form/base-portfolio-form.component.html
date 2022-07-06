@@ -1,1 +1,57 @@
-<p>base-portfolio-form works!</p>
+<div class="card shadow">
+  <div class="card-header">
+    <h4 class="card-title mb-0">{{portfolioTitle$ | async}}</h4>
+  </div>
+  <div class="card-body">
+    <ng-container [ngSwitch]="editActive$ | async">
+      <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="viewPortfolioTpl"></ng-container>
+      <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="editPortfolioFormTpl"></ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #viewPortfolioTpl>
+  <div class="portfolio-details-wrapper" *ngIf="store.portfolio$ | async as p">
+    <div class="portfolio-edit-buttons d-flex flex-column">
+      <button class="btn btn-primary btn-sm enable-edit-btn mb-1" (click)="editActive$.setTrue()">
+        <span class="bi bi-pencil"></span>
+      </button>
+      <button class="btn btn-outline-danger btn-sm delete-character-btn"
+              (click)="onDeletePortfolio()" [disabled]="p.default">
+        <span class="bi bi-trash"></span>
+      </button>
+    </div>
+
+    <ocm-read-only-field
+      label="Description"
+      [value]="p.description"
+      hideWhenEmpty="false"
+      placeholder="No description"></ocm-read-only-field>
+  </div>
+</ng-template>
+
+<ng-template #editPortfolioFormTpl>
+  <form [formGroup]="formGroup" (submit)="onSavePortfolio()"
+        [class.needs-validation]="formGroup.pristine"
+        [class.was-validated]="formGroup.dirty">
+    <div class="mb-3">
+      <label for="nameInput" class="form-label">Name</label>
+      <input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp" formControlName="name">
+      <div id="nameHelp" class="form-text">Maybe you already have a title for your book or game? Else be creative.</div>
+    </div>
+    <div class="mb-3">
+      <label for="descriptionInput" class="form-label">Description</label>
+      <textarea class="form-control" id="descriptionInput" aria-describedby="descriptionHelp"
+                formControlName="description"></textarea>
+      <div id="descriptionHelp" class="form-text">
+        Optional, but it might be smart to provide some context for your future self.
+      </div>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button *ngIf="store.isNewPortfolio$ | async | not" type="button" class="btn btn-outline-danger me-2"
+              (click)="editActive$.setFalse()">Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid">Save</button>
+    </div>
+  </form>
+</ng-template>

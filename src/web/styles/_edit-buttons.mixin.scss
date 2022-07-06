@@ -1,0 +1,28 @@
+@import "variables";
+
+@mixin edit-buttons($basename) {
+  .#{$basename}-details-wrapper {
+    position: relative;
+    height: 100%;
+
+    .#{$basename}-edit-buttons {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      opacity: 0;
+      transition: opacity .3s ease-in-out;
+
+      background-color: $white;
+      padding: .5rem;
+      border: $card-border-width solid $card-border-color;
+      border-radius: $card-border-radius;
+    }
+
+    &:hover {
+      .#{$basename}-edit-buttons {
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Modals} from '@juraji/ng-bootstrap-modals'
 import {mergeMap} from 'rxjs'
 
-import {PortfoliosStore} from '#core/root-store/portfolios.store'
+import {PortfoliosStore} from '#core/root-store'
 import {OcPortfolio} from '#models/portfolios.model'
 
 @Component({

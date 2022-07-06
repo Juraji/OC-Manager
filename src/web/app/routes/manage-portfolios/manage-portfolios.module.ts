@@ -9,7 +9,7 @@ const ROUTES: Routes = [
   },
   {
     path: 'edit',
-    redirectTo: '/'
+    loadChildren: () => import('./edit-portfolio/edit-portfolio.module').then(m => m.EditPortfolioModule)
   },
   {
     path: '**',
