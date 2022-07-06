@@ -15,7 +15,7 @@ import javax.validation.Valid
 @RequestMapping("/characters")
 class CharacterController(
     private val characterService: CharacterService,
-    private val thumbnailService: CharacterThumbnailService
+    private val thumbnailService: CharacterThumbnailService,
 ) {
     @GetMapping
     fun getAllCharacters(): Flux<OcCharacter> = characterService

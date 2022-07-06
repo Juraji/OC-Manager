@@ -1,7 +1,6 @@
 package nl.juraji.ocManager.configuration
 
 import nl.juraji.ocManager.domain.PortfolioService
-import nl.juraji.ocManager.domain.portfolios.OcPortfolio
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
@@ -25,14 +24,14 @@ class PortfolioRequestContextFilter(
         .flatMap { p ->
             chain
                 .filter(exchange)
-                .contextWrite { it.put(CONTEXT_PORTFOLIO, p) }
+                .contextWrite { it.put(CONTEXT_PORTFOLIO_ID, p.id!!) }
         }
 
     companion object {
         const val HEADER_PORTFOLIO = "X-OC-Context-Portfolio"
-        const val CONTEXT_PORTFOLIO = "OC_CONTEXT_PORTFOLIO"
+        const val CONTEXT_PORTFOLIO_ID = "OC_CONTEXT_PORTFOLIO_ID"
     }
 }
 
-fun ContextView.getRequestPortfolio(): OcPortfolio =
-    this[PortfolioRequestContextFilter.CONTEXT_PORTFOLIO]
+val ContextView.requestPortfolioId: String
+    get() = this[PortfolioRequestContextFilter.CONTEXT_PORTFOLIO_ID]

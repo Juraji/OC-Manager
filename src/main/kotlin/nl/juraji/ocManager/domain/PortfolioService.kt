@@ -1,11 +1,8 @@
 package nl.juraji.ocManager.domain
 
-import nl.juraji.ocManager.domain.characters.OcCharacter
 import nl.juraji.ocManager.domain.portfolios.OcPortfolio
-import nl.juraji.ocManager.domain.portfolios.PortfolioCharacterRepository
 import nl.juraji.ocManager.domain.portfolios.PortfolioRepository
 import nl.juraji.ocManager.util.orElseEntityNotFound
-import nl.juraji.ocManager.util.orElseRelationshipNotCreated
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -13,7 +10,6 @@ import reactor.core.publisher.Mono
 @Service
 class PortfolioService(
     private val portfolioRepository: PortfolioRepository,
-    private val portfolioCharacterRepository: PortfolioCharacterRepository
 ) {
     fun getAllPortfolios(): Flux<OcPortfolio> =
         portfolioRepository.findAll()
@@ -42,17 +38,4 @@ class PortfolioService(
             .filter { !it.default }
             .orElseEntityNotFound(OcPortfolio::class, portfolioId)
             .then(portfolioRepository.deleteById(portfolioId))
-
-
-    fun getPortfolioCharacters(portfolioId: String): Flux<OcCharacter> =
-        portfolioCharacterRepository.findAllPortfolioCharacters(portfolioId)
-
-    fun addCharacterToPortfolio(portfolioId: String, characterId: String): Mono<OcCharacter> =
-        portfolioCharacterRepository
-            .addCharacterToPortfolio(portfolioId, characterId)
-            .orElseRelationshipNotCreated(OcPortfolio::class, OcCharacter::class, portfolioId, characterId)
-
-    fun removeCharacterFromPortfolio(portfolioId: String, characterId: String): Mono<Void> =
-        portfolioCharacterRepository
-            .removeCharacterFromPortfolio(portfolioId, characterId)
 }
