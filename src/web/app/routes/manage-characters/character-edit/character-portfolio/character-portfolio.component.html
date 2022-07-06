@@ -1,0 +1,8 @@
+<div class="card shadow" *ngIf="portfolioStore.selectedPortfolio$ | async as p">
+  <div class="card-header">
+    <h5 class="card-title">Portfolio</h5>
+  </div>
+  <div class="card-body">
+    <ocm-read-only-field [label]="p.name" [value]="p.description"></ocm-read-only-field>
+  </div>
+</div>

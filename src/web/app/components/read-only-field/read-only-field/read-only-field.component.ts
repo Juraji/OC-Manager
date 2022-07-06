@@ -9,6 +9,7 @@ import {BooleanInput} from '#core/ng-extensions'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReadOnlyFieldComponent implements OnChanges {
+  private static NULLABLE_VALUES: unknown[] = [undefined, null, '']
 
   @Input()
   label: Nullable<string>
@@ -31,6 +32,7 @@ export class ReadOnlyFieldComponent implements OnChanges {
 
   @HostBinding('class.hidden')
   hidden = false;
+  isNullish = false;
 
   @HostBinding('class.mb-3')
   readonly hostClasses = true
@@ -39,8 +41,8 @@ export class ReadOnlyFieldComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.hidden = !this.value && !!this.hideWhenEmpty
-    console.log(this.hidden)
+    this.isNullish = ReadOnlyFieldComponent.NULLABLE_VALUES.indexOf(this.value) > -1
+    this.hidden = !!this.hideWhenEmpty && this.isNullish
   }
 
 }
