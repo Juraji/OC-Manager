@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 
-import {EventSettingsStore} from '#core/event-settings'
 import {requiredIf, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
+import {EventSettingsStore} from '#core/root-store'
 import {takeUntilDestroyed} from '#core/rxjs'
 import {OcEventSettings} from '#models/events.model'
 

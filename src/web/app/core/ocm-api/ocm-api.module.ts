@@ -7,6 +7,7 @@ import {OcmApiCharacterRelationshipsService} from './services/ocm-api-character-
 import {OcmApiCharacterTraitsService} from './services/ocm-api-character-traits.service'
 import {OcmApiCharactersService} from './services/ocm-api-characters.service'
 import {OcmApiEventsService} from './services/ocm-api-events.service'
+import {OcmApiPortfoliosService} from './services/ocm-api-portfolios.service'
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import {OcmApiEventsService} from './services/ocm-api-events.service'
   ],
   exports: [
     HttpClientModule
-  ],
+  ]
 })
 export class OcmApiModule {
   static forRoot(): ModuleWithProviders<OcmApiModule> {
@@ -28,6 +29,7 @@ export class OcmApiModule {
         OcmApiCharacterTraitsService,
         OcmApiCharactersService,
         OcmApiEventsService,
+        OcmApiPortfoliosService,
       ]
     }
   }

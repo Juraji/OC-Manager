@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {BehaviorSubject} from 'rxjs'
 
-import {EventSettingsStore} from '#core/event-settings'
+import {EventSettingsStore} from '#core/root-store'
 
 @Component({
   selector: 'ocm-main-menu',

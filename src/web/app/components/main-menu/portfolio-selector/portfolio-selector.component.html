@@ -1,0 +1,3 @@
+<select id="typeInput" class="form-select" [value]="store.selectedPortfolioId$ | async" (change)="onSelectPortfolio($any($event.target).value)">
+  <option *ngFor="let p of store.portfolios$ | async" [value]="p.id">{{p.name}}</option>
+</select>

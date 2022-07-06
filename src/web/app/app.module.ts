@@ -5,10 +5,10 @@ import {RouterModule, Routes} from '@angular/router'
 import {ModalsModule} from '@juraji/ng-bootstrap-modals'
 
 import {MainMenuModule} from '#components/main-menu'
-import {EventSettingsModule} from '#core/event-settings'
 import {NgExtensionsModule} from '#core/ng-extensions'
 import {OcmApiModule} from '#core/ocm-api'
 import {OcmNgbGlobalConfigurationModule} from '#core/ocm-ngb-global-configuration'
+import {RootStoreModule} from '#core/root-store'
 
 import {AppComponent} from './app.component';
 
@@ -40,7 +40,7 @@ const ROUTES: Routes = [
     OcmApiModule.forRoot(),
     OcmNgbGlobalConfigurationModule.forRoot(),
     NgExtensionsModule.forRoot(),
-    EventSettingsModule.forRoot(),
+    RootStoreModule.forRoot(),
     ModalsModule.forRoot(),
     MainMenuModule,
   ],

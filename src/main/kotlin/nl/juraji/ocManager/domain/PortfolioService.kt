@@ -38,7 +38,11 @@ class PortfolioService(
             .flatMap(portfolioRepository::save)
 
     fun deletePortfolio(portfolioId: String): Mono<Void> =
-        portfolioRepository.deleteById(portfolioId)
+        getPortfolioById(portfolioId)
+            .filter { !it.default }
+            .orElseEntityNotFound(OcPortfolio::class, portfolioId)
+            .then(portfolioRepository.deleteById(portfolioId))
+
 
     fun getPortfolioCharacters(portfolioId: String): Flux<OcCharacter> =
         portfolioCharacterRepository.findAllPortfolioCharacters(portfolioId)

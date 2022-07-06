@@ -3,8 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router'
 import {Modals} from '@juraji/ng-bootstrap-modals'
 import {map, mergeMap, of, skip, startWith, Subject, switchMap} from 'rxjs'
 
-import {EventSettingsStore} from '#core/event-settings'
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
+import {EventSettingsStore} from '#core/root-store'
 import {BooleanBehaviourSubject, filterNotNull, once, takeUntilDestroyed} from '#core/rxjs'
 import {OcCharacter} from '#models/characters.model'
 

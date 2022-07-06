@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
-import {mergeMap, Observable, tap} from 'rxjs'
+import {Observable, tap} from 'rxjs'
 
 import {OcmApiEventsService} from '#core/ocm-api'
 import {filterNotNull} from '#core/rxjs'
@@ -27,10 +27,11 @@ export class EventSettingsStore extends ComponentStore<EventSettingsStoreState> 
     })
   }
 
-  readonly initialize: () => void = this.effect($ => $.pipe(
-    mergeMap(() => this.service.getEventSettings()),
-    tap(settings => this.patchSettings(settings))
-  ))
+  initialize(): Observable<OcEventSettings> {
+    return this.service
+      .getEventSettings()
+      .pipe(tap(settings => this.patchSettings(settings)))
+  }
 
   saveEventSettings(update: OcEventSettings) {
     return this.service
