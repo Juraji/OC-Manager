@@ -1,0 +1,31 @@
+<div class="container position-relative">
+  <div class="header d-flex justify-content-between">
+    <h1>Portfolios</h1>
+    <div class="pt-2">
+      <button class="btn btn-primary shadow add-character-btn" title="Add character" routerLink="../edit/new">
+        <span class="bi bi-plus"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <table class="table table-striped table-hover">
+        <tbody>
+        <tr *ngFor="let p of store.portfolios$ | async" [routerLink]="['../edit', p.id]" class="cursor-pointer">
+          <td>{{p.name}}</td>
+          <td class="text-end">
+            <button class="btn btn-primary btn-sm me-1">
+              <span class="bi bi-pencil"></span>
+            </button>
+            <button class="btn btn-outline-danger btn-sm"
+                    (click)="onDeletePortfolio(p);$event.stopPropagation()" [disabled]="p.default">
+              <span class="bi bi-trash"></span>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
