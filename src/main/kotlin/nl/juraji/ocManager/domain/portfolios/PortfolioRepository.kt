@@ -9,4 +9,15 @@ import reactor.core.publisher.Mono
 interface PortfolioRepository : ReactiveNeo4jRepository<OcPortfolio, String> {
     @Query("MATCH (p:OcPortfolio {default: true}) RETURN p")
     fun findDefaultPortfolio(): Mono<OcPortfolio>
+
+    @Query(
+        """
+            MATCH (p:OcPortfolio {id: $ portfolioId})
+            OPTIONAL MATCH (p)-[:CONTAINS_CHARACTER]->(char:OcCharacter)
+            OPTIONAL MATCH (p)-[:CONTAINS_EVENT]->(event:OcEvent)
+
+            DETACH DELETE p, char, event
+        """
+    )
+    fun deletePortfolioCompletely(portfolioId: String): Mono<Void>
 }

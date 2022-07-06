@@ -37,5 +37,5 @@ class PortfolioService(
         getPortfolioById(portfolioId)
             .filter { !it.default }
             .orElseEntityNotFound(OcPortfolio::class, portfolioId)
-            .then(portfolioRepository.deleteById(portfolioId))
+            .then(portfolioRepository.deletePortfolioCompletely(portfolioId))
 }
