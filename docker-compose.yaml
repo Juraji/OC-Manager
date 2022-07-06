@@ -8,3 +8,8 @@ services:
       NEO4J_AUTH: "neo4j/password"
     ports:
       - "7687:7687"
+    volumes:
+      - neo4j-data:/data
+
+volumes:
+  neo4j-data:
