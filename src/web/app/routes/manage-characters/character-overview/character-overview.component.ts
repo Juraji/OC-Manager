@@ -17,7 +17,7 @@ export class CharacterOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    readonly store: CharacterOverviewStore
+    readonly store: CharacterOverviewStore,
   ) {
   }
 

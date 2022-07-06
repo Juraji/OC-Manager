@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 
-import {requiredIf, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
+import {required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
 import {EventSettingsStore} from '#core/root-store'
 import {takeUntilDestroyed} from '#core/rxjs'
 import {OcEventSettings} from '#models/events.model'
@@ -16,7 +16,7 @@ export class EventSettingsComponent implements OnInit, OnDestroy {
   readonly formGroup: TypedFormGroup<OcEventSettings> = typedFormGroup({
     id: typedFormControl(''),
     useFixedDate: typedFormControl<boolean>(false),
-    eventReferenceDate: typedFormControl<number>(Number.NaN, [requiredIf('useFixedDate', true)])
+    eventReferenceDate: typedFormControl<number>(Number.NaN, [required])
   })
 
   constructor(
@@ -25,10 +25,21 @@ export class EventSettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const setRefDateFieldState = (enable: boolean) => enable
+      ? this.formGroup.get('eventReferenceDate').enable()
+      : this.formGroup.get('eventReferenceDate').disable()
+
     this.store.settings$
       .pipe(takeUntilDestroyed(this))
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .subscribe(fd => this.formGroup.setValue(fd))
+      .subscribe(fd => {
+        this.formGroup.setValue(fd)
+        setRefDateFieldState(fd.useFixedDate)
+      })
+
+    this.formGroup.get('useFixedDate').valueChanges
+      .pipe(takeUntilDestroyed(this))
+      .subscribe(setRefDateFieldState)
   }
 
   ngOnDestroy() {

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostBinding, Input, OnChanges} from '@angular/core';
 
 import {BooleanInput} from '#core/ng-extensions'
 
@@ -8,7 +8,7 @@ import {BooleanInput} from '#core/ng-extensions'
   styleUrls: ['./read-only-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReadOnlyFieldComponent implements OnInit {
+export class ReadOnlyFieldComponent implements OnChanges {
 
   @Input()
   label: Nullable<string>
@@ -17,16 +17,30 @@ export class ReadOnlyFieldComponent implements OnInit {
   value: Nullable<unknown>
 
   @Input()
+  prefix: Nullable<string>
+
+  @Input()
+  suffix: Nullable<string>
+
+  @Input()
   @BooleanInput()
   hideWhenEmpty: boolean | string = true;
 
   @Input()
-  placeholder = 'No value or placeholder';
+  placeholder: Nullable<string>;
+
+  @HostBinding('class.hidden')
+  hidden = false;
+
+  @HostBinding('class.mb-3')
+  readonly hostClasses = true
 
   constructor() {
   }
 
-  ngOnInit(): void {
+  ngOnChanges() {
+    this.hidden = !this.value && !!this.hideWhenEmpty
+    console.log(this.hidden)
   }
 
 }

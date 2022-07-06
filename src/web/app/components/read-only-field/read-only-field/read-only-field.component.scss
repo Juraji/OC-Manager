@@ -1,11 +1,15 @@
 :host {
   display: block;
 
+  &.hidden {
+    display: none;
+  }
+
   .field-title {
     font-weight: 700;
   }
 
-  .field-value {
+  .field-value-wrapper {
     white-space: pre-line;
   }
 }

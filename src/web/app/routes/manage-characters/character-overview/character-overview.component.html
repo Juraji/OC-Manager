@@ -1,13 +1,14 @@
 <div class="container position-relative">
-  <div class="header d-flex justify-content-between">
+  <div class="header d-flex justify-content-between align-items-center">
     <h1>Characters</h1>
-    <div class="pt-2">
-      <button class="btn btn-primary shadow add-character-btn" title="Add character" routerLink="../edit/new">
-        <span class="bi bi-plus"></span>
-      </button>
-    </div>
+    <button class="btn btn-primary shadow add-character-btn" title="Add character" routerLink="../edit/new">
+      <span class="bi bi-plus"></span>
+    </button>
   </div>
 
+  <div class="portfolio-description">
+    <h3></h3>
+  </div>
   <div class="character-cards row">
     <div class="col-md-3 mb-4" *ngFor="let char of store.allCharacters$ | async as characters">
       <ocm-character-card

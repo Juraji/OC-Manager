@@ -5,12 +5,8 @@
         <ocm-character-card [character]="relationship.targetCharacterId" flat></ocm-character-card>
       </div>
       <div class="col-8">
-        <ul class="list-unstyled">
-          <li>{{relationship.type | titlecase}}</li>
-          <li *ngIf="relationship.description">
-            <pre>{{relationship.description}}</pre>
-          </li>
-        </ul>
+        <ocm-read-only-field [label]="relationship.type | titlecase" [value]="relationship.description"
+                             hideWhenEmpty="false"></ocm-read-only-field>
       </div>
     </div>
   </div>

@@ -63,7 +63,6 @@ export class PortfoliosStore extends ComponentStore<PortfoliosStoreState> {
 
   readonly setSelectedPortfolioById: (portfolioId: string) => void = this.effect<string>($ => $.pipe(
     mergeMap(id => this.portFolioById$(id)),
-    once(),
     filterNotNull(),
     tap(selectedPortfolio => this.patchState({selectedPortfolio}))
   ))
@@ -78,6 +77,7 @@ export class PortfoliosStore extends ComponentStore<PortfoliosStoreState> {
         mergeMap(p => this.service.savePortfolio(p)),
         tap(p => this.patchState(s => ({
           portfolios: this.portfolioAdapter.upsertOne(p, s.portfolios),
+          selectedPortfolio: p
         })))
       )
   }

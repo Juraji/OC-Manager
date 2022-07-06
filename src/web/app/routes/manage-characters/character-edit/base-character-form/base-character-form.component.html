@@ -29,25 +29,13 @@
       </button>
     </div>
 
-    <table class="table table-sm table-borderless">
-      <tbody>
-      <tr *ngIf="!!char.nickname">
-        <th scope="row">Nickname</th>
-        <td>{{char.nickname}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Date of birth</th>
-        <td>{{char.dateOfBirth | date}} <span
-          class="small text-muted">({{char.dateOfBirth | yearsAgo:(eventSettings.eventsDate$ | async)}}yo)</span></td>
-      </tr>
-      <tr *ngIf="!!char.notes">
-        <th scope="row">Notes</th>
-        <td>
-          <pre>{{char.notes}}</pre>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="row">
+      <ocm-read-only-field class="col-12" label="Nickname" [value]="char.nickname"></ocm-read-only-field>
+      <ocm-read-only-field class="col-md-6" label="Date of birth" [value]="char.dateOfBirth | date"></ocm-read-only-field>
+      <ocm-read-only-field class="col-md-6" label="Age" suffix=" years old"
+                           [value]="char.dateOfBirth | yearsAgo:(eventSettings.eventsDate$ | async)"></ocm-read-only-field>
+      <ocm-read-only-field class="col-12" label="Notes" [value]="char.notes"></ocm-read-only-field>
+    </div>
   </div>
 </ng-template>
 
@@ -68,7 +56,8 @@
     </div>
     <div class="mb-3">
       <label for="dateOfBirthInput" class="form-label">Date of birth</label><br/>
-      <span class="text-muted" *ngIf="formGroup.value.dateOfBirth">Current: {{formGroup.value.dateOfBirth | date}}</span><br/>
+      <span class="text-muted"
+            *ngIf="formGroup.value.dateOfBirth">Current: {{formGroup.value.dateOfBirth | date}}</span><br/>
       <ngb-datepicker id="dateOfBirthInput" formControlName="dateOfBirth"></ngb-datepicker>
     </div>
     <div class="mb-3">
