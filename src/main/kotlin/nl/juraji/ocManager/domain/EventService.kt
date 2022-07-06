@@ -22,10 +22,9 @@ class EventService(
     fun getAllEvents(): Flux<OcEvent> = Flux
         .deferContextual { eventRepository.findAllByPortfolioId(it.requestPortfolioId) }
 
-    fun getEventById(eventId: String): Mono<OcEvent> =
-        eventRepository
-            .findById(eventId)
-            .orElseEntityNotFound(OcEvent::class, eventId)
+    fun getEventById(eventId: String): Mono<OcEvent> = Mono
+        .deferContextual { eventRepository.findByPortfolioIdAndId(it.requestPortfolioId, eventId) }
+        .orElseEntityNotFound(OcEvent::class, eventId)
 
     fun createEvent(event: OcEvent): Mono<OcEvent> =
         eventRepository

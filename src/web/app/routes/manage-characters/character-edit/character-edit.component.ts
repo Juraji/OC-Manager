@@ -1,7 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router'
-import {map} from 'rxjs'
+import {ActivatedRoute, Router} from '@angular/router'
+import {map, skip} from 'rxjs'
 
+import {PortfoliosStore} from '#core/root-store/portfolios.store'
 import {takeUntilDestroyed} from '#core/rxjs'
 
 import {CharacterEditStore} from './character-edit.store'
@@ -17,6 +18,8 @@ export class CharacterEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+    private readonly portfoliosStore: PortfoliosStore,
     readonly store: CharacterEditStore
   ) {
   }
@@ -25,6 +28,10 @@ export class CharacterEditComponent implements OnInit, OnDestroy {
     this.activatedRoute.data
       .pipe(takeUntilDestroyed(this), map(d => d['storeData']))
       .subscribe(d => this.store.setStoreData(d))
+
+    this.portfoliosStore.selectedPortfolioId$
+      .pipe(takeUntilDestroyed(this), skip(1))
+      .subscribe(() => this.router.navigateByUrl('/'))
   }
 
   ngOnDestroy() {

@@ -20,10 +20,9 @@ class CharacterService(
     fun getAllCharacters(): Flux<OcCharacter> = Flux
         .deferContextual { characterRepository.findAllCharactersByPortfolioId(it.requestPortfolioId) }
 
-    fun getCharacterById(characterId: String): Mono<OcCharacter> =
-        characterRepository
-            .findById(characterId)
-            .orElseEntityNotFound(OcCharacter::class, characterId)
+    fun getCharacterById(characterId: String): Mono<OcCharacter> = Mono
+        .deferContextual { characterRepository.findPortfolioIdAndById(it.requestPortfolioId, characterId) }
+        .orElseEntityNotFound(OcCharacter::class, characterId)
 
     @Transactional
     fun createCharacter(character: OcCharacter): Mono<OcCharacter> =

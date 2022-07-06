@@ -12,6 +12,9 @@ interface EventRepository : ReactiveNeo4jRepository<OcEvent, String> {
     @Query("MATCH (:OcPortfolio {id: $ portfolioId})-[:CONTAINS_EVENT]->(e:OcEvent) RETURN e")
     fun findAllByPortfolioId(portfolioId: String): Flux<OcEvent>
 
+    @Query("MATCH (:OcPortfolio {id: $ portfolioId})-[:CONTAINS_EVENT]->(e:OcEvent {id: $ eventId}) RETURN e")
+    fun findByPortfolioIdAndId(portfolioId: String, eventId: String): Mono<OcEvent>
+
     @Query("MATCH (:OcCharacter {id: $ characterId})<-[:INVOLVES]-(e:OcEvent) RETURN e")
     fun findAllByCharacterId(characterId: String): Flux<OcEvent>
 
