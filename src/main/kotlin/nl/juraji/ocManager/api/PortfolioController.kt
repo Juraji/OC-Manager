@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/portfolios")
+@RequestMapping("/api/portfolios")
 class PortfolioController(
     private val portfolioService: PortfolioService
 ) {

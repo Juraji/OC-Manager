@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/traits")
+@RequestMapping("/api/traits")
 class TraitController(
     private val traitService: CharacterTraitService,
 ) {

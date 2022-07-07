@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/characters/{characterId}/relationships")
+@RequestMapping("/api/characters/{characterId}/relationships")
 class CharacterRelationshipController(
     private val relationshipService: CharacterRelationshipService
 ) {

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
 
 @RestController
-@RequestMapping("/characters/{characterId}/events")
+@RequestMapping("/api/characters/{characterId}/events")
 class CharacterEventsController(
     private val eventService: EventService
 ) {

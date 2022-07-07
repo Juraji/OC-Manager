@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/characters/{characterId}/traits")
+@RequestMapping("/api/characters/{characterId}/traits")
 class CharacterTraitController(
     private val characterTraitService: CharacterTraitService,
 ) {

@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/events")
 class EventController(
     private val eventService: EventService,
     private val settingsService: SettingsService,

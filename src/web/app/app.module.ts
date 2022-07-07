@@ -40,7 +40,7 @@ const ROUTES: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(ROUTES),
+    RouterModule.forRoot(ROUTES, {useHash: true}),
     OcmApiModule.forRoot(),
     OcmNgbGlobalConfigurationModule.forRoot(),
     NgExtensionsModule.forRoot(),

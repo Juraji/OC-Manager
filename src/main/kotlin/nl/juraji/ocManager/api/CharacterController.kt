@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/characters")
+@RequestMapping("/api/characters")
 class CharacterController(
     private val characterService: CharacterService,
     private val thumbnailService: CharacterThumbnailService,

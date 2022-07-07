@@ -5,11 +5,13 @@ spring:
       username: ${OCM_NEO4J_DB_USERNAME}
       password: ${OCM_NEO4J_DB_PASSWORD}
   webflux:
-    base-path: "/api"
     multipart:
       max-headers-size: "8MB"
   main:
     banner-mode: off
+  web:
+    resources:
+      static-locations: "classpath:oc-manager-ui/"
 
 server:
   http2:
