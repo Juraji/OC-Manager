@@ -45,11 +45,10 @@ class MemoryService(
     fun getMemoryCharacters(memoryId: String): Flux<OcCharacter> =
         memoryCharactersRepository.findMemoryCharacters(memoryId)
 
-    fun addCharacterToMemory(memoryId: String, characterId: String): Mono<Void> =
+    fun addCharacterToMemory(memoryId: String, characterId: String): Mono<OcCharacter> =
         memoryCharactersRepository
             .addCharacterToMemory(memoryId, characterId)
             .orElseRelationshipNotCreated(OcMemory::class, OcCharacter::class, memoryId, characterId)
-            .then()
 
     fun removeCharacterFromMemory(memoryId: String, characterId: String): Mono<Void> =
         memoryCharactersRepository

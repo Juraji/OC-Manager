@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router'
 
-import {CharacterCardModule} from '#components/character-card'
+import {CharacterMgmtModule} from '#components/character-mgmt'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
 import {CharacterOverviewComponent} from './character-overview.component';
@@ -23,7 +23,7 @@ const ROUTES: Routes = [
     imports: [
         CommonModule,
         RouterModule.forChild(ROUTES),
-        CharacterCardModule,
+        CharacterMgmtModule,
         RxUtilPipesModule
     ],
   declarations: [

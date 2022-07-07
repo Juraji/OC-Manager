@@ -31,11 +31,15 @@ export class MemoryTimelineComponent implements OnChanges {
   @BooleanInput()
   singleSided: boolean | string = false
 
+  @Input()
+  @BooleanInput()
+  flat: boolean | string = false
+
   memoriesByDate$: Observable<YearlyMap> = this.memories$
     .pipe(
       filterNotNull(),
       map(memories => memories
-        .map((m, idx) => ({...m, even: !this.singleSided && (idx % 2) !== 0} as TimelineMemory))
+        .map((m, idx) => ({...m, even: !this.singleSided && (idx % 2) === 0} as TimelineMemory))
         .reduce((acc, next) => {
           const mDate = new Date(next.date)
           const year: number = mDate.getFullYear()

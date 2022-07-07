@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms'
 import {RouterModule, Routes} from '@angular/router';
 
-import {CharacterCardModule} from '#components/character-card'
+import {CharacterMgmtModule} from '#components/character-mgmt'
 import {TraitMgmtModule} from '#components/trait-mgmt'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
@@ -32,7 +32,7 @@ const ROUTES: Routes = [
     CommonModule,
     RouterModule.forChild(ROUTES),
     RxUtilPipesModule,
-    CharacterCardModule,
+    CharacterMgmtModule,
     TraitMgmtModule,
     ReactiveFormsModule
   ],

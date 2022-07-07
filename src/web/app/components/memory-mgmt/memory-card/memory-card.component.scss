@@ -1,3 +1,13 @@
 :host {
   display: block;
+
+  &:not([disabled]) {
+    cursor: pointer;
+    transition: transform .3s ease-in-out;
+
+    &:hover {
+      z-index: 500;
+      transform: scale(1.05);
+    }
+  }
 }

@@ -1,20 +1,17 @@
-<div class="card shadow cursor-pointer" *ngIf="memory" [routerLink]="['/memories/edit', memory.id]">
-  <div class="card-header">
-    <h5 class="card-title">{{memory.title}}</h5>
-  </div>
+<div class="card cursor-pointer" [class.shadow]="!flat" *ngIf="memory" [routerLink]="['/memories/edit', memory.id]">
   <div class="card-body">
-      <div *ngIf="settings.eventsDate$ | async as reference">
-        <ocm-read-only-field class="mb-0" [value]="memory.date | date"></ocm-read-only-field>
-        <ng-container [ngSwitch]="memory.date | dateIsBefore:reference">
-          <ocm-read-only-field
-            *ngSwitchCase="true" suffix=" ago,"
-            [value]="memory.date | date | relativeTime:reference"></ocm-read-only-field>
-          <ocm-read-only-field
-            *ngSwitchCase="false" prefix="in " suffix=","
-            [value]="memory.date | date | relativeTime:reference"></ocm-read-only-field>
-        </ng-container>
+    <div *ngIf="settings.eventsDate$ | async as reference">
+      <ocm-read-only-field class="mb-0" [value]="memory.date | date"></ocm-read-only-field>
+      <ng-container [ngSwitch]="memory.date | dateIsBefore:reference">
+        <ocm-read-only-field
+          *ngSwitchCase="true" class="small" suffix=" ago,"
+          [value]="memory.date | date | relativeTime:reference"></ocm-read-only-field>
+        <ocm-read-only-field
+          *ngSwitchCase="false" class="small" prefix="in " suffix=","
+          [value]="memory.date | date | relativeTime:reference"></ocm-read-only-field>
+      </ng-container>
     </div>
 
-    <ocm-read-only-field [value]="memory.description" placeholder="No description"></ocm-read-only-field>
+    <ocm-read-only-field [label]="memory.title" [value]="memory.description"></ocm-read-only-field>
   </div>
 </div>

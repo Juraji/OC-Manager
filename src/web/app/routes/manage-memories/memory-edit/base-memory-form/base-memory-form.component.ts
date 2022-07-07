@@ -5,7 +5,7 @@ import {map, mergeMap, skip, startWith} from 'rxjs'
 
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
 import {SettingsStore} from '#core/root-store'
-import {BooleanBehaviourSubject, once, takeUntilDestroyed} from '#core/rxjs'
+import {BooleanBehaviourSubject, filterNotNull, once, takeUntilDestroyed} from '#core/rxjs'
 import {OcMemory} from '#models/memories.model'
 
 import {MemoryEditStore} from '../memory-edit.store'
@@ -61,6 +61,7 @@ export class BaseMemoryFormComponent implements OnInit, OnDestroy {
         .subscribe(m => {
           this.editActive$.setFalse()
           this.populateForm(m)
+          this.addOptionalCharacterOnSave()
           return this.router.navigate(
             ['..', m.id],
             {relativeTo: this.activatedRoute, replaceUrl: true})
@@ -86,5 +87,15 @@ export class BaseMemoryFormComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {id, ...formData} = memory
     this.formGroup.reset(formData)
+  }
+
+  private addOptionalCharacterOnSave() {
+    this.activatedRoute.queryParamMap
+      .pipe(
+        once(),
+        map(p => p.get('addCharacter')),
+        filterNotNull(),
+      )
+      .subscribe(characterId => this.store.addCharacter(characterId))
   }
 }

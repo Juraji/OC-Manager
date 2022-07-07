@@ -46,9 +46,9 @@ class MemoryController(
     fun addCharacterToMemory(
         @PathVariable memoryId: String,
         @PathVariable characterId: String,
-    ): Mono<Void> = memoryService.addCharacterToMemory(memoryId, characterId)
+    ): Mono<OcCharacter> = memoryService.addCharacterToMemory(memoryId, characterId)
 
-    @GetMapping("/{memoryId}/characters/{characterId}")
+    @DeleteMapping("/{memoryId}/characters/{characterId}")
     fun removeCharacterFromMemory(
         @PathVariable memoryId: String,
         @PathVariable characterId: String,

@@ -1,6 +1,11 @@
 :host {
   display: block;
 
+  .card-body{
+    max-height: 30rem;
+    overflow-y: auto;
+  }
+
   .add-memory-btn {
     opacity: 0;
     transition: opacity .3s ease-in-out;

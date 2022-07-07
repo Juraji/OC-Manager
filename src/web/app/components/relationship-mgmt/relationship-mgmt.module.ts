@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms'
 import {ModalsModule} from '@juraji/ng-bootstrap-modals'
 
-import {CharacterCardModule} from '#components/character-card'
+import {CharacterMgmtModule} from '#components/character-mgmt'
 import {ReadOnlyFieldModule} from '#components/read-only-field'
 
 import {
@@ -17,7 +17,7 @@ import { RelationshipCardComponent } from './relationship-card/relationship-card
         CommonModule,
         ModalsModule,
         ReactiveFormsModule,
-        CharacterCardModule,
+        CharacterMgmtModule,
         ReadOnlyFieldModule
     ],
   declarations: [

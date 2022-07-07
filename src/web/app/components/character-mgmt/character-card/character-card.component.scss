@@ -8,7 +8,7 @@
     transition: transform .3s ease-in-out;
 
     &:hover {
-      z-index: 99999;
+      z-index: 500;
       transform: scale(1.05);
     }
   }

@@ -12,7 +12,7 @@ interface MemoryCharactersRepository : ReactiveNeo4jRepository<OcCharacter, Stri
 
     @Query(
         """
-            MATCH (:OcMemory {id: $ memoryId})-[:INVOLVES]->(character:OcCharacters)
+            MATCH (:OcMemory {id: $ memoryId})-[:INVOLVES]->(character:OcCharacter)
             RETURN character
         """
     )

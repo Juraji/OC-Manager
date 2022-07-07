@@ -30,7 +30,7 @@ const ROUTES: Routes = [
     loadChildren: () => import('./routes/settings/settings.module').then(m => m.SettingsModule)
   },
   {
-    path: 'settings/traits',
+    path: 'traits',
     loadChildren: () => import('./routes/manage-traits/manage-traits.module').then(m => m.ManageTraitsModule)
   },
   {

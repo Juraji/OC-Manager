@@ -54,6 +54,7 @@ export class CharacterCardComponent implements OnChanges {
 
   @HostListener('click')
   onClick() {
+    console.log(this.disabled)
     if (!this.disabled) {
       this.characterId$
         .pipe(once(), filterNotNull())

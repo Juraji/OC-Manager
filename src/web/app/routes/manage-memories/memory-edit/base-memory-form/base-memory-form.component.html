@@ -23,10 +23,10 @@
 
     <div *ngIf="store.memory$ | async as m">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
           <ocm-read-only-field label="Date" [value]="m.date | date"></ocm-read-only-field>
         </div>
-        <div class="col-md-6" *ngIf="settings.eventsDate$ | async as reference">
+        <div class="col-md-3" *ngIf="settings.eventsDate$ | async as reference">
           <ng-container [ngSwitch]="m.date | dateIsBefore:reference">
             <ocm-read-only-field *ngSwitchCase="true" label="Relative" suffix=" ago"
                                  [value]="m.date | date | relativeTime:reference"></ocm-read-only-field>
@@ -35,7 +35,7 @@
           </ng-container>
         </div>
       </div>
-      <ocm-read-only-field label="Description" [value]="m.description"></ocm-read-only-field>
+      <ocm-read-only-field label="Description" [value]="m.description" placeholder="No description"></ocm-read-only-field>
     </div>
   </div>
 </ng-template>

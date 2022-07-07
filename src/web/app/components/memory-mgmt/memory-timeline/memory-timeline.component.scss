@@ -51,7 +51,7 @@ $arrow-size: 15px;
 
       &:not(.first-of-month) {
         ocm-memory-card {
-          margin-top: -8rem;
+          margin-top: -3rem;
         }
       }
     }
@@ -63,6 +63,10 @@ $arrow-size: 15px;
 
       ocm-memory-card {
         position: relative;
+
+        &:hover{
+          transform: scale(1.05) translateX(-2.5%) translateY(1%);
+        }
 
         &:after {
           content: "";
@@ -92,6 +96,10 @@ $arrow-size: 15px;
 
       ocm-memory-card {
         position: relative;
+
+        &:hover{
+          transform: scale(1.05) translateX(2.5%) translateY(1%);
+        }
 
         &:after {
           content: "";

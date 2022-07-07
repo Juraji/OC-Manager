@@ -1,0 +1,30 @@
+<div class="card shadow">
+  <div class="card-header d-flex justify-content-between">
+    <h4 class="card-title mb-0">Involved characters</h4>
+    <div ngbDropdown>
+      <button class="btn btn-sm btn-primary add-character-btn"
+              id="memoryAddCharacterBtn"
+              title="Add character" ngbDropdownToggle>
+        <span class="bi bi-plus"></span>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="memoryAddCharacterBtn">
+        <button
+          ngbDropdownItem
+          *ngFor="let c of store.filteredAvailableCharacters$ | async"
+          (click)="onAddCharacter(c);$event.preventDefault();">{{c.name}}</button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4 mb-4 memory-character-details-wrapper" *ngFor="let c of store.characters$ | async">
+        <div class="memory-character-edit-buttons d-flex flex-column">
+          <button class="btn btn-outline-danger btn-sm delete-memory-character-btn" (click)="onRemoveCharacter(c)">
+            <span class="bi bi-trash"></span>
+          </button>
+        </div>
+        <ocm-character-card [character]="c" flat></ocm-character-card>
+      </div>
+    </div>
+  </div>
+</div>

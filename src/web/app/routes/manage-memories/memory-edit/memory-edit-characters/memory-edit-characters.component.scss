@@ -1,0 +1,10 @@
+@import "src/web/styles/edit-buttons.mixin";
+
+:host {
+  @include edit-buttons('memory-character');
+
+  .memory-character-edit-buttons {
+    right: 1rem !important;
+    top: 0.25rem !important;
+  }
+}

@@ -25,11 +25,11 @@
           <ng-container *ngFor="let memory of month.value; let firstOfMonth=first">
             <tr class="memory-timeline-row memory" [class.first-of-month]="firstOfMonth">
               <td class="memory-timeline-left">
-                <ocm-memory-card *ngIf="memory.even" [memory]="memory"></ocm-memory-card>
+                <ocm-memory-card *ngIf="memory.even" [memory]="memory" [flat]="flat"></ocm-memory-card>
               </td>
               <td class="memory-timeline-divider"></td>
               <td class="memory-timeline-right">
-                <ocm-memory-card *ngIf="!memory.even" [memory]="memory"></ocm-memory-card>
+                <ocm-memory-card *ngIf="!memory.even" [memory]="memory" [flat]="flat"></ocm-memory-card>
               </td>
             </tr>
           </ng-container>

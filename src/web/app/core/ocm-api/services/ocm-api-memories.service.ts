@@ -38,11 +38,11 @@ export class OcmApiMemoriesService extends OcmApiService {
     return this.http.get<OcCharacter[]>(this.baseUri(memoryId, 'characters'))
   }
 
-  addCharacterToMemory(memoryId: string, characterId: string) {
-    return this.http.post<void>(this.baseUri(memoryId, 'characters', characterId), null)
+  addCharacterToMemory(memoryId: string, characterId: string): Observable<OcCharacter> {
+    return this.http.post<OcCharacter>(this.baseUri(memoryId, 'characters', characterId), null)
   }
 
-  removeCharacterFromMemory(memoryId: string, characterId: string) {
+  removeCharacterFromMemory(memoryId: string, characterId: string): Observable<void> {
     return this.http.delete<void>(this.baseUri(memoryId, 'characters', characterId))
   }
 
