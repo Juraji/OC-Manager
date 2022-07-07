@@ -57,4 +57,4 @@ build/
 Thumbs.db
 
 ### Application ###
-data/
+ocm-data/

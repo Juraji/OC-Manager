@@ -1,9 +1,9 @@
 spring:
   neo4j:
-    uri: ${NEO4J_DB_URI}
+    uri: ${OCM_NEO4J_DB_URI:bolt://localhost:7687}
     authentication:
-      username: ${NEO4J_DB_USERNAME}
-      password: ${NEO4J_DB_PASSWORD}
+      username: ${OCM_NEO4J_DB_USERNAME}
+      password: ${OCM_NEO4J_DB_PASSWORD}
   webflux:
     base-path: "/api"
     multipart:
@@ -17,5 +17,5 @@ server:
 
 oc:
   configuration:
-    data-dir: "./data"
-    thumbnail-size: 500
+    data-dir: ${OCM_DATA_DIR:./ocm-data}
+    thumbnail-size: ${OCM_THUMBNAIL_SIZE:500}

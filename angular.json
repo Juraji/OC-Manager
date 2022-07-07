@@ -31,7 +31,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "target/oc-manager-ui",
+            "outputPath": "target/classes/oc-manager-ui",
             "index": "src/web/index.html",
             "main": "src/web/main.ts",
             "polyfills": "src/web/polyfills.ts",
