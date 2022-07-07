@@ -1,0 +1,12 @@
+<div class="container position-relative">
+  <div class="header d-flex justify-content-between">
+    <h1>Memories</h1>
+    <div class="pt-2">
+      <button class="btn btn-primary shadow add-memory-btn" title="Add new memory" routerLink="../edit/new">
+        <span class="bi bi-plus"></span>
+      </button>
+    </div>
+  </div>
+
+  <ocm-memory-timeline [memories]="store.allMemories$ | async"></ocm-memory-timeline>
+</div>

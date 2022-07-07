@@ -1,3 +1,5 @@
 export * from './date-diff.pipe'
+export * from './date-is-before.pipe'
 export * from './date-pipes.module'
+export * from './relative-time.pipe'
 export * from './years-ago.pipe'

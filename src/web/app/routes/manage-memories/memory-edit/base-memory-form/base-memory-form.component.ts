@@ -4,6 +4,7 @@ import {Modals} from '@juraji/ng-bootstrap-modals'
 import {map, mergeMap, skip, startWith} from 'rxjs'
 
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
+import {SettingsStore} from '#core/root-store'
 import {BooleanBehaviourSubject, once, takeUntilDestroyed} from '#core/rxjs'
 import {OcMemory} from '#models/memories.model'
 
@@ -33,6 +34,7 @@ export class BaseMemoryFormComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly modals: Modals,
+    readonly settings: SettingsStore,
     readonly store: MemoryEditStore
   ) {
   }

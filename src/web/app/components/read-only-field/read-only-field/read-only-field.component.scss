@@ -1,9 +1,6 @@
 :host {
   display: block;
-
-  &.hidden {
-    display: none;
-  }
+  margin-bottom: .75rem;
 
   .field-title {
     font-weight: 700;

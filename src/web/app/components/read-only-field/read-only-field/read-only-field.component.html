@@ -1,6 +1,6 @@
 <div class="field-title">{{label}}</div>
 <div class="field-value-wrapper">
   <span class="field-prefix" *ngIf="!!prefix">{{prefix}}</span>
-  <span class="field-value">{{isNullish ? placeholder : value}}</span>
+  <span class="field-value" [class.text-muted]="isNullish">{{isNullish ? placeholder : value}}</span>
   <span class="field-suffix" *ngIf="!!suffix">{{suffix}}</span>
 </div>

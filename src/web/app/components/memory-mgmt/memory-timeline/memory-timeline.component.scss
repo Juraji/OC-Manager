@@ -1,0 +1,111 @@
+@import "src/web/styles/variables";
+
+$line-color: $gray-700;
+$arrow-size: 15px;
+
+:host {
+  display: block;
+
+  &[singleSided] {
+    .memory-timeline-row {
+      &.group-label td {
+        text-align: left !important;
+      }
+
+      ocm-memory-card {
+        margin-top: 0 !important;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .memory-timeline-left {
+      max-width: 1rem !important;
+      width: 1rem !important;
+    }
+
+    .memory-timeline-right {
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+  }
+
+  .memory-timeline {
+    width: 100%;
+
+    .memory-timeline-row {
+      &.group-label td {
+        text-align: center;
+      }
+
+      &.lead-in {
+        .memory-timeline-divider {
+          height: 1rem;
+        }
+      }
+
+      &.lead-out {
+        .memory-timeline-divider {
+          height: 2rem;
+        }
+      }
+
+      &:not(.first-of-month) {
+        ocm-memory-card {
+          margin-top: -8rem;
+        }
+      }
+    }
+
+    .memory-timeline-left {
+      padding-right: 1rem;
+      max-width: 50%;
+      width: 50%;
+
+      ocm-memory-card {
+        position: relative;
+
+        &:after {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 1rem;
+          right: -$arrow-size;
+          border-style: solid;
+          border-color: rgba(0, 0, 0, 0) $line-color;
+          border-width: $arrow-size 0 $arrow-size $arrow-size;
+          width: 0;
+          height: 0;
+        }
+      }
+    }
+
+    .memory-timeline-divider {
+      position: relative;
+      max-width: 0;
+      border-left: .4rem solid $line-color;
+    }
+
+    .memory-timeline-right {
+      padding-left: 1rem;
+      max-width: 50%;
+      width: 50%;
+
+      ocm-memory-card {
+        position: relative;
+
+        &:after {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 1rem;
+          left: -$arrow-size;
+          border-style: solid;
+          border-color: rgba(0, 0, 0, 0) $line-color;
+          border-width: $arrow-size $arrow-size $arrow-size 0;
+          width: 0;
+          height: 0;
+        }
+      }
+    }
+  }
+}

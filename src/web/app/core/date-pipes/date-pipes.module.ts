@@ -2,6 +2,8 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 
 import {DateDiffPipe} from './date-diff.pipe';
+import {DateIsBeforePipe} from './date-is-before.pipe';
+import {RelativeTimePipe} from './relative-time.pipe';
 import {YearsAgoPipe} from './years-ago.pipe';
 
 
@@ -11,11 +13,15 @@ import {YearsAgoPipe} from './years-ago.pipe';
   ],
   declarations: [
     DateDiffPipe,
-    YearsAgoPipe
+    YearsAgoPipe,
+    RelativeTimePipe,
+    DateIsBeforePipe,
   ],
   exports: [
     YearsAgoPipe,
-    DateDiffPipe
+    DateDiffPipe,
+    RelativeTimePipe,
+    DateIsBeforePipe,
   ]
 })
 export class DatePipesModule {

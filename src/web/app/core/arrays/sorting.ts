@@ -1,4 +1,4 @@
-type SortFn<T> = (a: T, b: T) => number
+export type SortFn<T> = (a: T, b: T) => number
 
 const mappedSort = <T, R>(mapper: (o: T) => R, sortFn: SortFn<R>): SortFn<T> =>
   (a, b) => sortFn(mapper(a), mapper(b))

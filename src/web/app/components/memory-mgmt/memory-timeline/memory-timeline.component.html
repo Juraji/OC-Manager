@@ -1,0 +1,51 @@
+<ng-container>
+  <div class="memory-timeline-wrapper d-flex flex-column" *ngIf="memories | empty | not; else emptyTpl">
+    <table class="memory-timeline">
+      <tbody>
+      <tr class="memory-timeline-row lead-in">
+        <td class="memory-timeline-left"></td>
+        <td class="memory-timeline-divider"></td>
+        <td class="memory-timeline-right"></td>
+      </tr>
+      <ng-container *ngFor="let year of memoriesByDate$ | async | keyValues:groupSortFn">
+        <tr class="memory-timeline-row group-label">
+          <td colspan="3">
+            <h3>{{year.key}}</h3>
+          </td>
+        </tr>
+        <ng-container *ngFor="let month of year.value | keyValues:groupSortFn">
+          <tr class="memory-timeline-row group-label">
+            <td colspan="3"><h5>{{month.key | monthAsDate | date:'MMMM'}}</h5></td>
+          </tr>
+          <tr class="memory-timeline-row lead-in">
+            <td class="memory-timeline-left"></td>
+            <td class="memory-timeline-divider"></td>
+            <td class="memory-timeline-right"></td>
+          </tr>
+          <ng-container *ngFor="let memory of month.value; let firstOfMonth=first">
+            <tr class="memory-timeline-row memory" [class.first-of-month]="firstOfMonth">
+              <td class="memory-timeline-left">
+                <ocm-memory-card *ngIf="memory.even" [memory]="memory"></ocm-memory-card>
+              </td>
+              <td class="memory-timeline-divider"></td>
+              <td class="memory-timeline-right">
+                <ocm-memory-card *ngIf="!memory.even" [memory]="memory"></ocm-memory-card>
+              </td>
+            </tr>
+          </ng-container>
+          <tr class="memory-timeline-row lead-out">
+            <td class="memory-timeline-left"></td>
+            <td class="memory-timeline-divider"></td>
+            <td class="memory-timeline-right"></td>
+          </tr>
+        </ng-container>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #emptyTpl>
+    <div class="no-memories-notice">
+      No memories? Could be amnesia... Or use the add-button in the top right to add some memories.
+    </div>
+  </ng-template>
+</ng-container>

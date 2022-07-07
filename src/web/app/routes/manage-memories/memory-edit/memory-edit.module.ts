@@ -5,6 +5,7 @@ import {RouterModule, Routes} from '@angular/router'
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'
 
 import {ReadOnlyFieldModule} from '#components/read-only-field'
+import {DatePipesModule} from '#core/date-pipes'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
 import { BaseMemoryFormComponent } from './base-memory-form/base-memory-form.component'
@@ -28,7 +29,8 @@ const ROUTES: Routes = [
     RxUtilPipesModule,
     ReactiveFormsModule,
     NgbDatepickerModule,
-    ReadOnlyFieldModule
+    ReadOnlyFieldModule,
+    DatePipesModule
   ],
   declarations: [
     MemoryEditComponent,
