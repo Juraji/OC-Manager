@@ -6,6 +6,7 @@ import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'
 
 import {DragDropFileModule} from '#components/drag-drop-file'
 import {ImgSrcFallbackModule} from '#components/img-src-fallback'
+import {MemoryMgmtModule} from '#components/memory-mgmt'
 import {ReadOnlyFieldModule} from '#components/read-only-field'
 import {RelationshipMgmtModule} from '#components/relationship-mgmt'
 import {TraitMgmtModule} from '#components/trait-mgmt'
@@ -35,19 +36,20 @@ const ROUTES: Routes = [
 ]
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule.forChild(ROUTES),
-        ImgSrcFallbackModule,
-        ReactiveFormsModule,
-        RxUtilPipesModule,
-        NgbDatepickerModule,
-        DragDropFileModule,
-        DatePipesModule,
-        RelationshipMgmtModule,
-        TraitMgmtModule,
-        ReadOnlyFieldModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(ROUTES),
+    ImgSrcFallbackModule,
+    ReactiveFormsModule,
+    RxUtilPipesModule,
+    NgbDatepickerModule,
+    DragDropFileModule,
+    DatePipesModule,
+    RelationshipMgmtModule,
+    TraitMgmtModule,
+    ReadOnlyFieldModule,
+    MemoryMgmtModule
+  ],
   declarations: [
     CharacterEditComponent,
     BaseCharacterFormComponent,

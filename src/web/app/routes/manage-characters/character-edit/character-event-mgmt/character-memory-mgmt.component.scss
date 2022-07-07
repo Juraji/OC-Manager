@@ -1,3 +1,14 @@
 :host {
   display: block;
+
+  .add-memory-btn {
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+  }
+
+  &:hover {
+    .add-memory-btn {
+      opacity: 1;
+    }
+  }
 }

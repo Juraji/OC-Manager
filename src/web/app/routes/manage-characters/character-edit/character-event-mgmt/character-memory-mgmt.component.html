@@ -1,8 +1,12 @@
 <div class="card shadow" *ngIf="store.allMemories$ | async as memories">
   <div class="card-header d-flex justify-content-between">
     <h5 class="card-title">Memories ({{memories | count}})</h5>
+    <button class="btn btn-primary btn-sm add-memory-btn" title="Add memory"
+            routerLink="/memories/edit/new" [queryParams]="{addCharacter: (store.characterId$ | async)}">
+      <span class="bi bi-plus"></span>
+    </button>
   </div>
   <div class="card-body">
-    Not yet implemented
+    <ocm-memory-timeline [memories]="store.allMemories$ | async" singleSided></ocm-memory-timeline>
   </div>
 </div>
