@@ -16,6 +16,7 @@ export class SettingsStore extends ComponentStore<SettingsStoreState> {
 
   readonly settings$: Observable<OcSettings> = this.select(s => s.settings).pipe(filterNotNull())
 
+  readonly useFixedDate$ = this.select(s => s.settings?.useFixedDate || false)
   readonly eventsDate$ = this.select(s => s.eventReferenceDate)
 
   constructor(
@@ -29,13 +30,13 @@ export class SettingsStore extends ComponentStore<SettingsStoreState> {
 
   initialize(): Observable<OcSettings> {
     return this.service
-      .getEventSettings()
+      .getSettings()
       .pipe(tap(settings => this.patchSettings(settings)))
   }
 
   saveSettings(update: OcSettings) {
     return this.service
-      .updateEventSettings(update)
+      .updateSettings(update)
       .pipe(tap(settings => this.patchSettings(settings)))
   }
 

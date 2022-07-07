@@ -13,7 +13,7 @@ export class MainMenuComponent implements OnInit {
   public readonly collapsed$ = new BehaviorSubject<boolean>(true)
 
   constructor(
-    readonly eventSettings: SettingsStore
+    readonly settings: SettingsStore
   ) {
   }
 

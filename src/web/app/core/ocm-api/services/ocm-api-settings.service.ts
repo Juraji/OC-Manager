@@ -11,11 +11,11 @@ export class OcmApiSettingsService extends OcmApiService {
     super(http)
   }
 
-  getEventSettings(): Observable<OcSettings> {
+  getSettings(): Observable<OcSettings> {
     return this.http.get<OcSettings>(this.baseUri())
   }
 
-  updateEventSettings(settings: OcSettings): Observable<OcSettings> {
+  updateSettings(settings: OcSettings): Observable<OcSettings> {
     return this.http.put<OcSettings>(this.baseUri(), settings)
   }
 

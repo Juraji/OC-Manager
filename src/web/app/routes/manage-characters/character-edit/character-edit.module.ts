@@ -15,7 +15,7 @@ import {RxUtilPipesModule} from '#core/rx-util-pipes'
 import {BaseCharacterFormComponent} from './base-character-form/base-character-form.component'
 import {CharacterEditComponent} from './character-edit.component'
 import {CharacterEditResolve} from './character-edit.resolve';
-import {CharacterEventMgmtComponent} from './character-event-mgmt/character-event-mgmt.component';
+import {CharacterMemoryMgmtComponent} from './character-event-mgmt/character-memory-mgmt.component';
 import { CharacterPortfolioComponent } from './character-portfolio/character-portfolio.component';
 import {CharacterRelationshipMgmtComponent} from './character-relationship-mgmt/character-relationship-mgmt.component';
 import {CharacterTraitMgmtComponent} from './character-trait-mgmt/character-trait-mgmt.component';
@@ -53,7 +53,7 @@ const ROUTES: Routes = [
     BaseCharacterFormComponent,
     CharacterTraitMgmtComponent,
     CharacterRelationshipMgmtComponent,
-    CharacterEventMgmtComponent,
+    CharacterMemoryMgmtComponent,
     CharacterPortfolioComponent
   ],
   providers: [

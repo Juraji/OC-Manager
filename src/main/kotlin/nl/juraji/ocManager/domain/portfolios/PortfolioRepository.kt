@@ -14,7 +14,7 @@ interface PortfolioRepository : ReactiveNeo4jRepository<OcPortfolio, String> {
         """
             MATCH (p:OcPortfolio {id: $ portfolioId})
             OPTIONAL MATCH (p)-[:CONTAINS_CHARACTER]->(char:OcCharacter)
-            OPTIONAL MATCH (p)-[:CONTAINS_EVENT]->(event:OcEvent)
+            OPTIONAL MATCH (p)-[:CONTAINS_MEMORY]->(event:OcMemory)
 
             DETACH DELETE p, char, event
         """

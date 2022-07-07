@@ -1,7 +1,7 @@
 package nl.juraji.ocManager.api
 
 import nl.juraji.ocManager.domain.SettingsService
-import nl.juraji.ocManager.domain.events.OcSettings
+import nl.juraji.ocManager.domain.application.OcSettings
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 import javax.validation.Valid
@@ -12,11 +12,11 @@ class UserSettingsController(
     private val settingsService: SettingsService
 ) {
     @GetMapping
-    fun getEventSettings(): Mono<OcSettings> =
-        settingsService.getEventSettings()
+    fun getSettings(): Mono<OcSettings> =
+        settingsService.getSettings()
 
     @PutMapping
-    fun updateEventSettings(
-        @Valid @RequestBody eventSettings: OcSettings
-    ) = settingsService.updateEventSettings(eventSettings)
+    fun updateSettings(
+        @Valid @RequestBody settings: OcSettings
+    ) = settingsService.updateSettings(settings)
 }

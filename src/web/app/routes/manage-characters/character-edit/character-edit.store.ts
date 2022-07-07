@@ -5,27 +5,27 @@ import {defaultIfEmpty, map, mergeMap, Observable, shareReplay, tap} from 'rxjs'
 
 import {numberSort, orderedSort} from '#core/arrays'
 import {
-  OcmApiCharacterEventsService,
+  OcmApiCharacterMemoriesService,
   OcmApiCharacterRelationshipsService,
   OcmApiCharactersService,
   OcmApiCharacterTraitsService
 } from '#core/ocm-api'
 import {filterNotNull, once} from '#core/rxjs'
 import {OcCharacter, OcCharacterRelationship} from '#models/characters.model'
-import {OcEvent} from '#models/events.model'
+import {OcMemory} from '#models/memories.model'
 import {OcCharacterTrait} from '#models/traits.model'
 
 interface CharacterEditStoreState {
   character: Nullable<OcCharacter>
   traits: EntityState<OcCharacterTrait>
-  events: EntityState<OcEvent>
+  memories: EntityState<OcMemory>
   relationships: EntityState<OcCharacterRelationship>
 }
 
 export interface CharacterEditStoreData {
   character: Nullable<OcCharacter>
   traits: OcCharacterTrait[]
-  events: OcEvent[]
+  memories: OcMemory[]
   relationships: OcCharacterRelationship[]
 }
 
@@ -35,8 +35,8 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
   private readonly traitsAdapter = CharacterEditStore.createTraitsAdapter()
   private readonly traitsSelectors = this.traitsAdapter.getSelectors()
 
-  private readonly eventsAdapter = CharacterEditStore.createEventsAdapter()
-  private readonly eventsSelectors = this.eventsAdapter.getSelectors()
+  private readonly memoriesAdapter = CharacterEditStore.createMemoriesAdapter()
+  private readonly memoriesSelectors = this.memoriesAdapter.getSelectors()
 
   private readonly relationshipsAdapter = CharacterEditStore.createRelationshipsAdapter()
   private readonly relationshipsSelectors = this.relationshipsAdapter.getSelectors()
@@ -57,9 +57,9 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
     .select(s => s.traits)
     .pipe(map(this.traitsSelectors.selectAll), shareReplay(1))
 
-  public readonly allEvents$: Observable<OcEvent[]> = this
-    .select(s => s.events)
-    .pipe(map(this.eventsSelectors.selectAll), shareReplay(1))
+  public readonly allMemories$: Observable<OcMemory[]> = this
+    .select(s => s.memories)
+    .pipe(map(this.memoriesSelectors.selectAll), shareReplay(1))
 
   public readonly allRelationships$: Observable<OcCharacterRelationship[]> = this
     .select(s => s.relationships)
@@ -68,7 +68,7 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
   constructor(
     private readonly charactersService: OcmApiCharactersService,
     private readonly characterTraitsService: OcmApiCharacterTraitsService,
-    private readonly characterEventsService: OcmApiCharacterEventsService,
+    private readonly characterMemoriesService: OcmApiCharacterMemoriesService,
     private readonly characterRelationshipsService: OcmApiCharacterRelationshipsService,
   ) {
     super()
@@ -76,7 +76,7 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
     this.setState({
       character: null,
       traits: this.traitsAdapter.getInitialState(),
-      events: this.eventsAdapter.getInitialState(),
+      memories: this.memoriesAdapter.getInitialState(),
       relationships: this.relationshipsAdapter.getInitialState(),
     })
   }
@@ -85,7 +85,7 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
     this.setState(s => ({
       character: data.character,
       traits: this.traitsAdapter.setAll(data.traits, s.traits),
-      events: this.eventsAdapter.setAll(data.events, s.events),
+      memories: this.memoriesAdapter.setAll(data.memories, s.memories),
       relationships: this.relationshipsAdapter.setAll(data.relationships, s.relationships),
     }))
   }
@@ -178,8 +178,8 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
     })
   }
 
-  private static createEventsAdapter() {
-    return createEntityAdapter<OcEvent>({
+  private static createMemoriesAdapter() {
+    return createEntityAdapter<OcMemory>({
       selectId: e => e.id,
       sortComparer: numberSort(e => e.date)
     })

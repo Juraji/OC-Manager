@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, Resolve} from '@angular/router'
 import {EMPTY, forkJoin, Observable} from 'rxjs'
 
 import {
-  OcmApiCharacterEventsService,
+  OcmApiCharacterMemoriesService,
   OcmApiCharacterRelationshipsService,
   OcmApiCharactersService,
   OcmApiCharacterTraitsService
@@ -18,7 +18,7 @@ export class CharacterEditResolve implements Resolve<CharacterEditStoreData> {
   constructor(
     private readonly charactersService: OcmApiCharactersService,
     private readonly traitsService: OcmApiCharacterTraitsService,
-    private readonly charEventsService: OcmApiCharacterEventsService,
+    private readonly memoriesService: OcmApiCharacterMemoriesService,
     private readonly relationshipsService: OcmApiCharacterRelationshipsService,
   ) {
   }
@@ -32,7 +32,7 @@ export class CharacterEditResolve implements Resolve<CharacterEditStoreData> {
       const sources: ForkJoinSource<CharacterEditStoreData> = {
         character: [null],
         traits: [[]],
-        events: [[]],
+        memories: [[]],
         relationships: [[]],
       }
 
@@ -41,7 +41,7 @@ export class CharacterEditResolve implements Resolve<CharacterEditStoreData> {
       const sources: ForkJoinSource<CharacterEditStoreData> = {
         character: this.charactersService.getCharacterById(characterId),
         traits: this.traitsService.getAllCharacterTraits(characterId),
-        events: this.charEventsService.getAllByCharacterId(characterId),
+        memories: this.memoriesService.getAllByCharacterId(characterId),
         relationships: this.relationshipsService.getAllByCharacterId(characterId),
       }
 

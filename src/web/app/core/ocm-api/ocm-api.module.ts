@@ -2,11 +2,11 @@ import {CommonModule} from '@angular/common'
 import {HttpClientModule} from '@angular/common/http'
 import {ModuleWithProviders, NgModule} from '@angular/core'
 
-import {OcmApiCharacterEventsService} from './services/ocm-api-character-events.service'
+import {OcmApiCharacterMemoriesService} from './services/ocm-api-character-memories.service'
 import {OcmApiCharacterRelationshipsService} from './services/ocm-api-character-relationships.service'
 import {OcmApiCharacterTraitsService} from './services/ocm-api-character-traits.service'
 import {OcmApiCharactersService} from './services/ocm-api-characters.service'
-import {OcmApiEventsService} from './services/ocm-api-events.service'
+import {OcmApiMemoriesService} from './services/ocm-api-memories.service'
 import {OcmApiPortfoliosService} from './services/ocm-api-portfolios.service'
 import {OcmApiSettingsService} from './services/ocm-api-settings.service'
 
@@ -25,11 +25,11 @@ export class OcmApiModule {
     return {
       ngModule: OcmApiModule,
       providers: [
-        OcmApiCharacterEventsService,
+        OcmApiCharacterMemoriesService,
         OcmApiCharacterRelationshipsService,
         OcmApiCharacterTraitsService,
         OcmApiCharactersService,
-        OcmApiEventsService,
+        OcmApiMemoriesService,
         OcmApiPortfoliosService,
         OcmApiSettingsService,
       ]

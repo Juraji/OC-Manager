@@ -2,22 +2,22 @@ import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {Observable} from 'rxjs'
 
-import {OcEvent} from '#models/events.model'
+import {OcMemory} from '#models/memories.model'
 
 import {OcmApiService} from './ocm-api.service'
 
 @Injectable()
-export class OcmApiCharacterEventsService extends OcmApiService {
+export class OcmApiCharacterMemoriesService extends OcmApiService {
 
   constructor(http: HttpClient) {
     super(http)
   }
 
-  getAllByCharacterId(characterId: string): Observable<OcEvent[]> {
-    return this.http.get<OcEvent[]>(this.baseUri(characterId))
+  getAllByCharacterId(characterId: string): Observable<OcMemory[]> {
+    return this.http.get<OcMemory[]>(this.baseUri(characterId))
   }
 
   protected override baseUri(characterId: string, ...path: string[]): string {
-    return super.baseUri('characters', characterId, 'events', ...path);
+    return super.baseUri('characters', characterId, 'memories', ...path);
   }
 }

@@ -33,7 +33,7 @@
       <ocm-read-only-field class="col-12" label="Nickname" [value]="char.nickname"></ocm-read-only-field>
       <ocm-read-only-field class="col-md-6" label="Date of birth" [value]="char.dateOfBirth | date"></ocm-read-only-field>
       <ocm-read-only-field class="col-md-6" label="Age" suffix=" years old"
-                           [value]="char.dateOfBirth | yearsAgo:(eventSettings.eventsDate$ | async)"></ocm-read-only-field>
+                           [value]="char.dateOfBirth | yearsAgo:(settings.eventsDate$ | async)"></ocm-read-only-field>
       <ocm-read-only-field class="col-12" label="Notes" [value]="char.notes"></ocm-read-only-field>
     </div>
   </div>

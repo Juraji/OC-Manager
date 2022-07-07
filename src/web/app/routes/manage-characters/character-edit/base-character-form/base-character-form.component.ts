@@ -44,7 +44,7 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly modals: Modals,
     readonly store: CharacterEditStore,
-    readonly eventSettings: SettingsStore,
+    readonly settings: SettingsStore,
   ) {
     this.store.character$
       .pipe(takeUntilDestroyed(this))

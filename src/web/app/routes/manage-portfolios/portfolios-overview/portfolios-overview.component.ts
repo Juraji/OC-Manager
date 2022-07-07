@@ -24,7 +24,7 @@ export class PortfoliosOverviewComponent implements OnInit {
   onDeletePortfolio(portfolio: OcPortfolio) {
     this.modals
       .confirm(`Are you sure you want to delete the portfolio "${portfolio.name}"?`
-        + '<br/><br/><span class="text-danger">All characters and events within this portfolio will be deleted!</span>')
+        + '<br/><br/><span class="text-danger">All characters and memories within this portfolio will be deleted!</span>')
       .onResolved
       .pipe(mergeMap(() => this.store.deletePortFolio(portfolio.id)))
       .subscribe()

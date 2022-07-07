@@ -1,4 +1,4 @@
-package nl.juraji.ocManager.domain.events
+package nl.juraji.ocManager.domain.application
 
 import nl.convect.cbnbackend.util.validators.RequiredIfFieldValue
 import nl.juraji.ocManager.util.persistence.SingletonEntityIdGenerator
