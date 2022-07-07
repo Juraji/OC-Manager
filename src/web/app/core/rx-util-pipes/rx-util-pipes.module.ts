@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 
+import { AbsolutePipe } from './absolute.pipe';
 import {CountPipe} from './count.pipe';
 import {EmptyPipe} from './empty.pipe';
 import {NotPipe} from './not.pipe';
@@ -9,7 +10,8 @@ import {NotPipe} from './not.pipe';
   declarations: [
     NotPipe,
     CountPipe,
-    EmptyPipe
+    EmptyPipe,
+    AbsolutePipe
   ],
   imports: [
     CommonModule
@@ -17,7 +19,8 @@ import {NotPipe} from './not.pipe';
   exports: [
     NotPipe,
     CountPipe,
-    EmptyPipe
+    EmptyPipe,
+    AbsolutePipe
   ]
 })
 export class RxUtilPipesModule {
