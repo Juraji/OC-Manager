@@ -11,7 +11,6 @@ export interface TraitSelectorData {
 
 @ModalSizeLg()
 @Component({
-  selector: 'ocm-trait-selector',
   templateUrl: './trait-selector.component.html',
   styleUrls: ['./trait-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

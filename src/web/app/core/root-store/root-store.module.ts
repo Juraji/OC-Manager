@@ -1,11 +1,11 @@
 import {HTTP_INTERCEPTORS} from '@angular/common/http'
 import {APP_INITIALIZER, ModuleWithProviders, NgModule} from '@angular/core';
 
-import {EventSettingsStore} from './event-settings.store'
 import {PortfolioHeaderInterceptor} from './portfolio-header.interceptor'
 import {PortfoliosStore} from './portfolios.store'
+import {SettingsStore} from './settings-store.service'
 
-export const initializeEventSettingsStore = (s: EventSettingsStore) => {
+export const initializeSettingsStore = (s: SettingsStore) => {
   return () => s.initialize()
 }
 
@@ -19,9 +19,9 @@ export class RootStoreModule {
     return {
       ngModule: RootStoreModule,
       providers: [
-        EventSettingsStore,
+        SettingsStore,
         PortfoliosStore,
-        {provide: APP_INITIALIZER, useFactory: initializeEventSettingsStore, deps: [EventSettingsStore], multi: true},
+        {provide: APP_INITIALIZER, useFactory: initializeSettingsStore, deps: [SettingsStore], multi: true},
         {provide: APP_INITIALIZER, useFactory: initializePortfoliosStore, deps: [PortfoliosStore], multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: PortfolioHeaderInterceptor, multi: true}
       ]

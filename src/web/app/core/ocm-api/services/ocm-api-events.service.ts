@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core'
 import {iif, Observable} from 'rxjs'
 
 import {OcCharacter} from '#models/characters.model'
-import {OcEvent, OcEventSettings} from '#models/events.model'
+import {OcEvent} from '#models/events.model'
 
 import {OcmApiService} from './ocm-api.service'
 
@@ -44,14 +44,6 @@ export class OcmApiEventsService extends OcmApiService {
 
   removeCharacterFromEvent(eventId: string, characterId: string) {
     return this.http.delete<void>(this.baseUri(eventId, 'characters', characterId))
-  }
-
-  getEventSettings(): Observable<OcEventSettings> {
-    return this.http.get<OcEventSettings>(this.baseUri('settings'))
-  }
-
-  updateEventSettings(settings: OcEventSettings): Observable<OcEventSettings> {
-    return this.http.put<OcEventSettings>(this.baseUri('settings'), settings)
   }
 
   protected override baseUri(...path: string[]): string {

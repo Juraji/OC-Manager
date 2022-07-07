@@ -8,7 +8,6 @@ import {takeUntilDestroyed} from '#core/rxjs'
 import {EditPortfolioStore} from './edit-portfolio.store'
 
 @Component({
-  selector: 'ocm-edit-portfolio',
   templateUrl: './edit-portfolio.component.html',
   styleUrls: ['./edit-portfolio.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -16,7 +16,6 @@ type RelationshipForm = Omit<OcCharacterRelationship, 'id'>
 
 @ModalSizeMd()
 @Component({
-  selector: 'ocm-create-character-relationship',
   templateUrl: './create-character-relationship.component.html',
   styleUrls: ['./create-character-relationship.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

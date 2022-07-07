@@ -7,7 +7,6 @@ import {takeUntilDestroyed} from '#core/rxjs'
 import {CharacterOverviewStore} from './character-overview.store'
 
 @Component({
-  selector: 'ocm-character-overview',
   templateUrl: './character-overview.component.html',
   styleUrls: ['./character-overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

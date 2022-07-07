@@ -4,18 +4,18 @@ import {ReactiveFormsModule} from '@angular/forms'
 import {RouterModule, Routes} from '@angular/router';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'
 
-import {EventSettingsComponent} from './event-settings.component';
+import {SettingsComponent} from './settings.component';
 
 const ROUTES: Routes = [
   {
     path: '',
-    component: EventSettingsComponent,
+    component: SettingsComponent,
   }
 ]
 
 @NgModule({
   declarations: [
-    EventSettingsComponent
+    SettingsComponent
   ],
   imports: [
     CommonModule,
@@ -24,5 +24,5 @@ const ROUTES: Routes = [
     NgbDatepickerModule,
   ],
 })
-export class EventSettingsModule {
+export class SettingsModule {
 }

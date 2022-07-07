@@ -1,26 +1,25 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 
 import {required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
-import {EventSettingsStore} from '#core/root-store'
+import {SettingsStore} from '#core/root-store'
 import {takeUntilDestroyed} from '#core/rxjs'
-import {OcEventSettings} from '#models/events.model'
+import {OcSettings} from '#models/settings.model'
 
 @Component({
-  selector: 'ocm-event-settings',
-  templateUrl: './event-settings.component.html',
-  styleUrls: ['./event-settings.component.scss'],
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EventSettingsComponent implements OnInit, OnDestroy {
+export class SettingsComponent implements OnInit, OnDestroy {
 
-  readonly formGroup: TypedFormGroup<OcEventSettings> = typedFormGroup({
+  readonly formGroup: TypedFormGroup<OcSettings> = typedFormGroup({
     id: typedFormControl(''),
     useFixedDate: typedFormControl<boolean>(false),
     eventReferenceDate: typedFormControl<number>(Number.NaN, [required])
   })
 
   constructor(
-    readonly store: EventSettingsStore
+    readonly store: SettingsStore
   ) {
   }
 
@@ -48,7 +47,7 @@ export class EventSettingsComponent implements OnInit, OnDestroy {
   onSaveSettings() {
     if (this.formGroup.valid) {
       this.store
-        .saveEventSettings(this.formGroup.value)
+        .saveSettings(this.formGroup.value)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .subscribe(fd => {
           this.formGroup.reset(fd)

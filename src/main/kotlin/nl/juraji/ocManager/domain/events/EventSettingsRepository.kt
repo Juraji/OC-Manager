@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 
 @Repository
-interface EventSettingsRepository : ReactiveNeo4jRepository<OcEventSettings, String> {
+interface EventSettingsRepository : ReactiveNeo4jRepository<OcSettings, String> {
 
     @Query("MATCH (n:OcEventSettings) RETURN n")
-    fun findSingleton(): Mono<OcEventSettings>
+    fun findSingleton(): Mono<OcSettings>
 }

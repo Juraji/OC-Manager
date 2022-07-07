@@ -12,7 +12,7 @@ import {
 } from '#core/ocm-api'
 import {filterNotNull, once} from '#core/rxjs'
 import {OcCharacter, OcCharacterRelationship} from '#models/characters.model'
-import {OcEvent, OcEventSettings} from '#models/events.model'
+import {OcEvent} from '#models/events.model'
 import {OcCharacterTrait} from '#models/traits.model'
 
 interface CharacterEditStoreState {
@@ -20,7 +20,6 @@ interface CharacterEditStoreState {
   traits: EntityState<OcCharacterTrait>
   events: EntityState<OcEvent>
   relationships: EntityState<OcCharacterRelationship>
-  eventSettings: Nullable<OcEventSettings>
 }
 
 export interface CharacterEditStoreData {
@@ -28,7 +27,6 @@ export interface CharacterEditStoreData {
   traits: OcCharacterTrait[]
   events: OcEvent[]
   relationships: OcCharacterRelationship[]
-  eventSettings: OcEventSettings
 }
 
 @Injectable()
@@ -80,7 +78,6 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
       traits: this.traitsAdapter.getInitialState(),
       events: this.eventsAdapter.getInitialState(),
       relationships: this.relationshipsAdapter.getInitialState(),
-      eventSettings: null
     })
   }
 
@@ -90,7 +87,6 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
       traits: this.traitsAdapter.setAll(data.traits, s.traits),
       events: this.eventsAdapter.setAll(data.events, s.events),
       relationships: this.relationshipsAdapter.setAll(data.relationships, s.relationships),
-      eventSettings: data.eventSettings
     }))
   }
 

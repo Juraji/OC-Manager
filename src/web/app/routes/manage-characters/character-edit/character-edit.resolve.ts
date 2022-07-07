@@ -6,7 +6,7 @@ import {
   OcmApiCharacterEventsService,
   OcmApiCharacterRelationshipsService,
   OcmApiCharactersService,
-  OcmApiCharacterTraitsService, OcmApiEventsService
+  OcmApiCharacterTraitsService
 } from '#core/ocm-api'
 import {ForkJoinSource} from '#core/rxjs'
 
@@ -20,7 +20,6 @@ export class CharacterEditResolve implements Resolve<CharacterEditStoreData> {
     private readonly traitsService: OcmApiCharacterTraitsService,
     private readonly charEventsService: OcmApiCharacterEventsService,
     private readonly relationshipsService: OcmApiCharacterRelationshipsService,
-    private readonly eventsService: OcmApiEventsService,
   ) {
   }
 
@@ -35,7 +34,6 @@ export class CharacterEditResolve implements Resolve<CharacterEditStoreData> {
         traits: [[]],
         events: [[]],
         relationships: [[]],
-        eventSettings: this.eventsService.getEventSettings()
       }
 
       return forkJoin(sources)
@@ -45,7 +43,6 @@ export class CharacterEditResolve implements Resolve<CharacterEditStoreData> {
         traits: this.traitsService.getAllCharacterTraits(characterId),
         events: this.charEventsService.getAllByCharacterId(characterId),
         relationships: this.relationshipsService.getAllByCharacterId(characterId),
-        eventSettings: this.eventsService.getEventSettings()
       }
 
       return forkJoin(sources)

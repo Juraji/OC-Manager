@@ -4,8 +4,3 @@ export interface OcEvent {
   description: string
 }
 
-export interface OcEventSettings {
-  readonly id: string
-  useFixedDate: boolean
-  eventReferenceDate: number
-}

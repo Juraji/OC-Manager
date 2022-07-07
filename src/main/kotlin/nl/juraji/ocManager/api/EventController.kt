@@ -1,10 +1,8 @@
 package nl.juraji.ocManager.api
 
 import nl.juraji.ocManager.domain.EventService
-import nl.juraji.ocManager.domain.SettingsService
 import nl.juraji.ocManager.domain.characters.OcCharacter
 import nl.juraji.ocManager.domain.events.OcEvent
-import nl.juraji.ocManager.domain.events.OcEventSettings
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -14,7 +12,6 @@ import javax.validation.Valid
 @RequestMapping("/api/events")
 class EventController(
     private val eventService: EventService,
-    private val settingsService: SettingsService,
 ) {
     @GetMapping
     fun getAllEvents() = eventService.getAllEvents()
@@ -56,12 +53,4 @@ class EventController(
         @PathVariable eventId: String,
         @PathVariable characterId: String,
     ): Mono<Void> = eventService.removeCharacterFromEvent(eventId, characterId)
-
-    @GetMapping("/settings")
-    fun getEventSettings(): Mono<OcEventSettings> = settingsService.getEventSettings()
-
-    @PutMapping("/settings")
-    fun updateEventSettings(
-        @Valid @RequestBody eventSettings: OcEventSettings
-    ) = settingsService.updateEventSettings(eventSettings)
 }

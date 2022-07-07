@@ -7,7 +7,6 @@ import {takeUntilDestroyed} from '#core/rxjs'
 import {EditTraitStore} from './edit-trait.store'
 
 @Component({
-  selector: 'ocm-edit-trait',
   templateUrl: './edit-trait.component.html',
   styleUrls: ['./edit-trait.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

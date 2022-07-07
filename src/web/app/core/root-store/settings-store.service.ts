@@ -2,24 +2,24 @@ import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {Observable, tap} from 'rxjs'
 
-import {OcmApiEventsService} from '#core/ocm-api'
+import {OcmApiSettingsService} from '#core/ocm-api/services/ocm-api-settings.service'
 import {filterNotNull} from '#core/rxjs'
-import {OcEventSettings} from '#models/events.model'
+import {OcSettings} from '#models/settings.model'
 
-interface EventSettingsStoreState {
-  settings: Nullable<OcEventSettings>
+interface SettingsStoreState {
+  settings: Nullable<OcSettings>
   eventReferenceDate: Date
 }
 
 @Injectable()
-export class EventSettingsStore extends ComponentStore<EventSettingsStoreState> {
+export class SettingsStore extends ComponentStore<SettingsStoreState> {
 
-  readonly settings$: Observable<OcEventSettings> = this.select(s => s.settings).pipe(filterNotNull())
+  readonly settings$: Observable<OcSettings> = this.select(s => s.settings).pipe(filterNotNull())
 
   readonly eventsDate$ = this.select(s => s.eventReferenceDate)
 
   constructor(
-    private readonly service: OcmApiEventsService,
+    private readonly service: OcmApiSettingsService,
   ) {
     super({
       settings: null,
@@ -27,19 +27,19 @@ export class EventSettingsStore extends ComponentStore<EventSettingsStoreState> 
     })
   }
 
-  initialize(): Observable<OcEventSettings> {
+  initialize(): Observable<OcSettings> {
     return this.service
       .getEventSettings()
       .pipe(tap(settings => this.patchSettings(settings)))
   }
 
-  saveEventSettings(update: OcEventSettings) {
+  saveSettings(update: OcSettings) {
     return this.service
       .updateEventSettings(update)
       .pipe(tap(settings => this.patchSettings(settings)))
   }
 
-  private patchSettings(settings: OcEventSettings) {
+  private patchSettings(settings: OcSettings) {
     this.patchState(s => ({
       settings,
       eventReferenceDate: settings.useFixedDate

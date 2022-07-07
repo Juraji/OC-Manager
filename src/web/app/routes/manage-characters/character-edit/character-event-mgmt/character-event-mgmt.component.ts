@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+
+import {CharacterEditStore} from '../character-edit.store'
 
 @Component({
   selector: 'ocm-character-event-mgmt',
@@ -8,7 +10,10 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 })
 export class CharacterEventMgmtComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    readonly store: CharacterEditStore
+  ) {
+  }
 
   ngOnInit(): void {
   }

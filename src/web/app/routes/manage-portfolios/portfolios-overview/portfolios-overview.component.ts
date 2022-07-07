@@ -6,7 +6,6 @@ import {PortfoliosStore} from '#core/root-store'
 import {OcPortfolio} from '#models/portfolios.model'
 
 @Component({
-  selector: 'ocm-portfolios-overview',
   templateUrl: './portfolios-overview.component.html',
   styleUrls: ['./portfolios-overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

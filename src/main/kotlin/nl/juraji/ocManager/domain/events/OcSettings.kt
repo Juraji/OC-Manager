@@ -13,7 +13,7 @@ import java.time.Instant
     sourceFieldValue = RequiredIfFieldValue.BOOL_TRUE,
     targetFieldName = "eventReferenceDate"
 )
-data class OcEventSettings(
+data class OcSettings(
     @Id @GeneratedValue(SingletonEntityIdGenerator::class)
     val id: String? = null,
     val useFixedDate: Boolean = false,

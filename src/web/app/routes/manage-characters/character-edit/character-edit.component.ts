@@ -8,7 +8,6 @@ import {takeUntilDestroyed} from '#core/rxjs'
 import {CharacterEditStore} from './character-edit.store'
 
 @Component({
-  selector: 'ocm-character-edit',
   templateUrl: './character-edit.component.html',
   styleUrls: ['./character-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

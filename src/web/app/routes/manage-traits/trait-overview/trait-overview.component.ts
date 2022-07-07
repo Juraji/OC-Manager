@@ -10,7 +10,6 @@ import {OcCharacterTrait} from '#models/traits.model'
 import {TraitOverviewStore} from './trait-overview.store'
 
 @Component({
-  selector: 'ocm-trait-overview',
   templateUrl: './trait-overview.component.html',
   styleUrls: ['./trait-overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

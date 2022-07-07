@@ -1,6 +1,6 @@
-<div class="card shadow">
+<div class="card shadow" *ngIf="store.allEvents$ | async as memories">
   <div class="card-header d-flex justify-content-between">
-    <h5 class="card-title">Events ({{[] | count}})</h5>
+    <h5 class="card-title">Events ({{memories | count}})</h5>
   </div>
   <div class="card-body">
     Not yet implemented

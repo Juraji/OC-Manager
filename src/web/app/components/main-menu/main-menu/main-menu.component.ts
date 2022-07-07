@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {BehaviorSubject} from 'rxjs'
 
-import {EventSettingsStore} from '#core/root-store'
+import {SettingsStore} from '#core/root-store'
 
 @Component({
   selector: 'ocm-main-menu',
@@ -13,7 +13,7 @@ export class MainMenuComponent implements OnInit {
   public readonly collapsed$ = new BehaviorSubject<boolean>(true)
 
   constructor(
-    readonly eventSettings: EventSettingsStore
+    readonly eventSettings: SettingsStore
   ) {
   }
 
