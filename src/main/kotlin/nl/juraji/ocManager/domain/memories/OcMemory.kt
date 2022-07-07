@@ -13,5 +13,7 @@ data class OcMemory(
     val id: String? = null,
     val date: Instant,
     @NotBlank
+    val title: String,
+    @NotBlank
     val description: String,
 )

@@ -153,9 +153,12 @@ export class BaseTraitFormComponent implements OnInit, OnDestroy {
         skip(1), once(),
         mergeMap(label => this.modals
           .confirm(`Are you sure you want to delete trait "${label}"?`)
-          .onResolved)
+          .onResolved),
+        mergeMap(() => this.store.deleteTrait())
       )
-      .subscribe(() => this.store.deleteTrait())
+      .subscribe(() => this.router.navigate(
+        ['../..'],
+        {relativeTo: this.activatedRoute}))
   }
 
   onSaveTrait() {
@@ -168,7 +171,9 @@ export class BaseTraitFormComponent implements OnInit, OnDestroy {
         .subscribe(c => {
           this.editActive$.setFalse()
           this.populateForm(c)
-          return this.router.navigate(['..', c.id], {relativeTo: this.activatedRoute})
+          return this.router.navigate(
+            ['..', c.id],
+            {relativeTo: this.activatedRoute, replaceUrl: true})
         })
     }
   }

@@ -1,0 +1,15 @@
+<div class="container position-relative">
+  <div class="header d-flex justify-content-between">
+    <h1>Edit memory</h1>
+  </div>
+
+  <div class="row">
+    <div class="col-md-5">
+      <ocm-base-memory-form class="mb-4"></ocm-base-memory-form>
+      <div class="mb-4" *ngIf="store.isNewMemory | async | not">TODO: Characters here?</div>
+    </div>
+    <div class="col-md-7 mb-4" *ngIf="store.isNewMemory | async | not">
+      TODO: Memory image?
+    </div>
+  </div>
+</div>

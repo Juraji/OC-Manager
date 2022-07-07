@@ -1,0 +1,61 @@
+<div class="card shadow">
+  <div class="card-header">
+    <h4 class="card-title mb-0">{{memoryTitle | async}}</h4>
+  </div>
+  <div class="card-body">
+    <ng-container [ngSwitch]="editActive$ | async">
+      <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="viewMemoryTpl"></ng-container>
+      <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="editMemoryFormTpl"></ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #viewMemoryTpl>
+  <div class="memory-details-wrapper">
+    <div class="memory-edit-buttons d-flex flex-column">
+      <button class="btn btn-primary btn-sm enable-edit-btn mb-1" (click)="editActive$.setTrue()">
+        <span class="bi bi-pencil"></span>
+      </button>
+      <button class="btn btn-outline-danger btn-sm delete-character-btn" (click)="onDeleteMemory()">
+        <span class="bi bi-trash"></span>
+      </button>
+    </div>
+
+    <div *ngIf="store.memory$ | async as m">
+      <ocm-read-only-field label="Date" [value]="m.date | date"></ocm-read-only-field>
+      <ocm-read-only-field label="Description" [value]="m.description"></ocm-read-only-field>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #editMemoryFormTpl>
+  <form [formGroup]="formGroup" (submit)="onSaveMemory()"
+        [class.needs-validation]="formGroup.pristine"
+        [class.was-validated]="formGroup.dirty">
+    <div class="mb-3">
+      <label for="titleInput" class="form-label">Title</label>
+      <input type="text" class="form-control" id="titleInput" aria-describedby="titleHelp" formControlName="title">
+      <div id="titleHelp" class="form-text">A short title, possibly a chapter title.</div>
+    </div>
+    <div class="mb-3">
+      <label for="descriptionInput" class="form-label">Description</label>
+      <textarea class="form-control" id="descriptionInput" aria-describedby="descriptionHelp"
+                formControlName="description"></textarea>
+      <div id="descriptionHelp" class="form-text">
+        Preferably the complete story, but this is your OC, so you the boss.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="dateInput" class="form-label">Date</label><br/>
+      <span class="text-muted" *ngIf="formGroup.value.date">Current: {{formGroup.value.date | date}}</span><br/>
+      <ngb-datepicker id="dateInput" formControlName="date"></ngb-datepicker>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button *ngIf="store.isNewMemory | async | not" type="button" class="btn btn-outline-danger me-2"
+              (click)="editActive$.setFalse()">Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid">Save</button>
+    </div>
+  </form>
+</ng-template>

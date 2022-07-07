@@ -80,7 +80,9 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
     this.characterTitle$
       .pipe(
         skip(1), once(),
-        mergeMap(name => this.modals.confirm(`Are you sure you want to delete ${name}?`).onResolved),
+        mergeMap(name => this.modals
+          .confirm(`Are you sure you want to delete ${name}?`)
+          .onResolved),
         mergeMap(() => this.store.deleteCharacter())
       )
       .subscribe(() => this.router.navigate(['/']))

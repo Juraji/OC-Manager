@@ -23,18 +23,21 @@ const ROUTES: Routes = [
 ]
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(ROUTES),
-    ReadOnlyFieldModule,
-    ReactiveFormsModule,
-    RxUtilPipesModule
-  ],
-  declarations: [
-    EditPortfolioComponent,
-    BasePortfolioFormComponent
-  ],
-  providers: [EditPortfolioSelectionGuard, EditPortfolioResolve]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(ROUTES),
+        ReadOnlyFieldModule,
+        ReactiveFormsModule,
+        RxUtilPipesModule
+    ],
+    declarations: [
+        EditPortfolioComponent,
+        BasePortfolioFormComponent
+    ],
+    exports: [
+        BasePortfolioFormComponent
+    ],
+    providers: [EditPortfolioSelectionGuard, EditPortfolioResolve]
 })
 export class EditPortfolioModule {
 }

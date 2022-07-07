@@ -43,11 +43,7 @@
   <form [formGroup]="formGroup" (submit)="onSaveCharacter()"
         [class.needs-validation]="formGroup.pristine"
         [class.was-validated]="formGroup.dirty">
-    <div class="mb-3">
-      <label for="nameInput" class="form-label">Name</label>
-      <input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp" formControlName="name">
-      <div id="nameHelp" class="form-text">The birth- or chosen name for this character.</div>
-    </div>
+
     <div class="mb-3">
       <label for="nicknameInput" class="form-label">Nickname</label>
       <input type="text" class="form-control" id="nicknameInput" aria-describedby="nicknameHelp"
