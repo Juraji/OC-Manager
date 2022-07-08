@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Modals} from '@juraji/ng-bootstrap-modals'
 
+import {ImageLightboxComponent} from '#components/image-lightbox/image-lightbox/image-lightbox.component'
 import {OcmApiImagesService} from '#core/ocm-api'
 import {OcImage} from '#models/images.model'
 
@@ -42,5 +43,9 @@ export class MemoryEditImagesComponent implements OnInit {
       .confirm(`Are you sure you want to delete the image ${img.sourceName}?`)
       .onResolved
       .subscribe(() => this.store.removeImage(img.id))
+  }
+
+  onOpenImageLightbox(image: OcImage) {
+    this.modals.open(ImageLightboxComponent, {data: {image}})
   }
 }

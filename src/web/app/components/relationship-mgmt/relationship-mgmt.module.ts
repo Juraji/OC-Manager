@@ -9,17 +9,17 @@ import {ReadOnlyFieldModule} from '#components/read-only-field'
 import {
   CreateCharacterRelationshipComponent
 } from './create-character-relationship/create-character-relationship.component';
-import { RelationshipCardComponent } from './relationship-card/relationship-card.component';
+import {RelationshipCardComponent} from './relationship-card/relationship-card.component';
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        ModalsModule,
-        ReactiveFormsModule,
-        CharacterMgmtModule,
-        ReadOnlyFieldModule
-    ],
+  imports: [
+    CommonModule,
+    ModalsModule,
+    ReactiveFormsModule,
+    CharacterMgmtModule,
+    ReadOnlyFieldModule
+  ],
   declarations: [
     CreateCharacterRelationshipComponent,
     RelationshipCardComponent

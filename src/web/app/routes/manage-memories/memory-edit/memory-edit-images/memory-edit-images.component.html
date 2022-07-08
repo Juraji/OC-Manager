@@ -13,7 +13,7 @@
     </div>
     <div class="row">
       <div class="col-md-3" *ngFor="let img of store.images$ | async">
-        <div class="card memory-image-details-wrapper">
+        <div class="card memory-image-details-wrapper" (click)="onOpenImageLightbox(img)">
           <div class="memory-image-edit-buttons d-flex flex-column">
             <button class="btn btn-outline-danger btn-sm delete-memory-image-btn" (click)="onRemoveImage(img)">
               <span class="bi bi-trash"></span>
