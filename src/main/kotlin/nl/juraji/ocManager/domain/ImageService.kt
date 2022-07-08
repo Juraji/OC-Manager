@@ -8,8 +8,6 @@ import nl.juraji.ocManager.util.orElseRelationshipNotCreated
 import org.apache.tika.mime.MimeTypes
 import org.springframework.core.io.PathResource
 import org.springframework.core.io.Resource
-import org.springframework.core.io.buffer.DataBuffer
-import org.springframework.core.io.buffer.DataBufferUtils
 import org.springframework.data.neo4j.core.schema.Node
 import org.springframework.http.MediaType
 import org.springframework.http.codec.multipart.FilePart
@@ -60,14 +58,17 @@ class ImageService(
 
         return file
             .flatMap { fp ->
+                val sourceName = fp.filename()
+                val sourceExt = getExtensionFor(fp.headers().contentType)
+                val sourceFileSize = fp.headers().contentLength
+
                 val imageId = UUID.randomUUID().toString()
                 val thumbnailPath = getImgPath("${imageId}_thumbnail", configuration.thumbnailType)
-                val sourceExt = getExtensionFor(fp.headers().contentType)
                 val sourcePath = getImgPath("${imageId}_source", sourceExt)
 
                 fp.transferTo(sourcePath)
                     .then(createThumbnail(sourcePath, thumbnailPath))
-                    .map { OcImage(imageId, thumbnailPath, sourcePath) }
+                    .map { OcImage(imageId, sourceName, sourceFileSize, thumbnailPath, sourcePath) }
             }
             .flatMap { imageRepository.save(it) }
             .flatMap { linkImageToNodeById(it, linkToNodeId) }

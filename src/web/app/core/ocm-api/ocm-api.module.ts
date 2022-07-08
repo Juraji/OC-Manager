@@ -2,6 +2,8 @@ import {CommonModule} from '@angular/common'
 import {HttpClientModule} from '@angular/common/http'
 import {ModuleWithProviders, NgModule} from '@angular/core'
 
+import {OcmApiImagesService} from '#core/ocm-api/services/ocm-api-images.service'
+
 import {OcmApiCharacterMemoriesService} from './services/ocm-api-character-memories.service'
 import {OcmApiCharacterRelationshipsService} from './services/ocm-api-character-relationships.service'
 import {OcmApiCharacterTraitsService} from './services/ocm-api-character-traits.service'
@@ -32,6 +34,7 @@ export class OcmApiModule {
         OcmApiMemoriesService,
         OcmApiPortfoliosService,
         OcmApiSettingsService,
+        OcmApiImagesService
       ]
     }
   }
