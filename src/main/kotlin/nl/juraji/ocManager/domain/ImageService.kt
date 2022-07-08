@@ -5,7 +5,6 @@ import nl.juraji.ocManager.domain.images.ImageRepository
 import nl.juraji.ocManager.domain.images.OcImage
 import nl.juraji.ocManager.util.orElseEntityNotFound
 import nl.juraji.ocManager.util.orElseRelationshipNotCreated
-import org.apache.tika.mime.MimeTypes
 import org.springframework.core.io.PathResource
 import org.springframework.core.io.Resource
 import org.springframework.data.neo4j.core.schema.Node
@@ -51,8 +50,13 @@ class ImageService(
 
     @Transactional
     fun saveImage(file: Mono<FilePart>, linkToNodeId: String): Mono<OcImage> {
-        fun getExtensionFor(mt: MediaType?): String =
-            mt.let { MimeTypes.getDefaultMimeTypes().forName(it.toString()) }?.extension ?: "jpg"
+        fun getExtensionFor(mt: MediaType?): String = when (mt?.subtype) {
+            "jpeg" -> "jpg"
+            "png" -> "png"
+            "gif" -> "gif"
+            "tiff" -> "tiff"
+            else -> "jpg"
+        }
 
         fun getImgPath(baseName: String, ext: String): Path =
             configuration.imagesDir.resolve("${baseName}.${ext}")
