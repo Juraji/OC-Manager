@@ -33,7 +33,7 @@ export class OcmApiImagesService extends OcmApiService {
   }
 
   deleteImage(imageId: string): Observable<void> {
-    return this.http.get<void>(this.baseUri(imageId))
+    return this.http.delete<void>(this.baseUri(imageId))
   }
 
   protected override baseUri(...path: string[]): string {

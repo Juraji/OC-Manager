@@ -127,6 +127,13 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
     })))
   ))
 
+  readonly removeImage: (imageId: string) => void = this.effect<string>($ => $.pipe(
+    mergeMap(imageId => this.imagesService.deleteImage(imageId).pipe(map(() => imageId))),
+    tap(imageId => this.patchState(s => ({
+      images: this.imageAdapter.removeOne(imageId, s.images)
+    })))
+  ))
+
   private static createCharacterAdapter() {
     return createEntityAdapter<OcCharacter>({
       selectId: e => e.id,

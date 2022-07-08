@@ -8,9 +8,17 @@
   <div class="card-body memory-images-wrapper"
        ocmDragDropFile
        (filesDropped)="onSetThumbnail($event)">
+    <div class="drop-active-overlay text-white d-flex flex-column justify-content-center text-center">
+      Drop image file(s) to upload.
+    </div>
     <div class="row">
-      <div class="col-md-3 image" *ngFor="let img of store.images$ | async">
-        <div class="card">
+      <div class="col-md-3" *ngFor="let img of store.images$ | async">
+        <div class="card memory-image-details-wrapper">
+          <div class="memory-image-edit-buttons d-flex flex-column">
+            <button class="btn btn-outline-danger btn-sm delete-memory-image-btn" (click)="onRemoveImage(img)">
+              <span class="bi bi-trash"></span>
+            </button>
+          </div>
           <img [src]="img | thumbnailImgUrl" ocmImgSrcFallback="assets/no-image-placeholder.svg"
                class="memory-thumbnail-img card-img-top" alt="Memory image thumbnail">
           <div class="card-body">
@@ -23,9 +31,6 @@
         No images uploaded yet. Either there wasn't a photographer on the scene OR you haven't uploaded any using the
         add button in the top right of this block. Note, you can also drag and drop images from you system file browser.
       </div>
-    </div>
-    <div class="drop-active-overlay text-white d-flex flex-column justify-content-center text-center">
-      Drop image file(s) to upload.
     </div>
   </div>
 </div>

@@ -1,6 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Modals} from '@juraji/ng-bootstrap-modals'
 
 import {OcmApiImagesService} from '#core/ocm-api'
+import {OcImage} from '#models/images.model'
 
 import {MemoryEditStore} from '../memory-edit.store'
 
@@ -15,6 +17,7 @@ export class MemoryEditImagesComponent implements OnInit {
   readonly supportedFileTypes = OcmApiImagesService.SUPPORTED_FILE_TYPES
 
   constructor(
+    private readonly modals:Modals,
     readonly store: MemoryEditStore
   ) {
   }
@@ -32,5 +35,12 @@ export class MemoryEditImagesComponent implements OnInit {
     field.value = ''
 
     if (!!files && files.length > 0) this.onSetThumbnail(files)
+  }
+
+  onRemoveImage(img: OcImage) {
+    this.modals
+      .confirm(`Are you sure you want to delete the image ${img.sourceName}?`)
+      .onResolved
+      .subscribe(() => this.store.removeImage(img.id))
   }
 }

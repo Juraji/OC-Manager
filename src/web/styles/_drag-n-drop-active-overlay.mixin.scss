@@ -18,5 +18,6 @@
 
   &.drop-active .drop-active-overlay {
     opacity: 1;
+    z-index: 500;
   }
 }

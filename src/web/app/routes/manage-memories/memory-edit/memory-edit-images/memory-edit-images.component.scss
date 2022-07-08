@@ -1,14 +1,25 @@
 @import "src/web/styles/variables";
 @import "src/web/styles/show-on-parent-hover.mixin";
 @import "src/web/styles/drag-n-drop-active-overlay.mixin";
+@import "src/web/styles/edit-buttons.mixin";
 
 :host {
   display: block;
 
   @include show-on-parent-hover('.upload-memory-image-btn');
+  @include edit-buttons('memory-image', .25rem, .5rem);
 
   .memory-images-wrapper {
     min-height: 10rem;
     @include drag-n-drop-active-overlay()
+  }
+
+  .memory-image-details-wrapper {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+      transition: transform .3s ease-in-out;
+    }
   }
 }
