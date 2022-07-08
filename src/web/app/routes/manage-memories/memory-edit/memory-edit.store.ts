@@ -3,22 +3,25 @@ import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
 import {defaultIfEmpty, map, mergeMap, Observable, tap, withLatestFrom} from 'rxjs'
 
-import {strSort} from '#core/arrays'
-import {OcmApiMemoriesService} from '#core/ocm-api'
+import {numberSort, strSort} from '#core/arrays'
+import {OcmApiImagesService, OcmApiMemoriesService} from '#core/ocm-api'
 import {filterNotNull, once} from '#core/rxjs'
 import {OcCharacter} from '#models/characters.model'
+import {OcImage} from '#models/images.model'
 import {OcMemory} from '#models/memories.model'
 
 interface MemoryEditStoreState {
   memory: Nullable<OcMemory>
   characters: EntityState<OcCharacter>
   availableCharacters: EntityState<OcCharacter>
+  images: EntityState<OcImage>
 }
 
 export interface MemoryEditStoreData {
   memory: Nullable<OcMemory>
   characters: OcCharacter[]
   availableCharacters: OcCharacter[]
+  images: OcImage[]
 }
 
 @Injectable()
@@ -26,6 +29,9 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
 
   private readonly characterAdapter = MemoryEditStore.createCharacterAdapter()
   private readonly characterSelectors = this.characterAdapter.getSelectors()
+
+  private readonly imageAdapter = MemoryEditStore.createImageAdapter()
+  private readonly imageSelectors = this.imageAdapter.getSelectors()
 
   readonly memoryId$ = this.select(s => s.memory?.id ?? null)
   readonly isNewMemory = this.memoryId$.pipe(map(id => !id))
@@ -45,8 +51,13 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
         .pipe(map(available => available.filter(ac => !idsInUse.includes(ac.id)))))
     )
 
+  readonly images$ = this
+    .select(s => s.images)
+    .pipe(map(this.imageSelectors.selectAll))
+
   constructor(
-    private readonly service: OcmApiMemoriesService
+    private readonly memoriesService: OcmApiMemoriesService,
+    private readonly imagesService: OcmApiImagesService,
   ) {
     super()
 
@@ -54,6 +65,7 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
       memory: null,
       characters: this.characterAdapter.getInitialState(),
       availableCharacters: this.characterAdapter.getInitialState(),
+      images: this.imageAdapter.getInitialState()
     })
   }
 
@@ -62,6 +74,7 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
       memory: data.memory,
       characters: this.characterAdapter.setAll(data.characters, s.characters),
       availableCharacters: this.characterAdapter.setAll(data.availableCharacters, s.characters),
+      images: this.imageAdapter.setAll(data.images, s.images)
     })))
   ))
 
@@ -73,7 +86,7 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
         once(),
         defaultIfEmpty({} as OcMemory),
         map(memory => ({...memory, ...changes})),
-        mergeMap(memory => this.service.saveMemory(memory)),
+        mergeMap(memory => this.memoriesService.saveMemory(memory)),
         tap(memory => this.patchState({memory}))
       )
   }
@@ -83,13 +96,13 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
       .pipe(
         once(),
         filterNotNull(),
-        mergeMap(id => this.service.deleteMemory(id))
+        mergeMap(id => this.memoriesService.deleteMemory(id))
       )
   }
 
   readonly addCharacter: (characterId: string) => void = this.effect<string>($ => $.pipe(
     withLatestFrom(this.memoryId$.pipe(filterNotNull())),
-    mergeMap(([characterId, memoryId]) => this.service.addCharacterToMemory(memoryId, characterId)),
+    mergeMap(([characterId, memoryId]) => this.memoriesService.addCharacterToMemory(memoryId, characterId)),
     tap(character => this.patchState(s => ({
       characters: this.characterAdapter.addOne(character, s.characters)
     })))
@@ -97,7 +110,7 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
 
   readonly removeCharacter: (characterId: string) => void = this.effect<string>($ => $.pipe(
     withLatestFrom(this.memoryId$.pipe(filterNotNull())),
-    mergeMap(([characterId, memoryId]) => this.service
+    mergeMap(([characterId, memoryId]) => this.memoriesService
       .removeCharacterFromMemory(memoryId, characterId)
       .pipe(map(() => characterId))),
     tap(characterId => this.patchState(s => ({
@@ -105,10 +118,26 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
     })))
   ))
 
+  readonly addImages: (f: FileList) => void = this.effect<FileList>($ => $.pipe(
+    mergeMap(l => l),
+    withLatestFrom(this.memoryId$.pipe(filterNotNull())),
+    mergeMap(([f, memoryId]) => this.imagesService.saveImage(f, memoryId)),
+    tap(image => this.patchState(s => ({
+      images: this.imageAdapter.addOne(image, s.images)
+    })))
+  ))
+
   private static createCharacterAdapter() {
     return createEntityAdapter<OcCharacter>({
       selectId: e => e.id,
       sortComparer: strSort(e => e.name)
+    })
+  }
+
+  private static createImageAdapter() {
+    return createEntityAdapter<OcImage>({
+      selectId: e => e.id,
+      sortComparer: numberSort(e => e.uploadedOn)
     })
   }
 }

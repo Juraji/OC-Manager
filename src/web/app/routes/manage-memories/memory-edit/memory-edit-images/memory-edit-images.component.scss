@@ -1,0 +1,14 @@
+@import "src/web/styles/variables";
+@import "src/web/styles/show-on-parent-hover.mixin";
+@import "src/web/styles/drag-n-drop-active-overlay.mixin";
+
+:host {
+  display: block;
+
+  @include show-on-parent-hover('.upload-memory-image-btn');
+
+  .memory-images-wrapper {
+    min-height: 10rem;
+    @include drag-n-drop-active-overlay()
+  }
+}

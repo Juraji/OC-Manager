@@ -1,0 +1,22 @@
+@import "variables";
+
+@mixin drag-n-drop-active-overlay() {
+  position: relative;
+
+  .drop-active-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+
+    background-color: fade-out($gray-700, .15);
+
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+  }
+
+  &.drop-active .drop-active-overlay {
+    opacity: 1;
+  }
+}

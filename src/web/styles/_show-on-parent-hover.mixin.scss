@@ -1,0 +1,16 @@
+@mixin show-on-parent-hover($target-selector, $hover-target-selector: null) {
+  #{$target-selector} {
+    opacity: 0;
+    transition: .3s ease-in-out;
+  }
+
+  @if $hover-target-selector == null {
+    &:hover #{$target-selector} {
+      opacity: 1;
+    }
+  } @else {
+    #{$hover-target-selector}:hover #{$target-selector} {
+      opacity: 1;
+    }
+  }
+}

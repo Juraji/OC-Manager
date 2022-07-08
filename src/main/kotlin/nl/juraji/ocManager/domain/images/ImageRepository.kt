@@ -7,12 +7,7 @@ import reactor.core.publisher.Mono
 
 interface ImageRepository : ReactiveNeo4jRepository<OcImage, String> {
 
-    @Query(
-        """
-            MATCH ({id: $ linkedNodeId})-[:HAS_IMAGE]->(image:OcImage)
-            RETURN image
-        """
-    )
+    @Query("MATCH ({id: $ linkedNodeId})-[:HAS_IMAGE]->(image:OcImage) RETURN image")
     fun findByLinkedNodeId(linkedNodeId: String): Flux<OcImage>
 
     @Query(

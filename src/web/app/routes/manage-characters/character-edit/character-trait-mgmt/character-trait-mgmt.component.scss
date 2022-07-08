@@ -1,20 +1,7 @@
+@import "src/web/styles/show-on-parent-hover.mixin";
+
 :host {
   display: block;
-
-  .add-trait-btn, .remove-trait-btn {
-    opacity: 0;
-    transition: .3s ease-in-out;
-  }
-
-  &:hover {
-    .add-trait-btn {
-      opacity: 1;
-    }
-  }
-
-  .character-trait-item:hover {
-    .remove-trait-btn {
-      opacity: 1;
-    }
-  }
+  @include show-on-parent-hover('.add-trait-btn');
+  @include show-on-parent-hover('.remove-trait-btn', '.character-trait-item');
 }

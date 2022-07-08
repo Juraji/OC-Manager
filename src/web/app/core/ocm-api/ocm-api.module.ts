@@ -10,17 +10,24 @@ import {OcmApiCharacterTraitsService} from './services/ocm-api-character-traits.
 import {OcmApiCharactersService} from './services/ocm-api-characters.service'
 import {OcmApiMemoriesService} from './services/ocm-api-memories.service'
 import {OcmApiPortfoliosService} from './services/ocm-api-portfolios.service'
-import {OcmApiSettingsService} from './services/ocm-api-settings.service'
+import {OcmApiSettingsService} from './services/ocm-api-settings.service';
+import { SourceImgUrlPipe } from './source-img-url.pipe'
+import {ThumbnailImgUrlPipe} from './thumbnail-img-url.pipe';
 
 
 @NgModule({
+  declarations: [
+    ThumbnailImgUrlPipe,
+    SourceImgUrlPipe
+  ],
   imports: [
     CommonModule,
     HttpClientModule
   ],
   exports: [
-    HttpClientModule
-  ]
+    ThumbnailImgUrlPipe,
+    SourceImgUrlPipe
+  ],
 })
 export class OcmApiModule {
   static forRoot(): ModuleWithProviders<OcmApiModule> {

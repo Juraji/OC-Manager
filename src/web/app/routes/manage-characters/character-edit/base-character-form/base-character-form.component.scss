@@ -1,4 +1,6 @@
 @import "src/web/styles/edit-buttons.mixin";
+@import "src/web/styles/show-on-parent-hover.mixin";
+@import "src/web/styles/drag-n-drop-active-overlay.mixin";
 
 :host {
   display: block;
@@ -12,7 +14,8 @@
     border: $card-border-width solid $card-border-color;
     overflow: hidden;
 
-    .drop-active-overlay, .hover-active-overlay {
+
+    .hover-active-overlay {
       position: absolute;
       top: 0;
       right: 0;
@@ -20,25 +23,13 @@
       bottom: 0;
 
       background-color: fade-out($gray-700, .15);
-
-      opacity: 0;
-      transition: opacity .3s ease-in-out;
     }
 
     .character-thumbnail-img {
       width: 100%;
     }
 
-    &:hover {
-      .hover-active-overlay {
-        opacity: 1;
-      }
-    }
-
-    &.drop-active {
-      .drop-active-overlay {
-        opacity: 1;
-      }
-    }
+    @include drag-n-drop-active-overlay();
+    @include show-on-parent-hover('.hover-active-overlay');
   }
 }

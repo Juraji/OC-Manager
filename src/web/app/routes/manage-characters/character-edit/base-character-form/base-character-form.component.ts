@@ -4,6 +4,7 @@ import {Modals} from '@juraji/ng-bootstrap-modals'
 import {map, mergeMap, of, skip, startWith, Subject, switchMap} from 'rxjs'
 
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
+import {OcmApiImagesService} from '#core/ocm-api'
 import {SettingsStore} from '#core/root-store'
 import {BooleanBehaviourSubject, filterNotNull, once, takeUntilDestroyed} from '#core/rxjs'
 import {OcCharacter} from '#models/characters.model'
@@ -31,6 +32,7 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
   public readonly characterTitle$ = this.store.character$
     .pipe(map(c => c.name), startWith('New character'))
 
+  readonly supportedFileTypes = OcmApiImagesService.SUPPORTED_FILE_TYPES
   private readonly refreshThumbnailImg$ = new Subject<void>()
   readonly thumbnailUri$ = this.store.thumbnailUri$
     .pipe(switchMap(uri => this.refreshThumbnailImg$
@@ -96,7 +98,10 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
   }
 
   onSetThumbnailViaFileInput(e: Event) {
-    const files = (e.target as HTMLInputElement).files
+    const field = e.target as HTMLInputElement
+    const files = field.files
+    field.value = ''
+
     if (!!files && files.length > 0) this.onSetThumbnail(files)
   }
 

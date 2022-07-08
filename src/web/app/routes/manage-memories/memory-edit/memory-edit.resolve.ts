@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core'
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router'
 import {EMPTY, forkJoin, Observable} from 'rxjs'
 
-import {OcmApiCharactersService, OcmApiMemoriesService} from '#core/ocm-api'
+import {OcmApiCharactersService, OcmApiImagesService, OcmApiMemoriesService} from '#core/ocm-api'
 import {ForkJoinSource} from '#core/rxjs'
 
 import {MemoryEditStoreData} from './memory-edit.store'
@@ -11,8 +11,9 @@ import {MemoryEditStoreData} from './memory-edit.store'
 export class MemoryEditResolve implements Resolve<MemoryEditStoreData> {
 
   constructor(
-    private readonly charactersService:OcmApiCharactersService,
-    private readonly service: OcmApiMemoriesService,
+    private readonly charactersService: OcmApiCharactersService,
+    private readonly imagesService: OcmApiImagesService,
+    private readonly memoriesService: OcmApiMemoriesService,
   ) {
   }
 
@@ -25,15 +26,17 @@ export class MemoryEditResolve implements Resolve<MemoryEditStoreData> {
       const sources: ForkJoinSource<MemoryEditStoreData> = {
         memory: [null],
         characters: [[]],
-        availableCharacters: [[]]
+        availableCharacters: [[]],
+        images: [[]]
       }
 
       return forkJoin(sources)
     } else {
       const sources: ForkJoinSource<MemoryEditStoreData> = {
-        memory: this.service.getMemoryById(memoryId),
-        characters: this.service.getMemoryCharacters(memoryId),
+        memory: this.memoriesService.getMemoryById(memoryId),
+        characters: this.memoriesService.getMemoryCharacters(memoryId),
         availableCharacters: this.charactersService.getAllCharacters(),
+        images: this.imagesService.getImagesByLinkedNodeId(memoryId)
       }
 
       return forkJoin(sources)

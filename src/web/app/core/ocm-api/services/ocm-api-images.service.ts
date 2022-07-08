@@ -7,6 +7,7 @@ import {OcImage} from '#models/images.model'
 
 @Injectable()
 export class OcmApiImagesService extends OcmApiService {
+  public static readonly SUPPORTED_FILE_TYPES = 'image/jpeg,image/png,image/gif,image/tiff'
 
   constructor(http: HttpClient) {
     super(http)

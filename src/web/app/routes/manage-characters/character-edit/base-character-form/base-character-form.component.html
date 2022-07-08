@@ -94,6 +94,6 @@
       Drop image file to upload as character thumbnail.
     </div>
   </label>
-  <input type="file" class="d-none" id="thumbnailFileField" accept="image/jpeg,image/png,image/gif,image/tiff"
+  <input type="file" class="d-none" id="thumbnailFileField" [accept]="supportedFileTypes"
          (change)="onSetThumbnailViaFileInput($event)"/>
 </ng-template>
