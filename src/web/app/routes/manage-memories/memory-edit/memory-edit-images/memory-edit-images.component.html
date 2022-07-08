@@ -19,8 +19,12 @@
               <span class="bi bi-trash"></span>
             </button>
           </div>
-          <img [src]="img | thumbnailImgUrl" ocmImgSrcFallback="assets/no-image-placeholder.svg"
-               class="memory-thumbnail-img card-img-top" alt="Memory image thumbnail">
+          <div class="card-img-top thumbnail-sq-outer-wrapper">
+            <div class="thumbnail-sq-inner-wrapper">
+              <img [src]="img | thumbnailImgUrl" ocmImgSrcFallback="assets/no-image-placeholder.svg"
+                   class="thumbnail-sq-img" [alt]="img.sourceName">
+            </div>
+          </div>
           <div class="card-body">
             <h5>{{img.sourceName}}</h5>
             <span class="uploaded-on">{{img.uploadedOn | date}}</span>
