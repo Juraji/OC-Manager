@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
+import java.time.Instant
 import java.util.*
 import javax.imageio.ImageIO
 import kotlin.io.path.inputStream
@@ -61,6 +62,7 @@ class ImageService(
                 val sourceName = fp.filename()
                 val sourceExt = getExtensionFor(fp.headers().contentType)
                 val sourceFileSize = fp.headers().contentLength
+                val uploadedOn = Instant.now()
 
                 val imageId = UUID.randomUUID().toString()
                 val thumbnailPath = getImgPath("${imageId}_thumbnail", configuration.thumbnailType)
@@ -68,7 +70,16 @@ class ImageService(
 
                 fp.transferTo(sourcePath)
                     .then(createThumbnail(sourcePath, thumbnailPath))
-                    .map { OcImage(imageId, sourceName, sourceFileSize, thumbnailPath, sourcePath) }
+                    .map {
+                        OcImage(
+                            id = imageId,
+                            sourceName = sourceName,
+                            sourceFileSize = sourceFileSize,
+                            uploadedOn = uploadedOn,
+                            thumbnailPath = thumbnailPath,
+                            sourcePath = sourcePath
+                        )
+                    }
             }
             .flatMap { imageRepository.save(it) }
             .flatMap { linkImageToNodeById(it, linkToNodeId) }

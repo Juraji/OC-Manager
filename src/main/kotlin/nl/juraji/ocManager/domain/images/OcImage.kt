@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue
 import org.springframework.data.neo4j.core.schema.Id
 import org.springframework.data.neo4j.core.schema.Node
 import java.nio.file.Path
+import java.time.Instant
 
 @Node
 data class OcImage(
@@ -13,6 +14,7 @@ data class OcImage(
     val id: String,
     val sourceName: String,
     val sourceFileSize: Long,
+    val uploadedOn: Instant,
 
     @JsonIgnore
     val thumbnailPath: Path,
