@@ -1,13 +1,12 @@
 package nl.juraji.ocManager.domain
 
 import nl.juraji.ocManager.configuration.OcManagerConfiguration
+import nl.juraji.ocManager.configuration.requestPortfolioId
 import nl.juraji.ocManager.domain.images.ImageRepository
 import nl.juraji.ocManager.domain.images.OcImage
 import nl.juraji.ocManager.util.orElseEntityNotFound
-import nl.juraji.ocManager.util.orElseRelationshipNotCreated
 import org.springframework.core.io.PathResource
 import org.springframework.core.io.Resource
-import org.springframework.data.neo4j.core.schema.Node
 import org.springframework.http.MediaType
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.stereotype.Service
@@ -86,8 +85,11 @@ class ImageService(
                     }
             }
             .flatMap { imageRepository.save(it) }
-            .flatMap { linkImageToNodeById(it, linkToNodeId) }
-
+            .transformDeferredContextual { imgMono, ctx ->
+                imgMono.flatMap {
+                    linkImageToNodeAndPortfolio(it, linkToNodeId, ctx.requestPortfolioId)
+                }
+            }
     }
 
     fun deleteImage(imageId: String): Mono<Void> =
@@ -100,6 +102,11 @@ class ImageService(
             }
             .flatMap(imageRepository::deleteById)
 
+    fun deleteAllImagesByLinkedNodeId(linkedNodeId: String): Mono<Void> =
+        getImagesByLinkedNodeId(linkedNodeId)
+            .flatMap { deleteImage(it.id) }
+            .then()
+
     fun getSingleImageByLinkedNodeId(linkedNodeId: String): Mono<OcImage> =
         getImagesByLinkedNodeId(linkedNodeId)
             .take(1).toMono()
@@ -108,10 +115,11 @@ class ImageService(
     fun getImagesByLinkedNodeId(linkedNodeId: String): Flux<OcImage> =
         imageRepository.findByLinkedNodeId(linkedNodeId)
 
-    private fun linkImageToNodeById(image: OcImage, targetNodeId: String): Mono<OcImage> =
-        Mono.just(targetNodeId)
-            .flatMap { nId -> imageRepository.linkImageToNodeById(image.id, nId) }
-            .orElseRelationshipNotCreated(OcImage::class, image.id, Node::class, targetNodeId)
+    fun linkImageToNodeAndPortfolio(image: OcImage, linkToNodeId: String, portfolioId: String) =
+        imageRepository.run {
+            linkImageToPortfolioById(image.id, portfolioId)
+                .then(linkImageToNodeById(image.id, linkToNodeId))
+        }
 
     private fun createThumbnail(sourcePath: Path, thumbnailPath: Path): Mono<Boolean> {
         @Suppress("BlockingMethodInNonBlockingContext")

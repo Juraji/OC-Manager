@@ -15,8 +15,9 @@ interface PortfolioRepository : ReactiveNeo4jRepository<OcPortfolio, String> {
             MATCH (p:OcPortfolio {id: $ portfolioId})
             OPTIONAL MATCH (p)-[:CONTAINS_CHARACTER]->(char:OcCharacter)
             OPTIONAL MATCH (p)-[:CONTAINS_MEMORY]->(event:OcMemory)
+            OPTIONAL MATCH (p)-[:CONTAINS_IMAGE]->(img:OcImage)
 
-            DETACH DELETE p, char, event
+            DETACH DELETE char, event, img, p
         """
     )
     fun deletePortfolioCompletely(portfolioId: String): Mono<Void>

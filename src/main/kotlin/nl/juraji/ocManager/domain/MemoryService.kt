@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono
 class MemoryService(
     private val memoryRepository: MemoryRepository,
     private val memoryCharactersRepository: MemoryCharactersRepository,
+    private val imagesService: ImageService,
 ) {
 
     fun getAllMemories(): Flux<OcMemory> = Flux
@@ -37,7 +38,9 @@ class MemoryService(
             .flatMap(memoryRepository::save)
 
     fun deleteMemory(memoryId: String): Mono<Void> =
-        memoryRepository.deleteById(memoryId)
+        memoryRepository
+            .deleteById(memoryId)
+            .then(imagesService.deleteAllImagesByLinkedNodeId(memoryId))
 
     fun getAllByCharacterId(characterId: String): Flux<OcMemory> =
         memoryRepository.findAllByCharacterId(characterId)

@@ -20,4 +20,15 @@ interface ImageRepository : ReactiveNeo4jRepository<OcImage, String> {
         """
     )
     fun linkImageToNodeById(imageId: String, targetNodeId: String): Mono<OcImage>
+
+    @Query(
+        """
+            MATCH (img:OcImage {id: $ imageId})
+            MATCH (p:OcPortfolio {id: $ portfolioId})
+
+            MERGE (t)-[:CONTAINS_IMAGE]->(img)
+            RETURN img
+        """
+    )
+    fun linkImageToPortfolioById(imageId: String, portfolioId: String): Mono<OcImage>
 }

@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono
 @Service
 class CharacterService(
     private val characterRepository: CharacterRepository,
+    private val imageService: ImageService,
 ) {
     fun getAllCharacters(): Flux<OcCharacter> = Flux
         .deferContextual { characterRepository.findAllCharactersByPortfolioId(it.requestPortfolioId) }
@@ -35,8 +36,11 @@ class CharacterService(
             .map { character.copy(id = it.id) }
             .flatMap(characterRepository::save)
 
+    @Transactional
     fun deleteCharacter(characterId: String): Mono<Void> =
-        characterRepository.deleteById(characterId)
+        characterRepository
+            .deleteById(characterId)
+            .then(imageService.deleteAllImagesByLinkedNodeId(characterId))
 
     private fun addCharacterToPortfolio(requestPortfolioId: String, character: OcCharacter): Mono<OcCharacter> =
         characterRepository

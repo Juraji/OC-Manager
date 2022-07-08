@@ -33,9 +33,9 @@ export class MemoryEditImagesComponent implements OnInit {
   onSetThumbnailViaFileInput(e: Event) {
     const field = e.target as HTMLInputElement
     const files = field.files
-    field.value = ''
 
     if (!!files && files.length > 0) this.onSetThumbnail(files)
+    field.value = ''
   }
 
   onRemoveImage(img: OcImage) {
