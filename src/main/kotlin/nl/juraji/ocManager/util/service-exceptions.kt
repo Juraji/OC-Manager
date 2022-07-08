@@ -37,8 +37,8 @@ fun <T> Mono<T>.orElseEntityNotFound(entity: KClass<*>, entityId: String = "unkn
 
 fun <T> Mono<T>.orElseRelationshipNotCreated(
     leftEntity: KClass<*>,
-    rightEntity: KClass<*>,
     leftEntityId: String = "unknown",
+    rightEntity: KClass<*>,
     rightEntityId: String = "unknown"
 ) = this.switchIfEmpty {
     Mono.error(RelationshipNotCreatedException(leftEntity, leftEntityId, rightEntity, rightEntityId))

@@ -6,7 +6,7 @@ spring:
       password: ${OCM_NEO4J_DB_PASSWORD}
   webflux:
     multipart:
-      max-headers-size: "8MB"
+      max-headers-size: ${OCM_MULTI_PART_MAX_HEADER_SIZE:8MB}
   main:
     banner-mode: off
   web:
@@ -20,4 +20,5 @@ server:
 oc:
   configuration:
     data-dir: ${OCM_DATA_DIR:./ocm-data}
-    thumbnail-size: ${OCM_THUMBNAIL_SIZE:500}
+    thumbnail-size: ${OCM_THUMBNAIL_SIZE:300}
+    thumbnail-type: ${OCM_THUMBNAIL_TYPE:jpg}

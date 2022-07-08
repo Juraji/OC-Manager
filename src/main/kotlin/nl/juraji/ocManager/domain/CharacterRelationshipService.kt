@@ -20,8 +20,8 @@ class CharacterRelationshipService(
             .create(relationship)
             .orElseRelationshipNotCreated(
                 OcCharacter::class,
-                OcCharacter::class,
                 relationship.sourceCharacterId,
+                OcCharacter::class,
                 relationship.targetCharacterId
             )
 

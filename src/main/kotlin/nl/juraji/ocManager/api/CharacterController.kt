@@ -3,6 +3,7 @@ package nl.juraji.ocManager.api
 import nl.juraji.ocManager.domain.CharacterService
 import nl.juraji.ocManager.domain.CharacterThumbnailService
 import nl.juraji.ocManager.domain.characters.OcCharacter
+import nl.juraji.ocManager.domain.images.OcImage
 import org.springframework.core.io.Resource
 import org.springframework.http.MediaType
 import org.springframework.http.codec.multipart.FilePart
@@ -54,5 +55,5 @@ class CharacterController(
     fun createCharacterThumbnail(
         @PathVariable characterId: String,
         @RequestPart("thumbnail") thumbnailFile: Mono<FilePart>
-    ): Mono<OcCharacter> = thumbnailService.createCharacterThumbnail(characterId, thumbnailFile)
+    ): Mono<OcImage> = thumbnailService.createCharacterThumbnail(characterId, thumbnailFile)
 }

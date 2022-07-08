@@ -14,14 +14,11 @@ import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 import reactor.core.publisher.Flux
-import reactor.core.scheduler.Schedulers
 import reactor.kotlin.core.publisher.toFlux
 import reactor.kotlin.core.publisher.toMono
-import java.nio.file.Files
 
 @Configuration
 class SetupConfiguration(
-    private val configuration: OcManagerConfiguration,
     private val settingsService: SettingsService,
     private val objectMapper: ObjectMapper,
     private val traitService: CharacterTraitService,
@@ -30,21 +27,8 @@ class SetupConfiguration(
 
     override fun afterPropertiesSet() {
         logger.info("OC Manager setup...")
-        initializeDataDirectories()
         initializeDefaultCharacterTraits()
         initializeDefaultPortfolio()
-    }
-
-    private fun initializeDataDirectories() {
-        listOf(configuration.dataDir, configuration.thumbnailDir)
-            .toFlux()
-            .subscribeOn(Schedulers.boundedElastic())
-            .filter(Files::notExists)
-            .map(Files::createDirectories)
-            .doOnSubscribe { logger.info("Checking data directories...") }
-            .doOnComplete { logger.info("Data directories verified") }
-            .doOnError { logger.warn("Data directories verification failed", it) }
-            .subscribe()
     }
 
     private fun initializeDefaultCharacterTraits() {

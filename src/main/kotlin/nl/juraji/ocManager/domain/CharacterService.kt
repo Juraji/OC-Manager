@@ -32,7 +32,7 @@ class CharacterService(
 
     fun updateCharacter(characterId: String, character: OcCharacter) =
         getCharacterById(characterId)
-            .map { character.copy(id = it.id, thumbnail = it.thumbnail) }
+            .map { character.copy(id = it.id) }
             .flatMap(characterRepository::save)
 
     fun deleteCharacter(characterId: String): Mono<Void> =
@@ -41,5 +41,5 @@ class CharacterService(
     private fun addCharacterToPortfolio(requestPortfolioId: String, character: OcCharacter): Mono<OcCharacter> =
         characterRepository
             .addCharacterToPortfolio(requestPortfolioId, character.id!!)
-            .orElseRelationshipNotCreated(OcPortfolio::class, OcCharacter::class, requestPortfolioId, character.id)
+            .orElseRelationshipNotCreated(OcPortfolio::class, requestPortfolioId, OcCharacter::class, character.id)
 }

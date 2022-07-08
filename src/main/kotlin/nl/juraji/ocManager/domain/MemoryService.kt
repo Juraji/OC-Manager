@@ -48,7 +48,7 @@ class MemoryService(
     fun addCharacterToMemory(memoryId: String, characterId: String): Mono<OcCharacter> =
         memoryCharactersRepository
             .addCharacterToMemory(memoryId, characterId)
-            .orElseRelationshipNotCreated(OcMemory::class, OcCharacter::class, memoryId, characterId)
+            .orElseRelationshipNotCreated(OcMemory::class, memoryId, OcCharacter::class, characterId)
 
     fun removeCharacterFromMemory(memoryId: String, characterId: String): Mono<Void> =
         memoryCharactersRepository
@@ -57,5 +57,5 @@ class MemoryService(
     private fun addMemoryToPortfolio(portfolioId: String, memory: OcMemory): Mono<OcMemory> =
         memoryRepository
             .addMemoryToPortfolio(portfolioId, memory.id!!)
-            .orElseRelationshipNotCreated(OcPortfolio::class, OcMemory::class, portfolioId, memory.id)
+            .orElseRelationshipNotCreated(OcPortfolio::class, portfolioId, OcMemory::class, memory.id)
 }
