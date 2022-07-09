@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono
 @Service
 class PortfolioService(
     private val portfolioRepository: PortfolioRepository,
+    private val imageService: ImageService,
 ) {
     fun getAllPortfolios(): Flux<OcPortfolio> =
         portfolioRepository.findAll()
@@ -38,4 +39,5 @@ class PortfolioService(
             .filter { !it.default }
             .orElseEntityNotFound(OcPortfolio::class, portfolioId)
             .then(portfolioRepository.deletePortfolioCompletely(portfolioId))
+            .then(imageService.deleteAllImagesByPortfolioId(portfolioId))
 }

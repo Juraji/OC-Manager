@@ -102,11 +102,6 @@ class ImageService(
             }
             .flatMap(imageRepository::deleteById)
 
-    fun deleteAllImagesByLinkedNodeId(linkedNodeId: String): Mono<Void> =
-        getImagesByLinkedNodeId(linkedNodeId)
-            .flatMap { deleteImage(it.id) }
-            .then()
-
     fun getSingleImageByLinkedNodeId(linkedNodeId: String): Mono<OcImage> =
         getImagesByLinkedNodeId(linkedNodeId)
             .take(1).toMono()
@@ -115,7 +110,18 @@ class ImageService(
     fun getImagesByLinkedNodeId(linkedNodeId: String): Flux<OcImage> =
         imageRepository.findByLinkedNodeId(linkedNodeId)
 
-    fun linkImageToNodeAndPortfolio(image: OcImage, linkToNodeId: String, portfolioId: String) =
+    fun deleteAllImagesByLinkedNodeId(linkedNodeId: String): Mono<Void> =
+        getImagesByLinkedNodeId(linkedNodeId)
+            .flatMap { deleteImage(it.id) }
+            .then()
+
+    fun deleteAllImagesByPortfolioId(portfolioId: String): Mono<Void> =
+        imageRepository
+            .findByPortfolioId(portfolioId)
+            .flatMap { deleteImage(it.id) }
+            .then()
+
+    private fun linkImageToNodeAndPortfolio(image: OcImage, linkToNodeId: String, portfolioId: String) =
         imageRepository.run {
             linkImageToPortfolioById(image.id, portfolioId)
                 .then(linkImageToNodeById(image.id, linkToNodeId))

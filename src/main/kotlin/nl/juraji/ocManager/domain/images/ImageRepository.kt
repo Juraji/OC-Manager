@@ -10,6 +10,9 @@ interface ImageRepository : ReactiveNeo4jRepository<OcImage, String> {
     @Query("MATCH ({id: $ linkedNodeId})-[:HAS_IMAGE]->(image:OcImage) RETURN image")
     fun findByLinkedNodeId(linkedNodeId: String): Flux<OcImage>
 
+    @Query("MATCH (:OcPortfolio {id: $ portfolioId})-[:CONTAINS_IMAGE]->(image:OcImage) RETURN image")
+    fun findByPortfolioId(portfolioId: String): Flux<OcImage>
+
     @Query(
         """
             MATCH (img:OcImage {id: $ imageId})
