@@ -18,7 +18,7 @@ export class MemoryEditImagesComponent implements OnInit {
   readonly supportedFileTypes = OcmApiImagesService.SUPPORTED_FILE_TYPES
 
   constructor(
-    private readonly modals:Modals,
+    private readonly modals: Modals,
     readonly store: MemoryEditStore
   ) {
   }
@@ -27,7 +27,12 @@ export class MemoryEditImagesComponent implements OnInit {
   }
 
   onSetThumbnail(e: FileList) {
-    this.store.addImages(e)
+    if (!!Array.from(e).find(f => f.size >= OcmApiImagesService.MAX_FILE_SIZE)) {
+      this.modals.confirm('On or more of the selected files exceeds the upload limit '
+        + `of ${OcmApiImagesService.MAX_FILE_SIZE_STR}. The upload is canceled.`, 'Ok')
+    } else {
+      this.store.addImages(e)
+    }
   }
 
   onSetThumbnailViaFileInput(e: Event) {

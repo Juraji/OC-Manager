@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router'
 import {Modals} from '@juraji/ng-bootstrap-modals'
-import {map, mergeMap, of, skip, startWith, Subject, switchMap} from 'rxjs'
+import {EMPTY, map, mergeMap, of, skip, startWith, Subject, switchMap} from 'rxjs'
 
 import {notBlank, required, typedFormControl, TypedFormGroup, typedFormGroup} from '#core/forms'
 import {OcmApiImagesService} from '#core/ocm-api'
@@ -92,17 +92,27 @@ export class BaseCharacterFormComponent implements OnInit, OnDestroy {
 
   onSetThumbnail(e: FileList) {
     of(e.item(0))
-      .pipe(filterNotNull())
-      .pipe(mergeMap(f => this.store.setCharacterThumbnail(f)))
+      .pipe(
+        filterNotNull(),
+        mergeMap(f => {
+          if (f.size >= OcmApiImagesService.MAX_FILE_SIZE) {
+            this.modals.confirm('The selected file exceeds the upload limit '
+              + `of ${OcmApiImagesService.MAX_FILE_SIZE_STR}. The upload is canceled.`, 'Ok')
+            return EMPTY
+          } else {
+            return this.store.setCharacterThumbnail(f)
+          }
+        })
+      )
       .subscribe(() => this.refreshThumbnailImg$.next())
   }
 
   onSetThumbnailViaFileInput(e: Event) {
     const field = e.target as HTMLInputElement
     const files = field.files
-    field.value = ''
 
     if (!!files && files.length > 0) this.onSetThumbnail(files)
+    field.value = ''
   }
 
   private populateForm(character: OcCharacter) {
