@@ -1,7 +1,8 @@
 import {CommonModule} from '@angular/common'
-import {HttpClientModule} from '@angular/common/http'
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 import {ModuleWithProviders, NgModule} from '@angular/core'
 
+import {OcmApiBaseUriInterceptor} from '#core/ocm-api/interceptors/ocm-api-base-uri.interceptor'
 import {OcmApiImagesService} from '#core/ocm-api/services/ocm-api-images.service'
 
 import {OcmApiCharacterMemoriesService} from './services/ocm-api-character-memories.service'
@@ -41,7 +42,8 @@ export class OcmApiModule {
         OcmApiMemoriesService,
         OcmApiPortfoliosService,
         OcmApiSettingsService,
-        OcmApiImagesService
+        OcmApiImagesService,
+        {provide: HTTP_INTERCEPTORS, useClass: OcmApiBaseUriInterceptor, multi: true}
       ]
     }
   }
