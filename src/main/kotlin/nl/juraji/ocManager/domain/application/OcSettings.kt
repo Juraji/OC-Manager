@@ -1,5 +1,6 @@
 package nl.juraji.ocManager.domain.application
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import nl.convect.cbnbackend.util.validators.RequiredIfFieldValue
 import nl.juraji.ocManager.util.persistence.SingletonEntityIdGenerator
 import org.springframework.data.annotation.Id
@@ -17,5 +18,8 @@ data class OcSettings(
     @Id @GeneratedValue(SingletonEntityIdGenerator::class)
     val id: String? = null,
     val useFixedDate: Boolean = false,
-    val eventReferenceDate: Instant? = null
+    val eventReferenceDate: Instant? = null,
+
+    @JsonIgnore // Used internally
+    val defaultTraitsInitialized: Boolean = false
 )

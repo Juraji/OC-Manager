@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import nl.juraji.ocManager.domain.CharacterTraitService
 import nl.juraji.ocManager.domain.PortfolioService
 import nl.juraji.ocManager.domain.SettingsService
-import nl.juraji.ocManager.domain.application.OcApplicationSettings
+import nl.juraji.ocManager.domain.application.OcSettings
 import nl.juraji.ocManager.domain.portfolios.OcPortfolio
 import nl.juraji.ocManager.domain.traits.OcCharacterTrait
 import nl.juraji.ocManager.util.LoggerCompanion
@@ -38,14 +38,14 @@ class SetupConfiguration(
             .flatMap(traitService::createCharacterTrait)
 
         settingsService
-            .getApplicationSettings()
-            .orElseEntityNotFound(OcApplicationSettings::class)
+            .getSettings()
+            .orElseEntityNotFound(OcSettings::class)
             .filter { !it.defaultTraitsInitialized }
             .doOnNext { logger.info("Setting up default character traits...") }
             .flatMap {
                 characterTraits
                     .collectList()
-                    .then(settingsService.updateApplicationSettings(it.copy(defaultTraitsInitialized = true)))
+                    .then(settingsService.updateSettingsInternal { it.copy(defaultTraitsInitialized = true) })
             }
             .doOnError { logger.warn("Default character traits setup failed", it) }
             .doOnNext { logger.info("Default character traits set up successfully") }
@@ -53,7 +53,7 @@ class SetupConfiguration(
     }
 
     private fun initializeDefaultPortfolio() {
-        val createDefaultPortfolio =  objectMapper
+        val createDefaultPortfolio = objectMapper
             .readValue<OcPortfolio>(ClassPathResource("default-portfolio.json").file)
             .toMono()
             .doOnNext { logger.info("Setting up default portfolio...") }
