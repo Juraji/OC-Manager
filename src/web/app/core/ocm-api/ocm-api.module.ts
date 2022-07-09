@@ -3,6 +3,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 import {ModuleWithProviders, NgModule} from '@angular/core'
 
 import {OcmApiBaseUriInterceptor} from '#core/ocm-api/interceptors/ocm-api-base-uri.interceptor'
+import {OcmApiExportService} from '#core/ocm-api/services/ocm-api-export.service'
 import {OcmApiImagesService} from '#core/ocm-api/services/ocm-api-images.service'
 
 import {OcmApiCharacterMemoriesService} from './services/ocm-api-character-memories.service'
@@ -12,7 +13,7 @@ import {OcmApiCharactersService} from './services/ocm-api-characters.service'
 import {OcmApiMemoriesService} from './services/ocm-api-memories.service'
 import {OcmApiPortfoliosService} from './services/ocm-api-portfolios.service'
 import {OcmApiSettingsService} from './services/ocm-api-settings.service';
-import { SourceImgUrlPipe } from './source-img-url.pipe'
+import {SourceImgUrlPipe} from './source-img-url.pipe'
 import {ThumbnailImgUrlPipe} from './thumbnail-img-url.pipe';
 
 
@@ -43,6 +44,7 @@ export class OcmApiModule {
         OcmApiPortfoliosService,
         OcmApiSettingsService,
         OcmApiImagesService,
+        OcmApiExportService,
         {provide: HTTP_INTERCEPTORS, useClass: OcmApiBaseUriInterceptor, multi: true}
       ]
     }

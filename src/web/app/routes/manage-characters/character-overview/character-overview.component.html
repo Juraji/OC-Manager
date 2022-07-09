@@ -1,9 +1,15 @@
 <div class="container position-relative">
   <div class="header d-flex justify-content-between align-items-center">
     <h1>Characters</h1>
-    <button class="btn btn-primary shadow add-character-btn" title="Add character" routerLink="../edit/new">
-      <span class="bi bi-plus"></span>
-    </button>
+    <div class="d-flex">
+      <button class="btn btn-primary shadow export-characters-btn me-2" title="Export characters"
+              (click)="onExportCharacters()">
+        <span class="bi bi-download"></span>
+      </button>
+      <button class="btn btn-primary shadow add-character-btn" title="Add character" routerLink="../edit/new">
+        <span class="bi bi-plus"></span>
+      </button>
+    </div>
   </div>
 
   <div class="portfolio-description">

@@ -5,6 +5,7 @@ import {map, mergeMap, Observable, skip, switchMap, tap} from 'rxjs'
 
 import {strSort} from '#core/arrays'
 import {OcmApiCharactersService} from '#core/ocm-api'
+import {OcmApiExportService} from '#core/ocm-api/services/ocm-api-export.service'
 import {PortfoliosStore} from '#core/root-store'
 import {OcCharacter} from '#models/characters.model'
 
@@ -28,7 +29,8 @@ export class CharacterOverviewStore extends ComponentStore<CharacterOverviewStor
 
   constructor(
     private readonly portfoliosStore: PortfoliosStore,
-    private readonly service: OcmApiCharactersService
+    private readonly service: OcmApiCharactersService,
+    private readonly exportService: OcmApiExportService,
   ) {
     super()
 
@@ -49,6 +51,10 @@ export class CharacterOverviewStore extends ComponentStore<CharacterOverviewStor
         characters: this.characterEntityAdapter.setAll(characters, s.characters)
       })))
     ))
+
+  readonly exportCharacters: () => void = this.effect<void>($ => $.pipe(
+    mergeMap(() => this.exportService.exportCharacters())
+  ))
 
   private static createCharacterEntityAdapter() {
     return createEntityAdapter<OcCharacter>({

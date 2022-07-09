@@ -28,4 +28,8 @@ export class CharacterOverviewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
+
+  onExportCharacters() {
+    this.store.exportCharacters()
+  }
 }
