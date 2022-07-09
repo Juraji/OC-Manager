@@ -6,3 +6,9 @@
     object-fit: contain;
   }
 }
+
+// Has to be global
+::ng-deep .modal .modal-dialog.modal-lg {
+  width: 95vw !important;
+  max-width: 95vw !important;
+}
