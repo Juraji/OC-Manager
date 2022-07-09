@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono
 interface CharacterRepository : ReactiveNeo4jRepository<OcCharacter, String> {
 
     @Query("MATCH (:OcPortfolio {id: $ portfolioId})-[:CONTAINS_CHARACTER]->(c:OcCharacter) RETURN c")
-    fun findAllCharactersByPortfolioId(portfolioId: String): Flux<OcCharacter>
+    fun findAllByPortfolioId(portfolioId: String): Flux<OcCharacter>
 
     @Query("MATCH (:OcPortfolio {id: $ portfolioId})-[:CONTAINS_CHARACTER]->(c:OcCharacter {id: $ characterId}) RETURN c")
     fun findPortfolioIdAndById(portfolioId: String, characterId: String): Mono<OcCharacter>

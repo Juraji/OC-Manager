@@ -5,10 +5,15 @@ import nl.juraji.ocManager.domain.characters.OcCharacter
 import nl.juraji.ocManager.domain.memories.MemoryCharactersRepository
 import nl.juraji.ocManager.domain.memories.MemoryRepository
 import nl.juraji.ocManager.domain.memories.OcMemory
+import nl.juraji.ocManager.domain.memories.OcMemoryToBeDeletedEvent
 import nl.juraji.ocManager.domain.portfolios.OcPortfolio
+import nl.juraji.ocManager.domain.portfolios.OcPortfolioToBeDeletedEvent
+import nl.juraji.ocManager.util.LoggerCompanion
 import nl.juraji.ocManager.util.flatMapContextual
 import nl.juraji.ocManager.util.orElseEntityNotFound
 import nl.juraji.ocManager.util.orElseRelationshipNotCreated
+import org.springframework.context.ApplicationEventPublisher
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -17,7 +22,7 @@ import reactor.core.publisher.Mono
 class MemoryService(
     private val memoryRepository: MemoryRepository,
     private val memoryCharactersRepository: MemoryCharactersRepository,
-    private val imagesService: ImageService,
+    private val eventPublisher: ApplicationEventPublisher,
 ) {
 
     fun getAllMemories(): Flux<OcMemory> = Flux
@@ -37,10 +42,9 @@ class MemoryService(
             .map { memory.copy(id = it.id) }
             .flatMap(memoryRepository::save)
 
-    fun deleteMemory(memoryId: String): Mono<Void> =
-        memoryRepository
-            .deleteById(memoryId)
-            .then(imagesService.deleteAllImagesByLinkedNodeId(memoryId))
+    fun deleteMemory(memoryId: String): Mono<Void> = Mono.just(memoryId)
+        .doOnNext { eventPublisher.publishEvent(OcMemoryToBeDeletedEvent(it)) }
+        .flatMap(memoryRepository::deleteById)
 
     fun getAllByCharacterId(characterId: String): Flux<OcMemory> =
         memoryRepository.findAllByCharacterId(characterId)
@@ -57,8 +61,18 @@ class MemoryService(
         memoryCharactersRepository
             .removeCharacterFromMemory(memoryId, characterId)
 
+    @EventListener
+    fun onOcPortfolioToBeDeletedEvent(e: OcPortfolioToBeDeletedEvent) =
+        memoryRepository
+            .findAllByPortfolioId(e.entityId)
+            .flatMap { deleteMemory(it.id!!) }
+            .onErrorContinue { t, _ -> logger.error("Failed deleting a memory for portfolio", t) }
+            .blockLast()
+
     private fun addMemoryToPortfolio(portfolioId: String, memory: OcMemory): Mono<OcMemory> =
         memoryRepository
             .addMemoryToPortfolio(portfolioId, memory.id!!)
             .orElseRelationshipNotCreated(OcPortfolio::class, portfolioId, OcMemory::class, memory.id)
+
+    companion object : LoggerCompanion(MemoryService::class)
 }

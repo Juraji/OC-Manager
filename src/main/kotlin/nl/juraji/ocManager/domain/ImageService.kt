@@ -2,9 +2,13 @@ package nl.juraji.ocManager.domain
 
 import nl.juraji.ocManager.configuration.OcManagerConfiguration
 import nl.juraji.ocManager.configuration.requestPortfolioId
+import nl.juraji.ocManager.domain.applicationEvents.OcEntityToBeDeletedEvent
 import nl.juraji.ocManager.domain.images.ImageRepository
 import nl.juraji.ocManager.domain.images.OcImage
+import nl.juraji.ocManager.domain.portfolios.OcPortfolioToBeDeletedEvent
+import nl.juraji.ocManager.util.LoggerCompanion
 import nl.juraji.ocManager.util.orElseEntityNotFound
+import org.springframework.context.event.EventListener
 import org.springframework.core.io.PathResource
 import org.springframework.core.io.Resource
 import org.springframework.http.MediaType
@@ -110,16 +114,20 @@ class ImageService(
     fun getImagesByLinkedNodeId(linkedNodeId: String): Flux<OcImage> =
         imageRepository.findByLinkedNodeId(linkedNodeId)
 
-    fun deleteAllImagesByLinkedNodeId(linkedNodeId: String): Mono<Void> =
-        getImagesByLinkedNodeId(linkedNodeId)
+    @EventListener
+    fun onOcEntityToBeDeletedEvent(e: OcEntityToBeDeletedEvent) =
+        getImagesByLinkedNodeId(e.entityId)
             .flatMap { deleteImage(it.id) }
-            .then()
+            .onErrorContinue { t, _ ->logger.error("Failed deleting image for entity with id ${e.entityId}", t)}
+            .blockLast()
 
-    fun deleteAllImagesByPortfolioId(portfolioId: String): Mono<Void> =
+    @EventListener
+    fun onOcPortfolioToBeDeletedEvent(e: OcPortfolioToBeDeletedEvent) =
         imageRepository
-            .findByPortfolioId(portfolioId)
+            .findByPortfolioId(e.entityId)
             .flatMap { deleteImage(it.id) }
-            .then()
+            .onErrorContinue { t, _ -> logger.error("Failed deleting image for portfolio with id ${e.entityId}", t) }
+            .blockLast()
 
     private fun linkImageToNodeAndPortfolio(image: OcImage, linkToNodeId: String, portfolioId: String) =
         imageRepository.run {
@@ -167,4 +175,6 @@ class ImageService(
             .map { createThumbNail() }
             .map { image -> writeFile(image) }
     }
+
+    companion object : LoggerCompanion(ImageService::class)
 }

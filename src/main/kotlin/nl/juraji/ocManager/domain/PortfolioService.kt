@@ -1,16 +1,19 @@
 package nl.juraji.ocManager.domain
 
 import nl.juraji.ocManager.domain.portfolios.OcPortfolio
+import nl.juraji.ocManager.domain.portfolios.OcPortfolioToBeDeletedEvent
 import nl.juraji.ocManager.domain.portfolios.PortfolioRepository
 import nl.juraji.ocManager.util.orElseEntityNotFound
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
 class PortfolioService(
     private val portfolioRepository: PortfolioRepository,
-    private val imageService: ImageService,
+    private val eventPublisher: ApplicationEventPublisher,
 ) {
     fun getAllPortfolios(): Flux<OcPortfolio> =
         portfolioRepository.findAll()
@@ -34,10 +37,10 @@ class PortfolioService(
             .map { portfolio.copy(id = it.id, default = it.default) }
             .flatMap(portfolioRepository::save)
 
+    @Transactional
     fun deletePortfolio(portfolioId: String): Mono<Void> =
         getPortfolioById(portfolioId)
             .filter { !it.default }
-            .orElseEntityNotFound(OcPortfolio::class, portfolioId)
-            .then(portfolioRepository.deletePortfolioCompletely(portfolioId))
-            .then(imageService.deleteAllImagesByPortfolioId(portfolioId))
+            .doOnNext { eventPublisher.publishEvent(OcPortfolioToBeDeletedEvent(portfolioId)) }
+            .flatMap(portfolioRepository::delete)
 }
