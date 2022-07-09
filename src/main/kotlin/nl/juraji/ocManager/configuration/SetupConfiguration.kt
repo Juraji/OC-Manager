@@ -33,7 +33,7 @@ class SetupConfiguration(
 
     private fun initializeDefaultCharacterTraits() {
         val characterTraits: Flux<OcCharacterTrait> = objectMapper
-            .readValue<List<OcCharacterTrait>>(ClassPathResource("default-character-traits.json").file)
+            .readValue<List<OcCharacterTrait>>(ClassPathResource("default-character-traits.json").inputStream)
             .toFlux()
             .flatMap(traitService::createCharacterTrait)
 
@@ -54,7 +54,7 @@ class SetupConfiguration(
 
     private fun initializeDefaultPortfolio() {
         val createDefaultPortfolio = objectMapper
-            .readValue<OcPortfolio>(ClassPathResource("default-portfolio.json").file)
+            .readValue<OcPortfolio>(ClassPathResource("default-portfolio.json").inputStream)
             .toMono()
             .doOnNext { logger.info("Setting up default portfolio...") }
             .map { it.copy(default = true) }
