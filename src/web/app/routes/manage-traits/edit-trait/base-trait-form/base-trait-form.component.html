@@ -146,6 +146,20 @@
             <div id="hairStyleDyeColorHelp" class="form-text">Dye color.</div>
           </div>
         </ng-container>
+        <ng-container *ngSwitchCase="'OcCustomTrait'">
+          <div class="mb-3">
+            <label for="customTraitLabelInput" class="form-label">Description</label>
+            <input type="text" class="form-control" id="customTraitLabelInput" aria-describedby="customTraitLabelHelp"
+                   formControlName="label">
+            <div id="customTraitLabelHelp" class="form-text">Kind of like a trait type.</div>
+          </div>
+          <div class="mb-3">
+            <label for="customTraitDescriptionInput" class="form-label">Description</label>
+            <input type="text" class="form-control" id="customTraitDescriptionInput" aria-describedby="customTraitDescriptionHelp"
+                   formControlName="description">
+            <div id="customTraitDescriptionHelp" class="form-text">Describe this trait in a short form.</div>
+          </div>
+        </ng-container>
         <ng-container *ngSwitchDefault>
           <div class="mb-3">
             <label for="descriptionInput" class="form-label">Description</label>
