@@ -30,7 +30,7 @@ export class TraitCardComponent {
   @HostListener('click')
   onClick() {
     if (!this.disabled && !!this.trait?.id) {
-      this.router.navigate(['/settings/traits/edit', this.trait.id])
+      this.router.navigate(['/traits/edit', this.trait.id])
     }
   }
 }
