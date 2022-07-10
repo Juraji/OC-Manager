@@ -1,3 +1,5 @@
+@import "src/web/styles/variables";
+
 :host {
   display: block;
   margin-bottom: .75rem;
@@ -8,5 +10,24 @@
 
   .field-value-wrapper {
     white-space: pre-line;
+  }
+
+  .field-value-placeholder {
+    color: $text-muted;
+    display: none;
+  }
+
+  &.empty {
+    .field-value-placeholder {
+      display: unset;
+    }
+
+    .field-value {
+      display: none;
+    }
+  }
+
+  &.hidden {
+    display: none;
   }
 }
