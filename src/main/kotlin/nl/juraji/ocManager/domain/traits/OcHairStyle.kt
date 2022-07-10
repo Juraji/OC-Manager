@@ -1,6 +1,6 @@
 package nl.juraji.ocManager.domain.traits
 
-import nl.convect.cbnbackend.util.validators.RequiredIfFieldValue
+import nl.juraji.ocManager.util.validators.RequiredIfFieldValue
 import nl.juraji.ocManager.util.persistence.StringUUIDGenerator
 import org.springframework.data.annotation.Id
 import org.springframework.data.neo4j.core.schema.GeneratedValue

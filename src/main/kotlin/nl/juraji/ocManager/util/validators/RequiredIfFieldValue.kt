@@ -1,4 +1,4 @@
-package nl.convect.cbnbackend.util.validators
+package nl.juraji.ocManager.util.validators
 
 import org.springframework.beans.PropertyAccessorFactory
 import javax.validation.Constraint

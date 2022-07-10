@@ -1,7 +1,7 @@
 package nl.juraji.ocManager.domain.application
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import nl.convect.cbnbackend.util.validators.RequiredIfFieldValue
+import nl.juraji.ocManager.util.validators.RequiredIfFieldValue
 import nl.juraji.ocManager.util.persistence.SingletonEntityIdGenerator
 import org.springframework.data.annotation.Id
 import org.springframework.data.neo4j.core.schema.GeneratedValue

@@ -14,12 +14,13 @@ data class OcManagerConfiguration(
     val thumbnailSize: Int,
     val thumbnailType: String,
 ) : InitializingBean {
-    val imagesDir: Path by lazy {
-        dataDir.resolve("images").absolute()
-    }
+    private val absoluteDataDir = dataDir.absolute()
+
+    fun getDataDir(key: String): Path = absoluteDataDir
+        .run { resolve(key) }
+        .also(Files::createDirectories)
 
     override fun afterPropertiesSet() {
-        Files.createDirectories(dataDir)
-        Files.createDirectories(imagesDir)
+        Files.createDirectories(absoluteDataDir)
     }
 }

@@ -62,7 +62,7 @@ class ImageService(
         }
 
         fun getImgPath(baseName: String, ext: String): Path =
-            configuration.imagesDir.resolve("${baseName}.${ext}")
+            configuration.getDataDir("images").resolve("${baseName}.${ext}")
 
         return file
             .flatMap { fp ->

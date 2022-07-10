@@ -1,9 +1,9 @@
 spring:
   neo4j:
-    uri: ${OCM_NEO4J_DB_URI:bolt://localhost:7687}
+    uri: "bolt://localhost:47620" # Default port 7687
     authentication:
-      username: ${OCM_NEO4J_DB_USERNAME}
-      password: ${OCM_NEO4J_DB_PASSWORD}
+      username: "neo4j"
+      password: "ocManager"
   webflux:
     multipart:
       max-headers-size: ${OCM_MULTI_PART_MAX_HEADER_SIZE:15MB}
