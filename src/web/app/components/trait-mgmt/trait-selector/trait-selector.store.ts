@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {combineLatest, map, mergeMap, tap} from 'rxjs'
+import {combineLatest, filter, map, mergeMap, tap} from 'rxjs'
 
 import {chainSort, orderedSort, strSort} from '#core/arrays'
 import {OcmApiCharacterTraitsService} from '#core/ocm-api'
@@ -100,39 +100,34 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
   readonly loadTraits: (omitTraitIds?: string[]) => void = this.effect<(string[] | undefined)>($ => $.pipe(
     mergeMap(omitIds => !!omitIds
       ? this.service.getAllTraits()
-        .pipe(map(ts => ts.filter(t => !omitIds.includes(t.id))))
+        .pipe(filter(t => !omitIds.includes(t.id)))
       : this.service.getAllTraits()
     ),
-    tap(allTraits => this.patchState(s => ({
-      bodyTypes: this.bodyTypeAdapter.setAll(
-        allTraits.filter(t => t.traitType === 'OcBodyType') as OcBodyType[],
-        s.bodyTypes
-      ),
-      ethnicities: this.ethnicityAdapter.setAll(
-        allTraits.filter(t => t.traitType === 'OcEthnicity') as OcEthnicity[],
-        s.ethnicities
-      ),
-      eyeColors: this.eyeColorAdapter.setAll(
-        allTraits.filter(t => t.traitType === 'OcEyeColor') as OcEyeColor[],
-        s.eyeColors
-      ),
-      genders: this.genderAdapter.setAll(
-        allTraits.filter(t => t.traitType === 'OcGender') as OcGender[],
-        s.genders
-      ),
-      hairStyles: this.hairStyleAdapter.setAll(
-        allTraits.filter(t => t.traitType === 'OcHairStyle') as OcHairStyle[],
-        s.hairStyles
-      ),
-      customTraits: this.customTraitAdapter.setAll(
-        allTraits.filter(t => t.traitType === 'OcCustomTrait') as OcCustomTrait[],
-        s.customTraits
-      ),
-      sexualities: this.sexualityAdapter.setAll(
-        allTraits.filter(t => t.traitType === 'OcSexuality') as OcSexuality[],
-        s.sexualities
-      ),
-    })))
+    tap(trait => {
+      switch (trait.traitType) {
+        case 'OcBodyType':
+          this.patchState(s => ({bodyTypes: this.bodyTypeAdapter.addOne(trait as OcBodyType, s.bodyTypes)}))
+          break;
+        case 'OcEthnicity':
+          this.patchState(s => ({ethnicities: this.ethnicityAdapter.addOne(trait as OcEthnicity, s.ethnicities)}))
+          break;
+        case 'OcEyeColor':
+          this.patchState(s => ({eyeColors: this.eyeColorAdapter.addOne(trait as OcEyeColor, s.eyeColors)}))
+          break;
+        case 'OcGender':
+          this.patchState(s => ({genders: this.genderAdapter.addOne(trait as OcGender, s.genders)}))
+          break;
+        case 'OcHairStyle':
+          this.patchState(s => ({hairStyles: this.hairStyleAdapter.addOne(trait as OcHairStyle, s.hairStyles)}))
+          break;
+        case 'OcCustomTrait':
+          this.patchState(s => ({customTraits: this.customTraitAdapter.addOne(trait as OcCustomTrait, s.customTraits)}))
+          break;
+        case 'OcSexuality':
+          this.patchState(s => ({sexualities: this.sexualityAdapter.addOne(trait as OcSexuality, s.sexualities)}))
+          break;
+      }
+    })
   ))
 
   private static createBodyTypeAdapter() {

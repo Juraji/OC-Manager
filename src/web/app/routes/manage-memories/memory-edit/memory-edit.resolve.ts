@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router'
-import {EMPTY, forkJoin, Observable} from 'rxjs'
+import {EMPTY, forkJoin, Observable, toArray} from 'rxjs'
 
 import {OcmApiCharactersService, OcmApiImagesService, OcmApiMemoriesService} from '#core/ocm-api'
 import {ForkJoinSource} from '#core/rxjs'
@@ -34,9 +34,9 @@ export class MemoryEditResolve implements Resolve<MemoryEditStoreData> {
     } else {
       const sources: ForkJoinSource<MemoryEditStoreData> = {
         memory: this.memoriesService.getMemoryById(memoryId),
-        characters: this.memoriesService.getMemoryCharacters(memoryId),
-        availableCharacters: this.charactersService.getAllCharacters(),
-        images: this.imagesService.getImagesByLinkedNodeId(memoryId)
+        characters: this.memoriesService.getMemoryCharacters(memoryId).pipe(toArray()),
+        availableCharacters: this.charactersService.getAllCharacters().pipe(toArray()),
+        images: this.imagesService.getImagesByLinkedNodeId(memoryId).pipe(toArray())
       }
 
       return forkJoin(sources)

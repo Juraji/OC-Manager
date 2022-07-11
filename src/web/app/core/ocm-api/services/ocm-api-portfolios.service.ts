@@ -13,8 +13,8 @@ export class OcmApiPortfoliosService extends OcmApiService {
     super(http)
   }
 
-  getAllPortfolios(): Observable<OcPortfolio[]> {
-    return this.http.get<OcPortfolio[]>(this.baseUri())
+  getAllPortfolios(): Observable<OcPortfolio> {
+    return this.http.get<OcPortfolio>(this.baseUri())
   }
 
   getPortfolioById(portfolioId: string): Observable<OcPortfolio> {

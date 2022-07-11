@@ -1,7 +1,8 @@
 import {CommonModule} from '@angular/common'
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
+import {HTTP_INTERCEPTORS, HttpBackend, HttpClientModule} from '@angular/common/http'
 import {ModuleWithProviders, NgModule} from '@angular/core'
 
+import {HttpFetchJsonStreamBackend} from '#core/ocm-api/http-backend/http-fetch-json-stream-backend.service'
 import {OcmApiBaseUriInterceptor} from '#core/ocm-api/interceptors/ocm-api-base-uri.interceptor'
 import {OcmApiExportService} from '#core/ocm-api/services/ocm-api-export.service'
 import {OcmApiImagesService} from '#core/ocm-api/services/ocm-api-images.service'
@@ -45,6 +46,8 @@ export class OcmApiModule {
         OcmApiSettingsService,
         OcmApiImagesService,
         OcmApiExportService,
+        HttpFetchJsonStreamBackend,
+        {provide: HttpBackend, useExisting: HttpFetchJsonStreamBackend},
         {provide: HTTP_INTERCEPTORS, useClass: OcmApiBaseUriInterceptor, multi: true}
       ]
     }

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {map, mergeMap, tap} from 'rxjs'
+import {filter, map, mergeMap, tap} from 'rxjs'
 
 import {strSort} from '#core/arrays'
 import {OcmApiCharactersService} from '#core/ocm-api'
@@ -34,9 +34,9 @@ export class CreateCharacterRelationshipStore extends ComponentStore<CreateChara
   public readonly loadTargetCharacters: (forCharacterId: string) => void = this.effect<string>($ => $.pipe(
     mergeMap(forCharacterId => this.charactersService
       .getAllCharacters()
-      .pipe(map(cs => cs.filter(c => c.id !== forCharacterId)))),
+      .pipe(filter(c => c.id !== forCharacterId))),
     tap(cs => this.setState(s => ({
-      targetCharacters: this.targetCharactersAdapter.setAll(cs, s.targetCharacters)
+      targetCharacters: this.targetCharactersAdapter.addOne(cs, s.targetCharacters)
     })))
   ))
 

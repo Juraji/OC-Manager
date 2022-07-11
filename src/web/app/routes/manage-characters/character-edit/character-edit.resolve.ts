@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router'
-import {EMPTY, forkJoin, Observable} from 'rxjs'
+import {EMPTY, forkJoin, Observable, toArray} from 'rxjs'
 
 import {
   OcmApiCharacterMemoriesService,
@@ -40,9 +40,9 @@ export class CharacterEditResolve implements Resolve<CharacterEditStoreData> {
     } else {
       const sources: ForkJoinSource<CharacterEditStoreData> = {
         character: this.charactersService.getCharacterById(characterId),
-        traits: this.traitsService.getAllCharacterTraits(characterId),
-        memories: this.memoriesService.getAllByCharacterId(characterId),
-        relationships: this.relationshipsService.getAllByCharacterId(characterId),
+        traits: this.traitsService.getAllCharacterTraits(characterId).pipe(toArray()),
+        memories: this.memoriesService.getAllByCharacterId(characterId).pipe(toArray()),
+        relationships: this.relationshipsService.getAllByCharacterId(characterId).pipe(toArray()),
       }
 
       return forkJoin(sources)

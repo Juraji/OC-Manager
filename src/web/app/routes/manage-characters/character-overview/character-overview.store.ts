@@ -48,7 +48,7 @@ export class CharacterOverviewStore extends ComponentStore<CharacterOverviewStor
       skip(1), // Skip initial
       mergeMap(() => this.service.getAllCharacters()),
       tap(characters => this.patchState(s => ({
-        characters: this.characterEntityAdapter.setAll(characters, s.characters)
+        characters: this.characterEntityAdapter.addOne(characters, s.characters)
       })))
     ))
 

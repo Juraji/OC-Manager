@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router'
-import {EMPTY, forkJoin, Observable} from 'rxjs'
+import {EMPTY, forkJoin, Observable, toArray} from 'rxjs'
 
 import {OcmApiCharacterTraitsService} from '#core/ocm-api'
 import {ForkJoinSource} from '#core/rxjs'
@@ -30,7 +30,7 @@ export class EditTraitResolve implements Resolve<EditTraitStoreData> {
     } else {
       const sources: ForkJoinSource<EditTraitStoreData> = {
         trait: this.service.getTraitById(traitId),
-        characters: this.service.getAllCharactersWithTrait(traitId)
+        characters: this.service.getAllCharactersWithTrait(traitId).pipe(toArray())
       }
 
       return forkJoin(sources);

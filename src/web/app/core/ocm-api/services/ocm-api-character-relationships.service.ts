@@ -13,8 +13,8 @@ export class OcmApiCharacterRelationshipsService extends OcmApiService {
     super(http)
   }
 
-  getAllByCharacterId(characterId: string): Observable<OcCharacterRelationship[]> {
-    return this.http.get<OcCharacterRelationship[]>(this.baseUri(characterId))
+  getAllByCharacterId(characterId: string): Observable<OcCharacterRelationship> {
+    return this.http.get<OcCharacterRelationship>(this.baseUri(characterId))
   }
 
   createRelationship(

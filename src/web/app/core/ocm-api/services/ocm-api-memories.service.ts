@@ -14,8 +14,8 @@ export class OcmApiMemoriesService extends OcmApiService {
     super(http)
   }
 
-  getAllMemories(): Observable<OcMemory[]> {
-    return this.http.get<OcMemory[]>(this.baseUri())
+  getAllMemories(): Observable<OcMemory> {
+    return this.http.get<OcMemory>(this.baseUri())
   }
 
   getMemoryById(memoryId: string): Observable<OcMemory> {
@@ -34,8 +34,8 @@ export class OcmApiMemoriesService extends OcmApiService {
     return this.http.delete<void>(this.baseUri(memoryId))
   }
 
-  getMemoryCharacters(memoryId: string): Observable<OcCharacter[]> {
-    return this.http.get<OcCharacter[]>(this.baseUri(memoryId, 'characters'))
+  getMemoryCharacters(memoryId: string): Observable<OcCharacter> {
+    return this.http.get<OcCharacter>(this.baseUri(memoryId, 'characters'))
   }
 
   addCharacterToMemory(memoryId: string, characterId: string): Observable<OcCharacter> {

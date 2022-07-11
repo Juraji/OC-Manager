@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {Resolve} from '@angular/router'
-import {forkJoin, Observable} from 'rxjs'
+import {forkJoin, Observable, toArray} from 'rxjs'
 
 import {OcmApiCharactersService} from '#core/ocm-api'
 import {catchToEmpty, ForkJoinSource} from '#core/rxjs'
@@ -15,7 +15,7 @@ export class CharacterOverviewResolve implements Resolve<CharacterOverviewStoreD
 
   resolve(): Observable<CharacterOverviewStoreData> {
     const sources: ForkJoinSource<CharacterOverviewStoreData> = {
-      characters: this.charactersService.getAllCharacters()
+      characters: this.charactersService.getAllCharacters().pipe(toArray())
     }
 
     return forkJoin(sources).pipe(catchToEmpty());

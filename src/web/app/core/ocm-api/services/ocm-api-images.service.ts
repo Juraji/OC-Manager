@@ -15,8 +15,8 @@ export class OcmApiImagesService extends OcmApiService {
     super(http)
   }
 
-  getImagesByLinkedNodeId(linkedNodeId: string): Observable<OcImage[]> {
-    return this.http.get<OcImage[]>(this.baseUri(), {params: {linkedNodeId}})
+  getImagesByLinkedNodeId(linkedNodeId: string): Observable<OcImage> {
+    return this.http.get<OcImage>(this.baseUri(), {params: {linkedNodeId}})
   }
 
   getImageThumbnailUrlById(imageId: string): string {

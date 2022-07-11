@@ -13,8 +13,8 @@ export class OcmApiCharactersService extends OcmApiService {
     super(http)
   }
 
-  getAllCharacters(): Observable<OcCharacter[]> {
-    return this.http.get<OcCharacter[]>(this.baseUri())
+  getAllCharacters(): Observable<OcCharacter> {
+    return this.http.get<OcCharacter>(this.baseUri())
   }
 
   getCharacterById(characterId: string): Observable<OcCharacter> {

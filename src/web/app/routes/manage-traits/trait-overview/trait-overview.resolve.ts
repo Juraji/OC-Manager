@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {Resolve} from '@angular/router'
-import {forkJoin, Observable} from 'rxjs'
+import {forkJoin, Observable, toArray} from 'rxjs'
 
 import {OcmApiCharacterTraitsService} from '#core/ocm-api'
 import {ForkJoinSource} from '#core/rxjs'
@@ -17,7 +17,7 @@ export class TraitOverviewResolve implements Resolve<TraitOverviewStoreData> {
 
   resolve(): Observable<TraitOverviewStoreData> {
     const sources: ForkJoinSource<TraitOverviewStoreData> = {
-      traits: this.traitsService.getAllTraits()
+      traits: this.traitsService.getAllTraits().pipe(toArray())
     }
 
     return forkJoin(sources);

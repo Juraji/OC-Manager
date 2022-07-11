@@ -48,16 +48,17 @@ export class PortfoliosStore extends ComponentStore<PortfoliosStoreState> {
     })
   }
 
-  initialize(): Observable<OcPortfolio[]> {
+  initialize(): Observable<OcPortfolio> {
     return this.service
       .getAllPortfolios()
       .pipe(tap(pfs => {
-        const defaultPortfolio = pfs.find(p => p.default)
-        this.setState(s => ({
-          portfolios: this.portfolioAdapter.setAll(pfs, s.portfolios),
-          selectedPortfolio: defaultPortfolio,
-          defaultPortfolio
-        }))
+        this.patchState(s => ({portfolios: this.portfolioAdapter.addOne(pfs, s.portfolios)}))
+        if(pfs.default) {
+          this.patchState({
+            selectedPortfolio: pfs,
+            defaultPortfolio: pfs
+          })
+        }
       }))
   }
 

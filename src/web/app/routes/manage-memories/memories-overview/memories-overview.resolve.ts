@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {Resolve} from '@angular/router'
-import {forkJoin, Observable} from 'rxjs'
+import {forkJoin, Observable, toArray} from 'rxjs'
 
 import {OcmApiMemoriesService} from '#core/ocm-api'
 import {ForkJoinSource} from '#core/rxjs'
@@ -15,7 +15,7 @@ export class MemoriesOverviewResolve implements Resolve<MemoriesOverviewStoreDat
 
   resolve(): Observable<MemoriesOverviewStoreData> {
     const sources: ForkJoinSource<MemoriesOverviewStoreData> = {
-      memories: this.service.getAllMemories()
+      memories: this.service.getAllMemories().pipe(toArray())
     }
 
     return forkJoin(sources)

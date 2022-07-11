@@ -14,8 +14,8 @@ export class OcmApiCharacterTraitsService extends OcmApiService {
     super(http)
   }
 
-  getAllTraits(): Observable<OcCharacterTrait[]> {
-    return this.http.get<OcCharacterTrait[]>(this.baseUri())
+  getAllTraits(): Observable<OcCharacterTrait> {
+    return this.http.get<OcCharacterTrait>(this.baseUri())
   }
 
   getTraitById(traitId: string): Observable<OcCharacterTrait> {
@@ -34,12 +34,12 @@ export class OcmApiCharacterTraitsService extends OcmApiService {
     return this.http.delete<void>(this.baseUri(traitId))
   }
 
-  getAllCharactersWithTrait(traitId: string): Observable<OcCharacter[]> {
-    return this.http.get<OcCharacter[]>(this.baseUri(traitId, 'characters'))
+  getAllCharactersWithTrait(traitId: string): Observable<OcCharacter> {
+    return this.http.get<OcCharacter>(this.baseUri(traitId, 'characters'))
   }
 
-  getAllCharacterTraits(characterId: string): Observable<OcCharacterTrait[]> {
-    return this.http.get<OcCharacterTrait[]>(this.baseUriByCharacter(characterId))
+  getAllCharacterTraits(characterId: string): Observable<OcCharacterTrait> {
+    return this.http.get<OcCharacterTrait>(this.baseUriByCharacter(characterId))
   }
 
   addTraitToCharacter(characterId: string, traitId: string): Observable<OcCharacterTrait> {
