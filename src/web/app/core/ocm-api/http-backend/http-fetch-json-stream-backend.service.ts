@@ -2,7 +2,7 @@ import {
   HttpBackend,
   HttpErrorResponse,
   HttpEvent,
-  HttpEventType,
+  HttpEventType, HttpHeaders,
   HttpRequest,
   HttpResponse,
   HttpSentEvent,
@@ -11,6 +11,8 @@ import {
 import {Injectable} from '@angular/core'
 import {catchError, from, iif, map, mergeMap, Observable, ObservableInput, startWith, throwError} from 'rxjs'
 import {fromFetch} from 'rxjs/fetch'
+
+const DEFAULT_ACCEPT_HEADER_VALUE = 'application/stream+json, application/json, text/plain, */*'
 
 @Injectable()
 export class HttpFetchJsonStreamBackend implements HttpBackend {
@@ -25,25 +27,41 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
     return this.doFetch(req).pipe(
       mergeMap(res => from(HttpFetchJsonStreamBackend.readBody(res, req.responseType))
         .pipe(
-          map(body => new HttpResponse({body})),
+          mergeMap(body => iif(
+            () => res.ok,
+            [body],
+            throwError(() => new HttpErrorResponse({
+              url: req.url,
+              headers: HttpFetchJsonStreamBackend.fetchResponseAsNGHttpHeaders(res),
+              status: res.status,
+              statusText: res.statusText,
+              error: body
+            }))
+          )),
+          map(body => new HttpResponse({
+            url: req.url,
+            body,
+            headers: HttpFetchJsonStreamBackend.fetchResponseAsNGHttpHeaders(res),
+            status: res.status,
+            statusText: res.statusText,
+          })),
           catchError(error => throwError(() => new HttpErrorResponse({
             error,
             status: 0,
             statusText: 'Unknown Error',
             url: req.url,
           }))),
-          mergeMap(res => iif(
-            () => res.ok,
-            [res],
-            throwError(() => new HttpErrorResponse({...res, url: req.url}))
-          ))
         )),
       startWith({type: HttpEventType.Sent} as HttpSentEvent),
     );
   }
 
   private doFetch(req: HttpRequest<unknown>) {
-    return fromFetch(req.url, {
+    const url = req.params.keys().length > 0
+      ? req.url + '?' + req.params.toString()
+      : req.url;
+
+    return fromFetch(url, {
       method: req.method,
       body: req.serializeBody(),
       headers: this.mapFromHttpHeaders(req),
@@ -58,7 +76,8 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
           .pipe(
             map(uInt8Array => new TextDecoder().decode(uInt8Array)),
             mergeMap(s => s.trim().split(/\n/g)),
-            map(s => JSON.parse(s))
+            map(s => JSON.parse(s)),
+            mergeMap(chunk => Array.isArray(chunk) ? chunk : [chunk])
           )
         else return []
       case 'blob':
@@ -71,10 +90,14 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
   }
 
 
-  private mapFromHttpHeaders(req: HttpRequest<unknown>) {
+  private mapFromHttpHeaders(req: HttpRequest<unknown>): Record<string, string> {
     const defaultHeaders: Record<string, string> = {
-      Accept: 'application/stream+json, application/json, text/plain, */*',
-      'Content-Type': req.detectContentTypeHeader() || 'application/octet-stream',
+      Accept: DEFAULT_ACCEPT_HEADER_VALUE,
+    }
+
+    const contentType = req.detectContentTypeHeader()
+    if(!!contentType) {
+      defaultHeaders['Content-Type'] = contentType
     }
 
     return req.headers
@@ -84,5 +107,10 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
         (headers, name) => ({...headers, [name]: req.headers.get(name)!}),
         defaultHeaders
       );
+  }
+
+  private static fetchResponseAsNGHttpHeaders(res: Response): HttpHeaders {
+    // Type hack Response.headers is actually an entry iterable, TS just doesn't expose this fact
+    return new HttpHeaders(Object.fromEntries(res.headers as unknown as Iterable<[string, string]>))
   }
 }
