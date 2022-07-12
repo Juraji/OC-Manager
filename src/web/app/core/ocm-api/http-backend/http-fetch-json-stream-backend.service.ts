@@ -17,6 +17,8 @@ const DEFAULT_ACCEPT_HEADER_VALUE = 'application/stream+json, application/json, 
 
 @Injectable()
 export class HttpFetchJsonStreamBackend implements HttpBackend {
+  private readonly textDecoder = new TextDecoder()
+
   constructor(private xhr: HttpXhrBackend) {
   }
 
@@ -26,7 +28,7 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
     }
 
     return this.doFetch(req).pipe(
-      mergeMap(res => from(HttpFetchJsonStreamBackend.readBody(res, req))
+      mergeMap(res => from(this.readBody(res, req))
         .pipe(
           mergeMap(body => iif(
             () => res.ok,
@@ -65,13 +67,13 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
     return fromFetch(url, {
       method: req.method,
       body: req.serializeBody(),
-      headers: this.mapFromHttpHeaders(req),
+      headers: this.ngHttpHeadersToFetchHeaders(req),
       credentials: req.withCredentials ? 'include' : 'omit',
     });
   }
 
-  private static readBody(res: Response, req: HttpRequest<unknown>): ObservableInput<unknown> {
-    if (req.method === 'DELETE' && !res.headers.has('Content-Type')) {
+  private readBody(res: Response, req: HttpRequest<unknown>): ObservableInput<unknown> {
+    if (!res.headers.has('Content-Type')) {
       return [null]
     }
 
@@ -79,7 +81,7 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
       case 'json':
         if (!!res.body) return from(res.body)
           .pipe(
-            map(uInt8Array => new TextDecoder().decode(uInt8Array)),
+            map(uInt8Array => this.textDecoder.decode(uInt8Array)),
             mergeMap(s => s.trim().split(/\n/g)),
             map(s => JSON.parse(s)),
             mergeMap(chunk => Array.isArray(chunk) ? chunk : [chunk]),
@@ -95,23 +97,19 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
   }
 
 
-  private mapFromHttpHeaders(req: HttpRequest<unknown>): Record<string, string> {
-    const defaultHeaders: Record<string, string> = {
-      Accept: DEFAULT_ACCEPT_HEADER_VALUE
-    }
+  private ngHttpHeadersToFetchHeaders(req: HttpRequest<unknown>): Headers {
+    const resultHeaders = new Headers()
+    resultHeaders.set('Accept', DEFAULT_ACCEPT_HEADER_VALUE)
 
     const contentType = req.detectContentTypeHeader()
-    if (!!contentType) {
-      defaultHeaders['Content-Type'] = contentType
-    }
+    if (!!contentType) resultHeaders.set('Content-Type', contentType)
 
-    return req.headers
+    req.headers
       .keys()
-      .reduce(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        (headers, name) => ({...headers, [name]: req.headers.get(name)!}),
-        defaultHeaders
-      );
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .forEach(k => resultHeaders.set(k, req.headers.get(k)!))
+
+    return resultHeaders
   }
 
   private static fetchResponseAsNGHttpHeaders(res: Response): HttpHeaders {
