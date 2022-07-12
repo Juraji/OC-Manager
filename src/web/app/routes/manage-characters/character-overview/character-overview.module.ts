@@ -6,15 +6,11 @@ import {CharacterMgmtModule} from '#components/character-mgmt'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
 import {CharacterOverviewComponent} from './character-overview.component';
-import {CharacterOverviewResolve} from './character-overview.resolve'
 
 const ROUTES: Routes = [
   {
     path: '',
     component: CharacterOverviewComponent,
-    resolve: {
-      storeData: CharacterOverviewResolve
-    }
   }
 ]
 
@@ -29,9 +25,6 @@ const ROUTES: Routes = [
   declarations: [
     CharacterOverviewComponent
   ],
-  providers: [
-    CharacterOverviewResolve
-  ]
 })
 export class CharacterOverviewModule {
 }

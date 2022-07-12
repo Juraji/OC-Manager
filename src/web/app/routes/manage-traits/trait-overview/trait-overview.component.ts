@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router'
 import {Modals} from '@juraji/ng-bootstrap-modals'
 import {BehaviorSubject, map, switchMap} from 'rxjs'
 
@@ -22,7 +21,6 @@ export class TraitOverviewComponent implements OnInit, OnDestroy {
       .pipe(map(fv => fv === 'ALL' ? traits : traits.filter(t => t.traitType === fv)))))
 
   constructor(
-    private readonly activatedRoute: ActivatedRoute,
     private readonly modals: Modals,
     readonly store: TraitOverviewStore
   ) {

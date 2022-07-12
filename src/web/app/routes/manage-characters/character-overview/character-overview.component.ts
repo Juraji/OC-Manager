@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router'
-import {map} from 'rxjs'
 
+import {PortfoliosStore} from '#core/root-store'
 import {takeUntilDestroyed} from '#core/rxjs'
 
 import {CharacterOverviewStore} from './character-overview.store'
@@ -15,15 +14,15 @@ import {CharacterOverviewStore} from './character-overview.store'
 export class CharacterOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
-    private readonly activatedRoute: ActivatedRoute,
+    private readonly portfoliosStore: PortfoliosStore,
     readonly store: CharacterOverviewStore,
   ) {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.data
-      .pipe(takeUntilDestroyed(this), map(d => d['storeData']))
-      .subscribe(data => this.store.setStoreData(data))
+    this.portfoliosStore.selectedPortfolioId$
+      .pipe(takeUntilDestroyed(this))
+      .subscribe(() => this.store.loadCharacters())
   }
 
   ngOnDestroy() {
