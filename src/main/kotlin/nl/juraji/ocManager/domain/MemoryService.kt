@@ -12,7 +12,6 @@ import nl.juraji.ocManager.util.LoggerCompanion
 import nl.juraji.ocManager.util.flatMapContextual
 import nl.juraji.ocManager.util.orElseEntityNotFound
 import nl.juraji.ocManager.util.orElseRelationshipNotCreated
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -22,7 +21,7 @@ import reactor.core.publisher.Mono
 class MemoryService(
     private val memoryRepository: MemoryRepository,
     private val memoryCharactersRepository: MemoryCharactersRepository,
-    private val eventPublisher: ApplicationEventPublisher,
+    private val ocEventPublisher: OcEventPublisher
 ) {
 
     fun getAllMemories(): Flux<OcMemory> = Flux
@@ -43,7 +42,7 @@ class MemoryService(
             .flatMap(memoryRepository::save)
 
     fun deleteMemory(memoryId: String): Mono<Void> = Mono.just(memoryId)
-        .doOnNext { eventPublisher.publishEvent(OcMemoryToBeDeletedEvent(it)) }
+        .doOnNext { ocEventPublisher.publish(OcMemoryToBeDeletedEvent(it)) }
         .flatMap(memoryRepository::deleteById)
 
     fun getAllByCharacterId(characterId: String): Flux<OcMemory> =

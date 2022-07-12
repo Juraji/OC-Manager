@@ -10,8 +10,6 @@ import nl.juraji.ocManager.util.LoggerCompanion
 import nl.juraji.ocManager.util.flatMapContextual
 import nl.juraji.ocManager.util.orElseEntityNotFound
 import nl.juraji.ocManager.util.orElseRelationshipNotCreated
-import org.springframework.context.ApplicationEventPublisher
-import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
@@ -21,8 +19,17 @@ import reactor.core.publisher.Mono
 @Service
 class CharacterService(
     private val characterRepository: CharacterRepository,
-    private val eventPublisher: ApplicationEventPublisher,
+    private val ocEventPublisher: OcEventPublisher,
 ) {
+    init {
+        ocEventPublisher.listenTo(OcPortfolioToBeDeletedEvent::class) { event ->
+            event
+                .flatMapMany { characterRepository.findAllByPortfolioId(it.entityId) }
+                .flatMap { deleteCharacter(it.id!!) }
+                .onErrorContinue { t, _ -> logger.error("Failed deleting a character for portfolio", t) }
+        }
+    }
+
     fun getAllCharacters(): Flux<OcCharacter> = Flux
         .deferContextual { characterRepository.findAllByPortfolioId(it.requestPortfolioId) }
 
@@ -43,16 +50,8 @@ class CharacterService(
 
     @Transactional
     fun deleteCharacter(characterId: String): Mono<Void> = Mono.just(characterId)
-        .doOnNext { eventPublisher.publishEvent(OcCharacterToBeDeletedEvent(it)) }
+        .doOnNext { ocEventPublisher.publish(OcCharacterToBeDeletedEvent(it)) }
         .flatMap(characterRepository::deleteById)
-
-    @EventListener
-    fun onOcPortfolioToBeDeletedEvent(e: OcPortfolioToBeDeletedEvent) =
-        characterRepository
-            .findAllByPortfolioId(e.entityId)
-            .flatMap { deleteCharacter(it.id!!) }
-            .onErrorContinue { t, _ -> logger.error("Failed deleting a character for portfolio", t) }
-            .blockLast()
 
     private fun addCharacterToPortfolio(requestPortfolioId: String, character: OcCharacter): Mono<OcCharacter> =
         characterRepository

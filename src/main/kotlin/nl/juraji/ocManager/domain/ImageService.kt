@@ -8,7 +8,6 @@ import nl.juraji.ocManager.domain.images.OcImage
 import nl.juraji.ocManager.domain.portfolios.OcPortfolioToBeDeletedEvent
 import nl.juraji.ocManager.util.LoggerCompanion
 import nl.juraji.ocManager.util.orElseEntityNotFound
-import org.springframework.context.event.EventListener
 import org.springframework.core.io.PathResource
 import org.springframework.core.io.Resource
 import org.springframework.http.MediaType
@@ -34,7 +33,24 @@ import kotlin.io.path.outputStream
 class ImageService(
     private val imageRepository: ImageRepository,
     private val configuration: OcManagerConfiguration,
+    ocEventPublisher: OcEventPublisher,
 ) {
+
+    init {
+        ocEventPublisher.listenTo(OcEntityToBeDeletedEvent::class) { event ->
+            event
+                .flatMapMany { getImagesByLinkedNodeId(it.entityId) }
+                .flatMap { deleteImage(it.id) }
+                .onErrorContinue { t, _ -> logger.error("Failed deleting image for entity", t) }
+        }
+
+        ocEventPublisher.listenTo(OcPortfolioToBeDeletedEvent::class) { event ->
+            event
+                .flatMapMany { imageRepository.findByPortfolioId(it.entityId) }
+                .flatMap { deleteImage(it.id) }
+                .onErrorContinue { t, _ -> logger.error("Failed deleting image for portfolio", t) }
+        }
+    }
 
     fun getImageById(imageId: String): Mono<OcImage> =
         imageRepository
@@ -113,21 +129,6 @@ class ImageService(
 
     fun getImagesByLinkedNodeId(linkedNodeId: String): Flux<OcImage> =
         imageRepository.findByLinkedNodeId(linkedNodeId)
-
-    @EventListener
-    fun onOcEntityToBeDeletedEvent(e: OcEntityToBeDeletedEvent) =
-        getImagesByLinkedNodeId(e.entityId)
-            .flatMap { deleteImage(it.id) }
-            .onErrorContinue { t, _ ->logger.error("Failed deleting image for entity with id ${e.entityId}", t)}
-            .blockLast()
-
-    @EventListener
-    fun onOcPortfolioToBeDeletedEvent(e: OcPortfolioToBeDeletedEvent) =
-        imageRepository
-            .findByPortfolioId(e.entityId)
-            .flatMap { deleteImage(it.id) }
-            .onErrorContinue { t, _ -> logger.error("Failed deleting image for portfolio with id ${e.entityId}", t) }
-            .blockLast()
 
     private fun linkImageToNodeAndPortfolio(image: OcImage, linkToNodeId: String, portfolioId: String) =
         imageRepository.run {

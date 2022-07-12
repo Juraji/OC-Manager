@@ -7,7 +7,7 @@ import org.springframework.data.neo4j.core.ReactiveNeo4jClient
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.util.UUID
+import java.util.*
 
 @Repository
 class CharacterRelationshipRepository(
