@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {Observable, tap} from 'rxjs'
 
+import {OcmApiActuatorService} from '#core/ocm-api/services/ocm-api-actuator.service'
 import {OcmApiSettingsService} from '#core/ocm-api/services/ocm-api-settings.service'
 import {filterNotNull} from '#core/rxjs'
 import {OcSettings} from '#models/settings.model'
@@ -21,6 +22,7 @@ export class SettingsStore extends ComponentStore<SettingsStoreState> {
 
   constructor(
     private readonly service: OcmApiSettingsService,
+    private readonly systemService: OcmApiActuatorService,
   ) {
     super({
       settings: null,
@@ -38,6 +40,10 @@ export class SettingsStore extends ComponentStore<SettingsStoreState> {
     return this.service
       .updateSettings(update)
       .pipe(tap(settings => this.patchSettings(settings)))
+  }
+
+  shutdownApplication(): Observable<void> {
+    return this.systemService.shutdown()
   }
 
   private patchSettings(settings: OcSettings) {

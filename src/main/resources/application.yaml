@@ -17,6 +17,19 @@ server:
   http2:
     enabled: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: shutdown
+      cors:
+        allowed-origin-patterns: "http://localhost:[*]"
+        allowed-methods: "POST"
+        allowed-headers: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+
 oc:
   configuration:
     data-dir: ${OCM_DATA_DIR:./ocm-data}

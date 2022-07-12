@@ -4,6 +4,7 @@ import {ModuleWithProviders, NgModule} from '@angular/core'
 
 import {HttpFetchJsonStreamBackend} from '#core/ocm-api/http-backend/http-fetch-json-stream-backend.service'
 import {OcmApiBaseUriInterceptor} from '#core/ocm-api/interceptors/ocm-api-base-uri.interceptor'
+import {OcmApiActuatorService} from '#core/ocm-api/services/ocm-api-actuator.service'
 import {OcmApiExportService} from '#core/ocm-api/services/ocm-api-export.service'
 import {OcmApiImagesService} from '#core/ocm-api/services/ocm-api-images.service'
 
@@ -46,6 +47,7 @@ export class OcmApiModule {
         OcmApiSettingsService,
         OcmApiImagesService,
         OcmApiExportService,
+        OcmApiActuatorService,
         HttpFetchJsonStreamBackend,
         {provide: HttpBackend, useExisting: HttpFetchJsonStreamBackend},
         {provide: HTTP_INTERCEPTORS, useClass: OcmApiBaseUriInterceptor, multi: true}
