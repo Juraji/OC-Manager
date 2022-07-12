@@ -23,7 +23,7 @@ const ROUTES: Routes = [
     path: ':memoryId',
     component: MemoryEditComponent,
     resolve: {
-      storeData: MemoryEditResolve
+      ocMemory: MemoryEditResolve
     }
   }
 ]

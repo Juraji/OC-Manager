@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {defaultIfEmpty, map, mergeMap, Observable, tap, withLatestFrom} from 'rxjs'
+import {defaultIfEmpty, map, merge, mergeMap, Observable, tap, withLatestFrom} from 'rxjs'
 
 import {numberSort, strSort} from '#core/arrays'
-import {OcmApiImagesService, OcmApiMemoriesService} from '#core/ocm-api'
+import {OcmApiCharactersService, OcmApiImagesService, OcmApiMemoriesService} from '#core/ocm-api'
 import {filterNotNull, once} from '#core/rxjs'
 import {OcCharacter} from '#models/characters.model'
 import {OcImage} from '#models/images.model'
@@ -15,13 +15,6 @@ interface MemoryEditStoreState {
   characters: EntityState<OcCharacter>
   availableCharacters: EntityState<OcCharacter>
   images: EntityState<OcImage>
-}
-
-export interface MemoryEditStoreData {
-  memory: Nullable<OcMemory>
-  characters: OcCharacter[]
-  availableCharacters: OcCharacter[]
-  images: OcImage[]
 }
 
 @Injectable()
@@ -58,6 +51,7 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
   constructor(
     private readonly memoriesService: OcmApiMemoriesService,
     private readonly imagesService: OcmApiImagesService,
+    private readonly charactersService: OcmApiCharactersService,
   ) {
     super()
 
@@ -69,13 +63,22 @@ export class MemoryEditStore extends ComponentStore<MemoryEditStoreState> {
     })
   }
 
-  setStoreData: (data: MemoryEditStoreData) => void = this.effect<MemoryEditStoreData>($ => $.pipe(
-    tap(data => this.setState(s => ({
-      memory: data.memory,
-      characters: this.characterAdapter.setAll(data.characters, s.characters),
-      availableCharacters: this.characterAdapter.setAll(data.availableCharacters, s.characters),
-      images: this.imageAdapter.setAll(data.images, s.images)
-    })))
+  readonly loadOcMemory: (memory: OcMemory | null) => void = this.effect<OcMemory | null>($ => $.pipe(
+    tap(memory => this.setState(s => ({
+      memory,
+      characters: this.characterAdapter.removeAll(s.characters),
+      availableCharacters: this.characterAdapter.removeAll(s.characters),
+      images: this.imageAdapter.removeAll(s.images)
+    }))),
+    filterNotNull(),
+    mergeMap(memory => merge(
+      this.memoriesService.getMemoryCharacters(memory.id)
+        .pipe(tap(c => this.patchState(s => ({characters: this.characterAdapter.addOne(c, s.characters)})))),
+      this.imagesService.getImagesByLinkedNodeId(memory.id)
+        .pipe(tap(img => this.patchState(s => ({images: this.imageAdapter.addOne(img, s.images)})))),
+      this.charactersService.getAllCharacters()
+        .pipe(tap(c => this.patchState(s => ({availableCharacters: this.characterAdapter.addOne(c, s.availableCharacters)})))),
+    ))
   ))
 
   saveMemory(changes: Partial<OcMemory>): Observable<OcMemory> {

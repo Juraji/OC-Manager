@@ -1,14 +1,12 @@
 import {Injectable} from '@angular/core'
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router'
-import {EMPTY, forkJoin, Observable, toArray} from 'rxjs'
+import {EMPTY, Observable, of} from 'rxjs'
 
 import {OcmApiCharactersService, OcmApiImagesService, OcmApiMemoriesService} from '#core/ocm-api'
-import {ForkJoinSource} from '#core/rxjs'
-
-import {MemoryEditStoreData} from './memory-edit.store'
+import {OcMemory} from '#models/memories.model'
 
 @Injectable()
-export class MemoryEditResolve implements Resolve<MemoryEditStoreData> {
+export class MemoryEditResolve implements Resolve<OcMemory | null> {
 
   constructor(
     private readonly charactersService: OcmApiCharactersService,
@@ -17,29 +15,15 @@ export class MemoryEditResolve implements Resolve<MemoryEditStoreData> {
   ) {
   }
 
-  resolve(route: ActivatedRouteSnapshot): Observable<MemoryEditStoreData> {
+  resolve(route: ActivatedRouteSnapshot): Observable<OcMemory | null> {
     const memoryId = route.paramMap.get('memoryId')
 
     if (!memoryId) {
       return EMPTY
     } else if (memoryId === 'new') {
-      const sources: ForkJoinSource<MemoryEditStoreData> = {
-        memory: [null],
-        characters: [[]],
-        availableCharacters: [[]],
-        images: [[]]
-      }
-
-      return forkJoin(sources)
+      return of(null)
     } else {
-      const sources: ForkJoinSource<MemoryEditStoreData> = {
-        memory: this.memoriesService.getMemoryById(memoryId),
-        characters: this.memoriesService.getMemoryCharacters(memoryId).pipe(toArray()),
-        availableCharacters: this.charactersService.getAllCharacters().pipe(toArray()),
-        images: this.imagesService.getImagesByLinkedNodeId(memoryId).pipe(toArray())
-      }
-
-      return forkJoin(sources)
+      return this.memoriesService.getMemoryById(memoryId)
     }
   }
 }

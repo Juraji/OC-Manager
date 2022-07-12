@@ -23,8 +23,8 @@ export class MemoryEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.data
-      .pipe(takeUntilDestroyed(this), map(d => d['storeData']))
-      .subscribe(sd => this.store.setStoreData(sd))
+      .pipe(takeUntilDestroyed(this), map(d => d['ocMemory']))
+      .subscribe(sd => this.store.loadOcMemory(sd))
   }
 
   ngOnDestroy() {
