@@ -17,7 +17,7 @@ const ROUTES: Routes = [
     path: ':traitId',
     component: EditTraitComponent,
     resolve: {
-      storeData: EditTraitResolve
+      trait: EditTraitResolve
     }
   }
 ]

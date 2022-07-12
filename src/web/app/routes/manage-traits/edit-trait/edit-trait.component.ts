@@ -22,8 +22,8 @@ export class EditTraitComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.data
-      .pipe(takeUntilDestroyed(this), map(d => d['storeData']))
-      .subscribe(sd => this.store.setStoreData(sd))
+      .pipe(takeUntilDestroyed(this), map(d => d['trait']))
+      .subscribe(trait => this.store.loadTrait(trait))
   }
 
   ngOnDestroy() {

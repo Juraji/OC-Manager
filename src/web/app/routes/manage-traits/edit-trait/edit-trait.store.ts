@@ -51,6 +51,16 @@ export class EditTraitStore extends ComponentStore<EditTraitStoreState> {
     }))
   }
 
+  readonly loadTrait: (trait: OcCharacterTrait | null) => void = this.effect<OcCharacterTrait | null>($ => $.pipe(
+    tap(trait => this.patchState(s => ({
+      trait,
+      characters: this.characterAdapter.removeAll(s.characters)
+    }))),
+    filterNotNull(),
+    mergeMap(trait => this.traitService.getAllCharactersWithTrait(trait.id)),
+    tap(char => this.patchState(s => ({characters: this.characterAdapter.addOne(char, s.characters)})))
+  ))
+
   saveTrait(changes: Partial<OcCharacterTrait>): Observable<OcCharacterTrait> {
     return this.traitId$
       .pipe(

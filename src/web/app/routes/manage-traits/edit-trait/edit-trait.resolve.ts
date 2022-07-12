@@ -1,39 +1,27 @@
 import {Injectable} from '@angular/core'
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router'
-import {EMPTY, forkJoin, Observable, toArray} from 'rxjs'
+import {EMPTY, Observable, of} from 'rxjs'
 
 import {OcmApiCharacterTraitsService} from '#core/ocm-api'
-import {ForkJoinSource} from '#core/rxjs'
-
-import {EditTraitStoreData} from './edit-trait.store'
+import {OcCharacterTrait} from '#models/traits.model'
 
 @Injectable()
-export class EditTraitResolve implements Resolve<EditTraitStoreData> {
+export class EditTraitResolve implements Resolve<OcCharacterTrait | null> {
 
   constructor(
     private readonly service: OcmApiCharacterTraitsService,
   ) {
   }
 
-  resolve(route: ActivatedRouteSnapshot): Observable<EditTraitStoreData> {
+  resolve(route: ActivatedRouteSnapshot): Observable<OcCharacterTrait | null> {
     const traitId = route.paramMap.get('traitId')
 
     if (!traitId) {
       return EMPTY
     } else if (traitId === 'new') {
-      const sources: ForkJoinSource<EditTraitStoreData> = {
-        trait: [null],
-        characters: [[]]
-      }
-
-      return forkJoin(sources);
+      return of(null)
     } else {
-      const sources: ForkJoinSource<EditTraitStoreData> = {
-        trait: this.service.getTraitById(traitId),
-        characters: this.service.getAllCharactersWithTrait(traitId).pipe(toArray())
-      }
-
-      return forkJoin(sources);
+      return this.service.getTraitById(traitId);
     }
   }
 }
