@@ -2,7 +2,8 @@ import {
   HttpBackend,
   HttpErrorResponse,
   HttpEvent,
-  HttpEventType, HttpHeaders,
+  HttpEventType,
+  HttpHeaders,
   HttpRequest,
   HttpResponse,
   HttpSentEvent,
@@ -25,7 +26,7 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
     }
 
     return this.doFetch(req).pipe(
-      mergeMap(res => from(HttpFetchJsonStreamBackend.readBody(res, req.responseType))
+      mergeMap(res => from(HttpFetchJsonStreamBackend.readBody(res, req))
         .pipe(
           mergeMap(body => iif(
             () => res.ok,
@@ -69,15 +70,19 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
     });
   }
 
-  private static readBody(res: Response, responseType: 'arraybuffer' | 'blob' | 'json' | 'text'): ObservableInput<unknown> {
-    switch (responseType) {
+  private static readBody(res: Response, req: HttpRequest<unknown>): ObservableInput<unknown> {
+    if (req.method === 'DELETE' && !res.headers.has('Content-Type')) {
+      return [null]
+    }
+
+    switch (req.responseType) {
       case 'json':
         if (!!res.body) return from(res.body)
           .pipe(
             map(uInt8Array => new TextDecoder().decode(uInt8Array)),
             mergeMap(s => s.trim().split(/\n/g)),
             map(s => JSON.parse(s)),
-            mergeMap(chunk => Array.isArray(chunk) ? chunk : [chunk])
+            mergeMap(chunk => Array.isArray(chunk) ? chunk : [chunk]),
           )
         else return []
       case 'blob':
@@ -92,11 +97,11 @@ export class HttpFetchJsonStreamBackend implements HttpBackend {
 
   private mapFromHttpHeaders(req: HttpRequest<unknown>): Record<string, string> {
     const defaultHeaders: Record<string, string> = {
-      Accept: DEFAULT_ACCEPT_HEADER_VALUE,
+      Accept: DEFAULT_ACCEPT_HEADER_VALUE
     }
 
     const contentType = req.detectContentTypeHeader()
-    if(!!contentType) {
+    if (!!contentType) {
       defaultHeaders['Content-Type'] = contentType
     }
 

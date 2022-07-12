@@ -44,6 +44,9 @@ export class MemoriesOverviewStore extends ComponentStore<MemoriesOverviewStoreS
       }))),
       switchMap(() => this.portfoliosStore.selectedPortfolioId$),
       skip(1), // Skip initial
+      tap(() => this.patchState(s => ({
+        memories: this.memoriesAdapter.removeAll(s.memories)
+      }))),
       mergeMap(() => this.service.getAllMemories()),
       tap(memory => this.patchState(s => ({
         memories: this.memoriesAdapter.addOne(memory, s.memories)

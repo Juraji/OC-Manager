@@ -46,6 +46,9 @@ export class CharacterOverviewStore extends ComponentStore<CharacterOverviewStor
       }))),
       switchMap(() => this.portfoliosStore.selectedPortfolioId$),
       skip(1), // Skip initial
+      tap(() => this.patchState(s => ({
+        characters: this.characterEntityAdapter.removeAll(s.characters)
+      }))),
       mergeMap(() => this.service.getAllCharacters()),
       tap(characters => this.patchState(s => ({
         characters: this.characterEntityAdapter.addOne(characters, s.characters)
