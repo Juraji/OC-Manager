@@ -25,8 +25,8 @@ export class CharacterEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.data
-      .pipe(takeUntilDestroyed(this), map(d => d['storeData']))
-      .subscribe(d => this.store.setStoreData(d))
+      .pipe(takeUntilDestroyed(this), map(d => d['character']))
+      .subscribe(char => this.store.loadCharacter(char))
 
     this.portfoliosStore.selectedPortfolioId$
       .pipe(takeUntilDestroyed(this), skip(1))

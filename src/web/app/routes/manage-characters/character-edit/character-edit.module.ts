@@ -26,7 +26,7 @@ const ROUTES: Routes = [
     path: ':characterId',
     component: CharacterEditComponent,
     resolve: {
-      storeData: CharacterEditResolve
+      character: CharacterEditResolve
     }
   },
   {

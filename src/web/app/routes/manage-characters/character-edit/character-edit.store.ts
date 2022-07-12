@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {ComponentStore} from '@ngrx/component-store'
 import {createEntityAdapter, EntityState} from '@ngrx/entity'
-import {defaultIfEmpty, map, mergeMap, Observable, shareReplay, tap} from 'rxjs'
+import {defaultIfEmpty, map, merge, mergeMap, Observable, shareReplay, tap} from 'rxjs'
 
 import {numberSort, orderedSort} from '#core/arrays'
 import {
@@ -20,13 +20,6 @@ interface CharacterEditStoreState {
   traits: EntityState<OcCharacterTrait>
   memories: EntityState<OcMemory>
   relationships: EntityState<OcCharacterRelationship>
-}
-
-export interface CharacterEditStoreData {
-  character: Nullable<OcCharacter>
-  traits: OcCharacterTrait[]
-  memories: OcMemory[]
-  relationships: OcCharacterRelationship[]
 }
 
 @Injectable()
@@ -81,14 +74,23 @@ export class CharacterEditStore extends ComponentStore<CharacterEditStoreState> 
     })
   }
 
-  setStoreData(data: CharacterEditStoreData) {
-    this.setState(s => ({
-      character: data.character,
-      traits: this.traitsAdapter.setAll(data.traits, s.traits),
-      memories: this.memoriesAdapter.setAll(data.memories, s.memories),
-      relationships: this.relationshipsAdapter.setAll(data.relationships, s.relationships),
-    }))
-  }
+  readonly loadCharacter: (character: OcCharacter | null) => void = this.effect<OcCharacter | null>($ => $.pipe(
+    tap(character => this.setState(s => ({
+      character,
+      traits: this.traitsAdapter.removeAll(s.traits),
+      memories: this.memoriesAdapter.removeAll(s.memories),
+      relationships: this.relationshipsAdapter.removeAll(s.relationships)
+    }))),
+    filterNotNull(),
+    mergeMap(character => merge(
+      this.characterTraitsService.getAllCharacterTraits(character.id)
+        .pipe(tap(t => this.patchState(s => ({traits: this.traitsAdapter.addOne(t, s.traits)})))),
+      this.characterMemoriesService.getAllByCharacterId(character.id)
+        .pipe(tap(m => this.patchState(s => ({memories: this.memoriesAdapter.addOne(m, s.memories)})))),
+      this.characterRelationshipsService.getAllByCharacterId(character.id)
+        .pipe(tap(r => this.patchState(s => ({relationships: this.relationshipsAdapter.addOne(r, s.relationships)})))),
+    ))
+  ))
 
   saveCharacter(changes: Partial<OcCharacter>): Observable<OcCharacter> {
     return this.characterId$
