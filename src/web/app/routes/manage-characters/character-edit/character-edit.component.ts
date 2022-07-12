@@ -29,7 +29,7 @@ export class CharacterEditComponent implements OnInit, OnDestroy {
       .subscribe(char => this.store.loadCharacter(char))
 
     this.portfoliosStore.selectedPortfolioId$
-      .pipe(takeUntilDestroyed(this), skip(1))
+      .pipe(skip(1), takeUntilDestroyed(this))
       .subscribe(() => this.router.navigateByUrl('/'))
   }
 

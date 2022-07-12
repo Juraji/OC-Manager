@@ -6,15 +6,11 @@ import {MemoryMgmtModule} from '#components/memory-mgmt'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
 
 import {MemoriesOverviewComponent} from './memories-overview.component';
-import {MemoriesOverviewResolve} from './memories-overview.resolve'
 
 const ROUTES: Routes = [
   {
     path: '',
     component: MemoriesOverviewComponent,
-    resolve: {
-      storeData: MemoriesOverviewResolve
-    }
   }
 ]
 
@@ -28,9 +24,6 @@ const ROUTES: Routes = [
   declarations: [
     MemoriesOverviewComponent
   ],
-  providers: [
-    MemoriesOverviewResolve
-  ]
 })
 export class MemoriesOverviewModule {
 }
