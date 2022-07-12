@@ -20,10 +20,6 @@ interface TraitOverviewStoreState {
   traits: EntityState<OcCharacterTrait>
 }
 
-export interface TraitOverviewStoreData {
-  traits: OcCharacterTrait[]
-}
-
 @Injectable()
 export class TraitOverviewStore extends ComponentStore<TraitOverviewStoreState> {
 
@@ -44,11 +40,11 @@ export class TraitOverviewStore extends ComponentStore<TraitOverviewStoreState> 
     })
   }
 
-  setStoreData(data: TraitOverviewStoreData) {
-    this.setState(s => ({
-      traits: this.traitAdapter.setAll(data.traits, s.traits)
-    }))
-  }
+  readonly loadTraits: () => void = this.effect($ => $.pipe(
+    tap(() => this.patchState(s => ({traits: this.traitAdapter.removeAll(s.traits)}))),
+    mergeMap(() => this.service.getAllTraits()),
+    tap(t => this.patchState(s => ({traits: this.traitAdapter.addOne(t, s.traits)}))),
+  ))
 
   readonly deleteTrait: (traitId: string) => void = this.effect<string>($ => $.pipe(
     mergeMap(traitId => this.service.deleteTrait(traitId).pipe(map(() => traitId))),
