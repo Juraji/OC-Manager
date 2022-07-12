@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toMono
 
 @Service
 class CharacterThumbnailService(
@@ -17,7 +18,9 @@ class CharacterThumbnailService(
 
     fun getCharacterThumbnail(characterId: String): Mono<Resource> =
         imageService
-            .getSingleImageByLinkedNodeId(characterId)
+            .getImagesByLinkedNodeId(characterId)
+            .toMono()
+            .orElseEntityNotFound(OcImage::class, characterId)
             .flatMap { imageService.getImageThumbnailResourceById(it.id) }
 
     fun createCharacterThumbnail(characterId: String, thumbnailFilePart: Mono<FilePart>): Mono<OcImage> {

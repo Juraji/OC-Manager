@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
-import reactor.kotlin.core.publisher.toMono
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.nio.file.Files
@@ -121,11 +120,6 @@ class ImageService(
                 it.id
             }
             .flatMap(imageRepository::deleteById)
-
-    fun getSingleImageByLinkedNodeId(linkedNodeId: String): Mono<OcImage> =
-        getImagesByLinkedNodeId(linkedNodeId)
-            .take(1).toMono()
-            .orElseEntityNotFound(OcImage::class, linkedNodeId)
 
     fun getImagesByLinkedNodeId(linkedNodeId: String): Flux<OcImage> =
         imageRepository.findByLinkedNodeId(linkedNodeId)
