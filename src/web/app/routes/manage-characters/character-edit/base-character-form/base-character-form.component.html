@@ -63,9 +63,13 @@
     </div>
     <div class="mb-3">
       <label for="dateOfBirthInput" class="form-label">Date of birth</label><br/>
-      <span class="text-muted"
-            *ngIf="formGroup.value.dateOfBirth">Current: {{formGroup.value.dateOfBirth | date}}</span><br/>
-      <ngb-datepicker id="dateOfBirthInput" formControlName="dateOfBirth"></ngb-datepicker>
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd"
+               id="dateOfBirthInput" formControlName="dateOfBirth" ngbDatepicker #d="ngbDatepicker">
+        <button class="btn btn-outline-primary" (click)="d.toggle()" type="button">
+          <span class="bi bi-calendar"></span>
+        </button>
+      </div>
     </div>
     <div class="mb-3">
       <label for="notesInput" class="form-label">Notes</label>

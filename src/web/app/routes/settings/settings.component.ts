@@ -32,7 +32,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .pipe(takeUntilDestroyed(this))
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .subscribe(fd => {
-        this.formGroup.setValue(fd)
+        this.formGroup.patchValue(fd)
         setRefDateFieldState(fd.useFixedDate)
       })
 

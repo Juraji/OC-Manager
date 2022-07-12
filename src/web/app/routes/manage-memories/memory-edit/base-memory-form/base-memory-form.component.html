@@ -59,8 +59,13 @@
     </div>
     <div class="mb-3">
       <label for="dateInput" class="form-label">Date</label><br/>
-      <span class="text-muted" *ngIf="formGroup.value.date">Current: {{formGroup.value.date | date}}</span><br/>
-      <ngb-datepicker id="dateInput" formControlName="date"></ngb-datepicker>
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd"
+               id="dateInput" formControlName="date" ngbDatepicker #d="ngbDatepicker">
+        <button class="btn btn-outline-primary" (click)="d.toggle()" type="button">
+          <span class="bi bi-calendar"></span>
+        </button>
+      </div>
     </div>
 
     <div class="d-flex justify-content-end">

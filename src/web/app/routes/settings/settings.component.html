@@ -22,7 +22,13 @@
             </div>
             <div class="mb-3" *ngIf="formGroup.value.useFixedDate">
               <label for="eventReferenceDateInput" class="form-label">Event reference date</label><br/>
-              <ngb-datepicker id="eventReferenceDateInput" formControlName="eventReferenceDate"></ngb-datepicker>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                       id="eventReferenceDateInput" formControlName="eventReferenceDate" ngbDatepicker #d="ngbDatepicker">
+                <button class="btn btn-outline-primary" (click)="d.toggle()" type="button">
+                  <span class="bi bi-calendar"></span>
+                </button>
+              </div>
             </div>
 
             <div class="d-flex justify-content-end">
