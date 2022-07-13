@@ -20,11 +20,12 @@
         <li class="nav-item" routerLinkActive="active" #ddTrigger="routerLinkActive" ngbDropdown>
           <a class="nav-link" [class.active]="ddTrigger.isActive" tabindex="0"
              ngbDropdownToggle id="navbarDropdown1" role="button">
-            Settings
+            More
           </a>
           <div ngbDropdownMenu aria-labelledby="navbarDropdown1" class="dropdown-menu">
             <a ngbDropdownItem routerLink="/portfolios" (click)="$event.preventDefault()">Portfolios</a>
             <a ngbDropdownItem routerLink="/traits" (click)="$event.preventDefault()">Traits</a>
+            <a ngbDropdownItem routerLink="/images" (click)="$event.preventDefault()">Images</a>
             <a ngbDropdownItem routerLink="/settings" (click)="$event.preventDefault()">User Settings</a>
           </div>
         </li>

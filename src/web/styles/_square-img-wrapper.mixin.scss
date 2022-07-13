@@ -1,0 +1,33 @@
+@import "variables";
+
+@mixin square-img-wrapper(
+  $outer-wrapper-cls: thumbnail-sq-outer-wrapper,
+  $inner-wrapper-cls: thumbnail-sq-inner-wrapper,
+  $img-tag-cls: thumbnail-sq-img
+) {
+  .#{$outer-wrapper-cls} {
+    width: 100%;
+    position: relative;
+    background-color: $gray-100;
+
+    &:after {
+      content: '';
+      display: block;
+      padding-bottom: 100%;
+    }
+
+    .#{$inner-wrapper-cls} {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .#{$img-tag-cls} {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}

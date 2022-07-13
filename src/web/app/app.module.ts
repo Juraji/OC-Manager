@@ -22,6 +22,10 @@ const ROUTES: Routes = [
     loadChildren: () => import('./routes/manage-memories/manage-memories.module').then(m => m.ManageMemoriesModule)
   },
   {
+    path: 'images',
+    loadChildren: () => import('./routes/image-gallery/image-gallery.module').then(m => m.ImageGalleryModule)
+  },
+  {
     path: 'portfolios',
     loadChildren: () => import('./routes/manage-portfolios/manage-portfolios.module').then(m => m.ManagePortfoliosModule)
   },

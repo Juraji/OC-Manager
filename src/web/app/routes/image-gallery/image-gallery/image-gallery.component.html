@@ -1,0 +1,20 @@
+<div class="container position-relative">
+  <div class="header d-flex justify-content-between align-items-center">
+    <h1>Images</h1>
+  </div>
+
+  <div class="portfolio-description">
+    <h3></h3>
+  </div>
+  <div class="image-gallery-cards row">
+    <div class="col-md-3 mb-4" *ngFor="let img of store.images$ | async as characters">
+      <ocm-image-gallery-card
+        class="mx-auto mx-md-0"
+        [image]="img"
+      ></ocm-image-gallery-card>
+    </div>
+  </div>
+  <div class="character-cards text-muted" *ngIf="store.images$ | async | empty">
+    No images found. You can add images to memories and characters, which will then also appear here.
+  </div>
+</div>

@@ -1,24 +1,15 @@
 package nl.juraji.ocManager.domain.traits
 
-import nl.juraji.ocManager.domain.characters.OcCharacter
 import nl.juraji.ocManager.util.Neo4jDataClassMapper
 import nl.juraji.ocManager.util.toMap
 import org.neo4j.driver.Record
 import org.springframework.data.neo4j.core.DatabaseSelectionProvider
 import org.springframework.data.neo4j.core.ReactiveNeo4jClient
 import org.springframework.data.neo4j.core.mappedBy
-import org.springframework.data.neo4j.repository.ReactiveNeo4jRepository
-import org.springframework.data.neo4j.repository.query.Query
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.util.*
-
-@Repository
-interface TraitCharactersRepository : ReactiveNeo4jRepository<OcCharacter, String> {
-    @Query("MATCH (:OcCharacterTrait {id: $ traitId})<-[:HAS_TRAIT]-(char:OcCharacter) RETURN char")
-    fun findAllCharactersWithTrait(traitId: String): Flux<OcCharacter>
-}
 
 @Repository
 class CharacterTraitRepository(

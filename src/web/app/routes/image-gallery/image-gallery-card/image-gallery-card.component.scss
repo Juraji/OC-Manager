@@ -1,0 +1,6 @@
+@import "src/web/styles/square-img-wrapper.mixin";
+
+:host {
+  display: block;
+  @include square-img-wrapper();
+}

@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core'
 import {Observable} from 'rxjs'
 
 import {OcmApiService} from '#core/ocm-api/services/ocm-api.service'
-import {OcImage} from '#models/images.model'
+import {OcImage, OcImageGalleryView} from '#models/images.model'
 
 @Injectable()
 export class OcmApiImagesService extends OcmApiService {
@@ -17,6 +17,10 @@ export class OcmApiImagesService extends OcmApiService {
 
   getImagesByLinkedNodeId(linkedNodeId: string): Observable<OcImage> {
     return this.http.get<OcImage>(this.baseUri(), {params: {linkedNodeId}})
+  }
+
+  getImagesAsGalleryViews(): Observable<OcImageGalleryView> {
+    return this.http.get<OcImageGalleryView>(this.baseUri('gallery'))
   }
 
   getImageThumbnailUrlById(imageId: string): string {

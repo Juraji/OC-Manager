@@ -5,7 +5,7 @@ import org.springframework.data.neo4j.repository.query.Query
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-interface ImageRepository : ReactiveNeo4jRepository<OcImage, String> {
+interface ImageRepository : ReactiveNeo4jRepository<OcImage, String>, ImageRepositoryExtension {
 
     @Query("MATCH ({id: $ linkedNodeId})-[:HAS_IMAGE]->(image:OcImage) RETURN image")
     fun findByLinkedNodeId(linkedNodeId: String): Flux<OcImage>
@@ -29,7 +29,7 @@ interface ImageRepository : ReactiveNeo4jRepository<OcImage, String> {
             MATCH (img:OcImage {id: $ imageId})
             MATCH (p:OcPortfolio {id: $ portfolioId})
 
-            MERGE (t)-[:CONTAINS_IMAGE]->(img)
+            MERGE (p)-[:CONTAINS_IMAGE]->(img)
             RETURN img
         """
     )

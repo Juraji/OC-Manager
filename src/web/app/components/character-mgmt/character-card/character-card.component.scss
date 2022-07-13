@@ -1,4 +1,5 @@
 @import "src/web/styles/variables";
+@import "src/web/styles/square-img-wrapper.mixin";
 
 :host {
   display: block;
@@ -13,29 +14,5 @@
     }
   }
 
-  .thumbnail-sq-outer-wrapper {
-    width: 100%;
-    position: relative;
-    background-color: $gray-100;
-
-    &:after {
-      content: '';
-      display: block;
-      padding-bottom: 100%;
-    }
-
-    .thumbnail-sq-inner-wrapper {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
-
-    .character-thumbnail-sq-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-  }
+  @include square-img-wrapper();
 }

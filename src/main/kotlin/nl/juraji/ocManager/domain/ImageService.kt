@@ -5,6 +5,7 @@ import nl.juraji.ocManager.configuration.requestPortfolioId
 import nl.juraji.ocManager.domain.applicationEvents.OcEntityToBeDeletedEvent
 import nl.juraji.ocManager.domain.images.ImageRepository
 import nl.juraji.ocManager.domain.images.OcImage
+import nl.juraji.ocManager.domain.images.OcImageGalleryView
 import nl.juraji.ocManager.domain.portfolios.OcPortfolioToBeDeletedEvent
 import nl.juraji.ocManager.util.LoggerCompanion
 import nl.juraji.ocManager.util.orElseEntityNotFound
@@ -50,6 +51,9 @@ class ImageService(
                 .onErrorContinue { t, _ -> logger.error("Failed deleting image for portfolio", t) }
         }
     }
+
+    fun getAllImagesAsGalleryViews(): Flux<OcImageGalleryView> = Flux
+        .deferContextual { imageRepository.findAllOcImageGalleryViews(it.requestPortfolioId) }
 
     fun getImageById(imageId: String): Mono<OcImage> =
         imageRepository
@@ -124,11 +128,10 @@ class ImageService(
     fun getImagesByLinkedNodeId(linkedNodeId: String): Flux<OcImage> =
         imageRepository.findByLinkedNodeId(linkedNodeId)
 
-    private fun linkImageToNodeAndPortfolio(image: OcImage, linkToNodeId: String, portfolioId: String) =
-        imageRepository.run {
-            linkImageToPortfolioById(image.id, portfolioId)
-                .then(linkImageToNodeById(image.id, linkToNodeId))
-        }
+    private fun linkImageToNodeAndPortfolio(image: OcImage, linkToNodeId: String, portfolioId: String) = Mono
+        .just(image)
+        .flatMap { imageRepository.linkImageToNodeById(it.id, linkToNodeId) }
+        .flatMap { imageRepository.linkImageToPortfolioById(it.id, portfolioId) }
 
     private fun createThumbnail(sourcePath: Path, thumbnailPath: Path): Mono<Boolean> {
         @Suppress("BlockingMethodInNonBlockingContext")

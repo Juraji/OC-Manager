@@ -4,3 +4,8 @@ export interface OcImage {
   sourceFileSize: number
   uploadedOn: number
 }
+
+export interface OcImageGalleryView extends OcImage {
+  parentNodeId: string
+  parentNodeLabels: string[]
+}

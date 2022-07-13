@@ -2,6 +2,7 @@ package nl.juraji.ocManager.api
 
 import nl.juraji.ocManager.domain.ImageService
 import nl.juraji.ocManager.domain.images.OcImage
+import nl.juraji.ocManager.domain.images.OcImageGalleryView
 import org.springframework.core.io.Resource
 import org.springframework.http.MediaType
 import org.springframework.http.codec.multipart.FilePart
@@ -15,17 +16,16 @@ import reactor.core.publisher.Mono
 class ImageController(
     private val imageService: ImageService,
 ) {
+
     @GetMapping
     fun getImagesByLinkedNodeId(
         @RequestParam linkedNodeId: String
     ): Flux<OcImage> =
         imageService.getImagesByLinkedNodeId(linkedNodeId)
 
-    @GetMapping("/{imageId}")
-    fun getImageById(
-        @PathVariable imageId: String
-    ): Mono<OcImage> =
-        imageService.getImageById(imageId)
+    @GetMapping("/gallery")
+    fun getAllImagesAsGalleryViews(): Flux<OcImageGalleryView> =
+        imageService.getAllImagesAsGalleryViews()
 
     @GetMapping("/{imageId}/thumbnail")
     fun getImageThumbnailResourceById(

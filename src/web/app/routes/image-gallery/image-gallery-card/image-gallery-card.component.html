@@ -1,4 +1,4 @@
-<div class="card" [class.shadow]="!flat">
+<div class="card shadow" *ngIf="(image$ | async) as image">
   <div class="card-img-top thumbnail-sq-outer-wrapper">
     <div class="thumbnail-sq-inner-wrapper">
       <img *ngIf="thumbnailUri$ | async as url"
@@ -6,7 +6,11 @@
            class="thumbnail-sq-img" alt="Character thumbnail">
     </div>
   </div>
-  <div class="card-body" *ngIf="!hideName">
-    <h5 class="card-title mb-0 text-overflow-ellipsis">{{((character$ | async))?.name}}</h5>
+  <div class="card-body">
+    <h5 class="card-title mb-0 text-overflow-ellipsis">{{image.sourceName}}</h5>
+    <ul class="list-unstyled">
+      <li>{{image.uploadedOn | date}}</li>
+      <li>{{image.sourceFileSize}}</li>
+    </ul>
   </div>
 </div>
