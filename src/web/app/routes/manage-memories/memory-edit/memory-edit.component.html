@@ -6,14 +6,10 @@
   <div class="row mb-4">
     <div class="col-md-8">
       <ocm-base-memory-form class="mb-4"></ocm-base-memory-form>
+      <ocm-memory-edit-images *ngIf="store.isNewMemory | async | not"></ocm-memory-edit-images>
     </div>
     <div class="col-md-4" *ngIf="store.isNewMemory | async | not">
       <ocm-memory-edit-characters class="mb-4" *ngIf="store.isNewMemory | async | not"></ocm-memory-edit-characters>
-    </div>
-  </div>
-  <div class="row" *ngIf="store.isNewMemory | async | not">
-    <div class="col-12">
-      <ocm-memory-edit-images></ocm-memory-edit-images>
     </div>
   </div>
 </div>
