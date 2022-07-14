@@ -1,4 +1,4 @@
-<div class="card shadow" *ngIf="(image$ | async) as image">
+<div class="card shadow">
   <div class="card-img-top thumbnail-sq-outer-wrapper">
     <div class="thumbnail-sq-inner-wrapper">
       <img *ngIf="thumbnailUri$ | async as url"
@@ -6,11 +6,23 @@
            class="thumbnail-sq-img" alt="Character thumbnail">
     </div>
   </div>
-  <div class="card-body">
+  <div class="card-body" *ngIf="(image$ | async) as image">
     <h5 class="card-title mb-0 text-overflow-ellipsis" [title]="image.sourceName">{{image.sourceName}}</h5>
     <ul class="list-unstyled">
       <li>{{image.uploadedOn | date}}</li>
       <li>{{image.sourceFileSize | bytesToHuman}}</li>
     </ul>
+    <div class="d-flex flex-row justify-content-end">
+      <button class="btn btn-outline-primary me-2"
+              (click)="onOpenImageLightbox()"
+              title="Open in large view">
+        <span class="bi bi-search"></span>
+      </button>
+      <button class="btn btn-outline-primary"
+              [routerLink]="imageCardLink$ | async"
+              title="View linked entity">
+        <span class="bi bi-link"></span>
+      </button>
+    </div>
   </div>
 </div>

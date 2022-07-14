@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {ModalsModule} from '@juraji/ng-bootstrap-modals'
 
 import {ImgSrcFallbackModule} from '#components/img-src-fallback'
 import {RxUtilPipesModule} from '#core/rx-util-pipes'
@@ -27,8 +28,9 @@ const ROUTES: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(ROUTES),
+    ModalsModule,
     RxUtilPipesModule,
-    ImgSrcFallbackModule
+    ImgSrcFallbackModule,
   ]
 })
 export class ImageGalleryModule {
