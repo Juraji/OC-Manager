@@ -18,6 +18,7 @@ export class ImageGalleryCardComponent implements OnChanges {
   @Input()
   image: Nullable<OcImageGalleryView>
   readonly image$ = this.inputs.observe(() => this.image)
+
   readonly thumbnailUri$ = this.image$.pipe(
     filterNotNull(),
     map(img => this.store.getImageThumbnailUrlById(img.id))

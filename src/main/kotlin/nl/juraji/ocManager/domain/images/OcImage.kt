@@ -1,8 +1,6 @@
 package nl.juraji.ocManager.domain.images
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import nl.juraji.ocManager.util.persistence.StringUUIDGenerator
-import org.springframework.data.neo4j.core.schema.GeneratedValue
 import org.springframework.data.neo4j.core.schema.Id
 import org.springframework.data.neo4j.core.schema.Node
 import java.nio.file.Path
@@ -17,7 +15,7 @@ interface BaseOcImage {
 
 @Node
 data class OcImage(
-    @Id @GeneratedValue(StringUUIDGenerator::class)
+    @Id
     override val id: String,
     override val sourceName: String,
     override val sourceFileSize: Long,

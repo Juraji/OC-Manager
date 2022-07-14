@@ -7,6 +7,8 @@
     </div>
   </div>
   <div class="card-body" *ngIf="!hideName">
-    <h5 class="card-title mb-0 text-overflow-ellipsis">{{((character$ | async))?.name}}</h5>
+    <h5 class="card-title mb-0 text-overflow-ellipsis"
+        *ngIf="(character$ | async)?.name as name"
+    [title]="name">{{name}}</h5>
   </div>
 </div>

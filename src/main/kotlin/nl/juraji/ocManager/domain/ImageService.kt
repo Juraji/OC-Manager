@@ -81,13 +81,12 @@ class ImageService(
         }
 
         fun getImgPath(baseName: String, ext: String): Path =
-            configuration.getDataDir("images").resolve("${baseName}.${ext}")
+            configuration.getDataDir(IMAGES_DIR).resolve("${baseName}.${ext}")
 
         return file
             .flatMap { fp ->
                 val sourceName = fp.filename()
                 val sourceExt = getExtensionFor(fp.headers().contentType)
-                val sourceFileSize = fp.headers().contentLength
                 val uploadedOn = Instant.now()
 
                 val imageId = UUID.randomUUID().toString()
@@ -96,11 +95,12 @@ class ImageService(
 
                 fp.transferTo(sourcePath)
                     .then(createThumbnail(sourcePath, thumbnailPath))
+                    .publishOn(Schedulers.boundedElastic())
                     .map {
                         OcImage(
                             id = imageId,
                             sourceName = sourceName,
-                            sourceFileSize = sourceFileSize,
+                            sourceFileSize = Files.size(sourcePath),
                             uploadedOn = uploadedOn,
                             thumbnailPath = thumbnailPath,
                             sourcePath = sourcePath
@@ -171,8 +171,10 @@ class ImageService(
         return Mono.just(thumbnailPath)
             .publishOn(Schedulers.boundedElastic())
             .map { createThumbNail() }
-            .map { image -> writeFile(image) }
+            .map(::writeFile)
     }
 
-    companion object : LoggerCompanion(ImageService::class)
+    companion object : LoggerCompanion(ImageService::class) {
+        const val IMAGES_DIR = "images"
+    }
 }
