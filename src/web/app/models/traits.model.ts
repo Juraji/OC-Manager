@@ -7,12 +7,13 @@ export type OcCharacterTraitType =
   | OcEyeColor['traitType']
   | OcGender['traitType']
   | OcHairStyle['traitType']
+  | OcHairDye['traitType']
   | OcCustomTrait['traitType']
   | OcSexuality['traitType']
 
 export const TRAIT_TYPES: OcCharacterTraitType[] = [
   'OcBodyType', 'OcEthnicity', 'OcEyeColor', 'OcGender',
-  'OcHairStyle', 'OcCustomTrait', 'OcSexuality',
+  'OcHairStyle','OcHairDye', 'OcCustomTrait', 'OcSexuality',
 ]
 
 export const EYE_COLOR_TYPES: OcEyeColorType[] = [
@@ -58,8 +59,13 @@ export interface OcHairStyle extends OcCharacterTrait {
   length: OcHairStyleLength
   baseColor: OcHairStyleColor
   variant: string
-  dyed: boolean
-  dyeColor?: string
+}
+
+export interface OcHairDye extends OcCharacterTrait {
+  readonly traitType: 'OcHairDye'
+  baseColor: OcHairStyleColor
+  variant: string
+  outgrowth: boolean
 }
 
 export interface OcCustomTrait extends OcCharacterTrait {

@@ -51,9 +51,19 @@
             <th scope="row">Variant:</th>
             <td>{{$any(trait).variant}}</td>
           </tr>
-          <tr *ngIf="$any(trait).dyed">
-            <th scope="row">Dyed:</th>
-            <td>{{$any(trait).dyeColor}}</td>
+        </ng-container>
+        <ng-container *ngSwitchCase="'OcHairDye'">
+          <tr>
+            <th scope="row">Base color:</th>
+            <td>{{$any(trait).baseColor | titlecase}}</td>
+          </tr>
+          <tr *ngIf="$any(trait).variant">
+            <th scope="row">Variant:</th>
+            <td>{{$any(trait).variant}}</td>
+          </tr>
+          <tr *ngIf="$any(trait).outgrowth">
+            <th scope="row">Outgrowth:</th>
+            <td>{{$any(trait).outgrowth ? 'Yes' : 'No'}}</td>
           </tr>
         </ng-container>
         <ng-container *ngSwitchDefault>
@@ -130,20 +140,34 @@
               "Light".
             </div>
           </div>
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="hairStyleDyedInput"
-                   aria-describedby="hairStyleDyedHelp"
-                   formControlName="dyed">
-            <label class="form-check-label" for="hairStyleDyedInput">Dyed</label>
-            <div id="hairStyleDyedHelp" class="form-text">
-              Enable this to be able to enter a dyed hair color.
+        </ng-container>
+        <ng-container *ngSwitchCase="'OcHairDye'">
+          <div class="mb-3">
+            <label for="hairDyeBaseColorInput" class="form-label">Base color</label>
+            <select id="hairDyeBaseColorInput" class="form-select" formControlName="baseColor"
+                    aria-describedby="hairDyeBaseColorHelp">
+              <option *ngFor="let t of ocHairStyleColors" [value]="t">{{t | titlecase}}</option>
+            </select>
+            <div id="hairDyeBaseColorHelp" class="form-text">
+              The base color. Use Exotic with a variant for special colors.
             </div>
           </div>
-          <div class="mb-3" *ngIf="$any(formGroup.value.trait).dyed">
-            <label for="hairStyleDyeColorInput" class="form-label">Dye color</label>
-            <input type="text" class="form-control" id="hairStyleDyeColorInput" aria-describedby="hairStyleDyeColorHelp"
-                   formControlName="dyeColor">
-            <div id="hairStyleDyeColorHelp" class="form-text">Dye color.</div>
+          <div class="mb-3">
+            <label for="hairDyeVariantInput" class="form-label">Variant</label>
+            <input type="text" class="form-control" id="hairDyeVariantInput" aria-describedby="hairDyeVariantHelp"
+                   formControlName="variant">
+            <div id="hairDyeVariantHelp" class="form-text">Color variation, optional, something like "Green" or
+              "Highlights".
+            </div>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="hairDyeOutgrowthInput"
+                   aria-describedby="hairDyeOutgrowthHelp"
+                   formControlName="outgrowth">
+            <label class="form-check-label" for="hairDyeOutgrowthInput">Outgrowth</label>
+            <div id="hairDyeOutgrowthHelp" class="form-text">
+              Sometimes it's Trendy&trade; to let your own colors shine through!
+            </div>
           </div>
         </ng-container>
         <ng-container *ngSwitchCase="'OcCustomTrait'">
@@ -155,7 +179,8 @@
           </div>
           <div class="mb-3">
             <label for="customTraitDescriptionInput" class="form-label">Description</label>
-            <input type="text" class="form-control" id="customTraitDescriptionInput" aria-describedby="customTraitDescriptionHelp"
+            <input type="text" class="form-control" id="customTraitDescriptionInput"
+                   aria-describedby="customTraitDescriptionHelp"
                    formControlName="description">
             <div id="customTraitDescriptionHelp" class="form-text">Describe this trait in a short form.</div>
           </div>

@@ -2,15 +2,19 @@
   <div class="card-body">
     <div class="d-flex trait-label">
       <ng-container [ngSwitch]="trait.traitType">
-        <span *ngSwitchCase="'OcBodyType'" class="bi bi-person-circle me-2"></span>
-        <span *ngSwitchCase="'OcEthnicity'" class="bi bi-sun me-2"></span>
-        <span *ngSwitchCase="'OcEyeColor'" class="bi bi-eye me-2"></span>
-        <span *ngSwitchCase="'OcGender'" class="bi bi-gender-ambiguous me-2"></span>
-        <span *ngSwitchCase="'OcSexuality'" class="bi bi-hearts me-2"></span>
-        <span *ngSwitchCase="'OcHairStyle'" class="bi bi-palette me-2"></span>
-        <span *ngSwitchCase="'OcCustomTrait'" class="bi bi-emoji-laughing me-2"></span>
+        <span *ngSwitchCase="'OcBodyType'" class="bi bi-person-circle me-3"></span>
+        <span *ngSwitchCase="'OcEthnicity'" class="bi bi-sun me-3"></span>
+        <span *ngSwitchCase="'OcEyeColor'" class="bi bi-eye me-3"></span>
+        <span *ngSwitchCase="'OcGender'" class="bi bi-gender-ambiguous me-3"></span>
+        <span *ngSwitchCase="'OcSexuality'" class="bi bi-hearts me-3"></span>
+        <span *ngSwitchCase="'OcHairStyle'" class="bi bi-palette me-3"></span>
+        <span *ngSwitchCase="'OcHairDye'" class="text-nowrap">
+          <span class="bi bi-palette"></span>
+          <span class="bi bi-plus"></span>
+        </span>
+        <span *ngSwitchCase="'OcCustomTrait'" class="bi bi-emoji-laughing me-3"></span>
       </ng-container>
-      <span>{{trait | traitLabel}}</span>
+      <span>{{trait | traitLabel: false}}</span>
     </div>
   </div>
 </div>

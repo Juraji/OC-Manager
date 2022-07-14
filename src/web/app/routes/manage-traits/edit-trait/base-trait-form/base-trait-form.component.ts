@@ -17,7 +17,7 @@ import {
   OcEthnicity,
   OcEyeColor,
   OcEyeColorType,
-  OcGender,
+  OcGender, OcHairDye,
   OcHairStyle,
   OcHairStyleColor,
   OcHairStyleLength,
@@ -50,7 +50,7 @@ export class BaseTraitFormComponent implements OnInit, OnDestroy {
   readonly editActive$ = new BooleanBehaviourSubject()
   readonly formGroup: TypedFormGroup<OcCharacterTraitForm> = typedFormGroup({
     traitType: typedFormControl<OcCharacterTraitType>('OcBodyType', [required]),
-    trait: this.traitFormGroupByType('OcBodyType'),
+    trait: BaseTraitFormComponent.traitFormGroupByType('OcBodyType'),
   })
 
   readonly traitTitle$ = this.store.trait$
@@ -70,12 +70,12 @@ export class BaseTraitFormComponent implements OnInit, OnDestroy {
       .subscribe(t => {
         this.formGroup.get('traitType').setValue(t)
         this.formGroup.get('traitType').disable()
-        this.formGroup.setControl('trait', this.traitFormGroupByType(t))
+        this.formGroup.setControl('trait', BaseTraitFormComponent.traitFormGroupByType(t))
       })
 
     this.formGroup.get('traitType').valueChanges
       .pipe(takeUntilDestroyed(this))
-      .subscribe(t => this.formGroup.setControl('trait', this.traitFormGroupByType(t)))
+      .subscribe(t => this.formGroup.setControl('trait', BaseTraitFormComponent.traitFormGroupByType(t)))
 
     this.store.trait$
       .pipe(takeUntilDestroyed(this))
@@ -89,7 +89,7 @@ export class BaseTraitFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  private traitFormGroupByType(traitType: OcCharacterTraitType): TypedFormGroup<OmitId<OcCharacterTrait>> {
+  private static traitFormGroupByType(traitType: OcCharacterTraitType): TypedFormGroup<OmitId<OcCharacterTrait>> {
     switch (traitType) {
       case 'OcBodyType':
         return typedFormGroup<OmitId<OcBodyType>>({
@@ -113,24 +113,19 @@ export class BaseTraitFormComponent implements OnInit, OnDestroy {
           description: typedFormControl('', [required, notBlank])
         })
       case 'OcHairStyle':
-        return ((): TypedFormGroup<OmitId<OcHairStyle>> => {
-          const fg = typedFormGroup<OmitId<OcHairStyle>>({
-            traitType: typedFormControl('OcHairStyle'),
-            length: typedFormControl<OcHairStyleLength>('SHORT', [required]),
-            baseColor: typedFormControl<OcHairStyleColor>('BLONDE', [required]),
-            variant: typedFormControl('', [notBlank]),
-            dyed: typedFormControl<boolean>(false),
-            dyeColor: typedFormControl<string | undefined>({value: undefined, disabled: true}, [notBlank])
-          })
-
-          fg.get('dyed').valueChanges
-            .pipe(takeUntilDestroyed(this))
-            .subscribe(isDyed => isDyed
-              ? fg.get('dyeColor').enable()
-              : fg.get('dyeColor').disable())
-
-          return fg
-        })()
+        return typedFormGroup<OmitId<OcHairStyle>>({
+          traitType: typedFormControl('OcHairStyle'),
+          length: typedFormControl<OcHairStyleLength>('SHORT', [required]),
+          baseColor: typedFormControl<OcHairStyleColor>('BLONDE', [required]),
+          variant: typedFormControl('', [notBlank]),
+        })
+      case 'OcHairDye':
+        return typedFormGroup<OmitId<OcHairDye>>({
+          traitType: typedFormControl('OcHairDye'),
+          baseColor: typedFormControl<OcHairStyleColor>('BLONDE', [required]),
+          variant: typedFormControl('', [notBlank]),
+          outgrowth: typedFormControl(false)
+        })
       case 'OcCustomTrait':
         return typedFormGroup<OmitId<OcCustomTrait>>({
           traitType: typedFormControl('OcCustomTrait'),

@@ -3,7 +3,7 @@ import {Modals} from '@juraji/ng-bootstrap-modals'
 import {BehaviorSubject, map, switchMap} from 'rxjs'
 
 import {TraitLabelPipe} from '#components/trait-mgmt'
-import {OcCharacterTrait} from '#models/traits.model'
+import {OcCharacterTrait, OcCharacterTraitType} from '#models/traits.model'
 
 import {TraitOverviewStore} from './trait-overview.store'
 
@@ -15,7 +15,7 @@ import {TraitOverviewStore} from './trait-overview.store'
 })
 export class TraitOverviewComponent implements OnInit, OnDestroy {
 
-  private readonly traitFilterValue$ = new BehaviorSubject('ALL');
+  private readonly traitFilterValue$ = new BehaviorSubject<OcCharacterTraitType | 'ALL'>('ALL');
   readonly filteredTraits$ = this.store.allTraits$
     .pipe(switchMap(traits => this.traitFilterValue$
       .pipe(map(fv => fv === 'ALL' ? traits : traits.filter(t => t.traitType === fv)))))
@@ -33,7 +33,7 @@ export class TraitOverviewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  onTypeFilterSelect(value: string) {
+  onTypeFilterSelect(value: OcCharacterTraitType) {
     this.traitFilterValue$.next(value)
   }
 

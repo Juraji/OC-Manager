@@ -16,13 +16,16 @@ class CharacterTraitRepository(
     private val neo4jClient: ReactiveNeo4jClient,
     private val databaseSelectionProvider: DatabaseSelectionProvider,
 ) {
-    private val ocBodyTypeMapper = Neo4jDataClassMapper(OcBodyType::class)
-    private val ocEthnicityMapper = Neo4jDataClassMapper(OcEthnicity::class)
-    private val ocEyeColorMapper = Neo4jDataClassMapper(OcEyeColor::class)
-    private val ocGenderMapper = Neo4jDataClassMapper(OcGender::class)
-    private val ocHairStyleMapper = Neo4jDataClassMapper(OcHairStyle::class)
-    private val ocSexualityMapper = Neo4jDataClassMapper(OcSexuality::class)
-    private val ocCustomTraitMapper = Neo4jDataClassMapper(OcCustomTrait::class)
+    private val traitMappers = mapOf(
+        "OcBodyType" to Neo4jDataClassMapper(OcBodyType::class),
+        "OcEthnicity" to Neo4jDataClassMapper(OcEthnicity::class),
+        "OcEyeColor" to Neo4jDataClassMapper(OcEyeColor::class),
+        "OcGender" to Neo4jDataClassMapper(OcGender::class),
+        "OcHairStyle" to Neo4jDataClassMapper(OcHairStyle::class),
+        "OcHairDye" to Neo4jDataClassMapper(OcHairDye::class),
+        "OcSexuality" to Neo4jDataClassMapper(OcSexuality::class),
+        "OcCustomTrait" to Neo4jDataClassMapper(OcCustomTrait::class),
+    )
 
     fun findAll(): Flux<OcCharacterTrait> = neo4jClient
         .query("MATCH (trait:OcCharacterTrait) RETURN trait")
@@ -116,15 +119,8 @@ class CharacterTraitRepository(
         val node = record["trait"].asNode()
         val traitLabel = node.labels().first { it != "OcCharacterTrait" }
 
-        return when (traitLabel) {
-            "OcBodyType" -> ocBodyTypeMapper.mapFrom(node.asMap())
-            "OcEthnicity" -> ocEthnicityMapper.mapFrom(node.asMap())
-            "OcEyeColor" -> ocEyeColorMapper.mapFrom(node.asMap())
-            "OcGender" -> ocGenderMapper.mapFrom(node.asMap())
-            "OcHairStyle" -> ocHairStyleMapper.mapFrom(node.asMap())
-            "OcSexuality" -> ocSexualityMapper.mapFrom(node.asMap())
-            "OcCustomTrait" -> ocCustomTraitMapper.mapFrom(node.asMap())
-            else -> throw IllegalArgumentException("No mapper defined for trait label \"$traitLabel\"")
-        }
+        return traitMappers[traitLabel]
+            ?.mapFrom(node.asMap())
+            ?: throw IllegalArgumentException("No mapper defined for trait label \"$traitLabel\"")
     }
 }

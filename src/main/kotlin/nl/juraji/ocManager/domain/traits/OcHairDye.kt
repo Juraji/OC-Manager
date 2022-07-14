@@ -5,10 +5,11 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.neo4j.core.schema.GeneratedValue
 import org.springframework.data.neo4j.core.schema.Node
 
-@Node("OcEyeColor", "OcCharacterTrait")
-data class OcEyeColor(
+@Node("OcHairDye", "OcCharacterTrait")
+data class OcHairDye(
     @Id @GeneratedValue(StringUUIDGenerator::class)
     override val id: String? = null,
-    val type: OcEyeColorType,
+    val baseColor: OcHairStyleColor,
     val variant: String,
-): OcCharacterTrait
+    val outgrowth: Boolean,
+) : OcCharacterTrait

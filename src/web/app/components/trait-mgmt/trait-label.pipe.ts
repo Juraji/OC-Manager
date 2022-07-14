@@ -7,7 +7,7 @@ import {
   OcCustomTrait,
   OcEthnicity,
   OcEyeColor,
-  OcGender,
+  OcGender, OcHairDye,
   OcHairStyle, OcSexuality
 } from '#models/traits.model'
 
@@ -61,13 +61,21 @@ class OcHairStyleRenderer extends TraitRenderer<OcHairStyle> {
   readonly typeLabel = () => 'Hair style'
 
   render(t: OcHairStyle): string {
-    if (t.dyed) {
-      if (!!t.variant) return `${this.titleCase(t.length)} dyed ${t.dyeColor} (actually ${t.variant} (${this.titleCase(t.baseColor)}))`
-      else return `${this.titleCase(t.length)} dyed ${t.dyeColor} (actually ${this.titleCase(t.baseColor)})`
-    } else {
-      if (!!t.variant) return `${this.titleCase(t.length)} ${t.variant} (${this.titleCase(t.baseColor)})`
-      else return `${this.titleCase(t.length)} ${this.titleCase(t.baseColor)}`
-    }
+    if (!!t.variant) return `${this.titleCase(t.length)} ${t.variant} (${this.titleCase(t.baseColor)})`
+    else return `${this.titleCase(t.length)} ${this.titleCase(t.baseColor)}`
+  }
+}
+
+class OcHairDyeRenderer extends TraitRenderer<OcHairDye> {
+  readonly typeLabel = () => 'Dyed hair'
+
+  override render(t: OcHairDye): string {
+    const base = !!t.variant
+      ? `${t.variant} (${this.titleCase(t.baseColor)})`
+      : this.titleCase(t.baseColor)
+
+    if (t.outgrowth) return `${base} with outgrowth`
+    else return base
   }
 }
 
@@ -91,12 +99,13 @@ class OcSexualityRenderer extends TraitRenderer<OcSexuality> {
 
 abstract class TraitRendererPipe implements PipeTransform {
   protected readonly titleCase = new TitleCasePipe()
-  protected readonly rendererMap: Record<string, TraitRenderer<OcCharacterTrait>> = {
+  protected readonly rendererMap: Record<OcCharacterTraitType, TraitRenderer<OcCharacterTrait>> = {
     'OcBodyType': new OcBodyTypeRenderer(this.titleCase),
     'OcEthnicity': new OcEthnicityRenderer(this.titleCase),
     'OcEyeColor': new OcEyeColorRenderer(this.titleCase),
     'OcGender': new OcGenderRenderer(this.titleCase),
     'OcHairStyle': new OcHairStyleRenderer(this.titleCase),
+    'OcHairDye': new OcHairDyeRenderer(this.titleCase),
     'OcCustomTrait': new OcCustomTraitRenderer(this.titleCase),
     'OcSexuality': new OcSexualityRenderer(this.titleCase),
   }

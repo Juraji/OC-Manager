@@ -54,6 +54,6 @@ export class ImageGalleryCardComponent implements OnChanges {
   }
 
   onOpenImageLightbox() {
-    this.modals.open(ImageLightboxComponent, {data: {image: this.image$}})
+    this.modals.open(ImageLightboxComponent, {data: {image: this.image}})
   }
 }

@@ -50,6 +50,8 @@
     <ng-template ngbNavContent>
       <ng-container [ngTemplateOutlet]="traitListTpl"
                     [ngTemplateOutletContext]="{$implicit: store.hairStyles$ | async}"></ng-container>
+      <ng-container [ngTemplateOutlet]="traitListTpl"
+                    [ngTemplateOutletContext]="{$implicit: store.hairDyes$ | async}"></ng-container>
     </ng-template>
   </li>
   <li ngbNavItem="">

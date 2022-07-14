@@ -10,7 +10,7 @@ import {
   OcCustomTrait,
   OcEthnicity,
   OcEyeColor,
-  OcGender,
+  OcGender, OcHairDye,
   OcHairStyle,
   OcSexuality
 } from '#models/traits.model'
@@ -21,6 +21,7 @@ interface TraitSelectorStoreState {
   eyeColors: EntityState<OcEyeColor>
   genders: EntityState<OcGender>
   hairStyles: EntityState<OcHairStyle>
+  hairDyes: EntityState<OcHairDye>
   customTraits: EntityState<OcCustomTrait>
   sexualities: EntityState<OcSexuality>
 }
@@ -41,6 +42,9 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
 
   private readonly hairStyleAdapter = TraitSelectorStore.createHairStyleAdapter()
   private readonly hairStyleSelectors = this.hairStyleAdapter.getSelectors()
+
+  private readonly hairDyeAdapter = TraitSelectorStore.createHairDyeAdapter()
+  private readonly hairDyeSelectors = this.hairDyeAdapter.getSelectors()
 
   private readonly customTraitAdapter = TraitSelectorStore.createCustomTraitAdapter()
   private readonly customTraitSelectors = this.customTraitAdapter.getSelectors()
@@ -63,6 +67,10 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
   readonly hairStyles$ = this
     .select(s => s.hairStyles)
     .pipe(map(this.hairStyleSelectors.selectAll))
+
+  readonly hairDyes$ = this
+    .select(s => s.hairDyes)
+    .pipe(map(this.hairDyeSelectors.selectAll))
 
   readonly genders$ = this
     .select(s => s.genders)
@@ -92,6 +100,7 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
       eyeColors: this.eyeColorAdapter.getInitialState(),
       genders: this.genderAdapter.getInitialState(),
       hairStyles: this.hairStyleAdapter.getInitialState(),
+      hairDyes: this.hairDyeAdapter.getInitialState(),
       customTraits: this.customTraitAdapter.getInitialState(),
       sexualities: this.sexualityAdapter.getInitialState()
     })
@@ -119,6 +128,9 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
           break;
         case 'OcHairStyle':
           this.patchState(s => ({hairStyles: this.hairStyleAdapter.addOne(trait as OcHairStyle, s.hairStyles)}))
+          break;
+        case 'OcHairDye':
+          this.patchState(s => ({hairDyes: this.hairDyeAdapter.addOne(trait as OcHairDye, s.hairDyes)}))
           break;
         case 'OcCustomTrait':
           this.patchState(s => ({customTraits: this.customTraitAdapter.addOne(trait as OcCustomTrait, s.customTraits)}))
@@ -161,7 +173,18 @@ export class TraitSelectorStore extends ComponentStore<TraitSelectorStoreState> 
   private static createHairStyleAdapter() {
     return createEntityAdapter<OcHairStyle>({
       selectId: e => e.id,
-      sortComparer: chainSort(orderedSort(e => e.length, 'SHAVED', 'SHORT', 'MEDIUM', 'LONG'), strSort(e => e.baseColor))
+      sortComparer: chainSort(
+        orderedSort(e => e.length, 'SHAVED', 'SHORT', 'MEDIUM', 'LONG'),
+        strSort(e => e.baseColor),
+        strSort(e => e.variant)
+      )
+    })
+  }
+
+  private static createHairDyeAdapter() {
+    return createEntityAdapter<OcHairDye>({
+      selectId: e => e.id,
+      sortComparer: chainSort(strSort(e => e.baseColor), strSort(e => e.variant))
     })
   }
 

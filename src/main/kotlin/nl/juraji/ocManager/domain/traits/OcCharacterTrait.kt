@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     Type(value = OcEyeColor::class, name = "OcEyeColor"),
     Type(value = OcGender::class, name = "OcGender"),
     Type(value = OcHairStyle::class, name = "OcHairStyle"),
+    Type(value = OcHairDye::class, name = "OcHairDye"),
     Type(value = OcSexuality::class, name = "OcSexuality"),
 )
 interface OcCharacterTrait {
