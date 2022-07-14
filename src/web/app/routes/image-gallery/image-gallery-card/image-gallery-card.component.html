@@ -10,7 +10,7 @@
     <h5 class="card-title mb-0 text-overflow-ellipsis" [title]="image.sourceName">{{image.sourceName}}</h5>
     <ul class="list-unstyled">
       <li>{{image.uploadedOn | date}}</li>
-      <li>{{image.sourceFileSize}}</li>
+      <li>{{image.sourceFileSize | bytesToHuman}}</li>
     </ul>
   </div>
 </div>
