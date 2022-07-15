@@ -85,9 +85,7 @@ class ImageService(
 
         return file
             .flatMap { fp ->
-                val sourceName = fp.filename()
                 val sourceExt = getExtensionFor(fp.headers().contentType)
-                val uploadedOn = Instant.now()
 
                 val imageId = UUID.randomUUID().toString()
                 val thumbnailPath = getImgPath("${imageId}_thumbnail", configuration.thumbnailType)
@@ -99,9 +97,9 @@ class ImageService(
                     .map {
                         OcImage(
                             id = imageId,
-                            sourceName = sourceName,
+                            sourceName = fp.filename(),
                             sourceFileSize = Files.size(sourcePath),
-                            uploadedOn = uploadedOn,
+                            uploadedOn = Instant.now(),
                             thumbnailPath = thumbnailPath,
                             sourcePath = sourcePath
                         )
@@ -133,46 +131,44 @@ class ImageService(
         .flatMap { imageRepository.linkImageToNodeById(it.id, linkToNodeId) }
         .flatMap { imageRepository.linkImageToPortfolioById(it.id, portfolioId) }
 
-    private fun createThumbnail(sourcePath: Path, thumbnailPath: Path): Mono<Boolean> {
-        @Suppress("BlockingMethodInNonBlockingContext")
-        fun createThumbNail(): BufferedImage {
-            val originalImage = ImageIO.read(sourcePath.inputStream(StandardOpenOption.READ))
+    private fun createThumbnail(sourcePath: Path, thumbnailPath: Path): Mono<Boolean> = Mono
+        .just(sourcePath)
+        .publishOn(Schedulers.boundedElastic())
+        .map(::createThumbNailImg)
+        .map { writeFile(thumbnailPath, it) }
 
-            val boundedSize = configuration.thumbnailSize
-            val originalWidth = originalImage.width
-            val originalHeight = originalImage.height
-            var targetWidth = originalWidth
-            var targetHeight = originalHeight
+    private fun createThumbNailImg(source: Path): BufferedImage {
+        val originalImage = ImageIO.read(source.inputStream(StandardOpenOption.READ))
 
-            if (originalWidth > boundedSize) {
-                targetWidth = boundedSize
-                targetHeight = (targetWidth * originalHeight) / originalWidth
-            }
+        val boundedSize = configuration.thumbnailSize
+        val originalWidth = originalImage.width
+        val originalHeight = originalImage.height
+        var targetWidth = originalWidth
+        var targetHeight = originalHeight
 
-            if (targetHeight > boundedSize) {
-                targetHeight = boundedSize
-                targetWidth = (targetHeight * originalWidth) / originalHeight
-            }
-
-            return BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB).apply {
-                createGraphics().apply {
-                    background = Color.WHITE
-                    clearRect(0, 0, targetWidth, targetHeight)
-                    drawImage(originalImage, 0, 0, targetWidth, targetHeight, null)
-                    dispose()
-                }
-            }
+        if (originalWidth > boundedSize) {
+            targetWidth = boundedSize
+            targetHeight = (targetWidth * originalHeight) / originalWidth
         }
 
-        fun writeFile(image: BufferedImage): Boolean =
-            thumbnailPath.outputStream()
-                .use { ImageIO.write(image, configuration.thumbnailType, it) }
+        if (targetHeight > boundedSize) {
+            targetHeight = boundedSize
+            targetWidth = (targetHeight * originalWidth) / originalHeight
+        }
 
-        return Mono.just(thumbnailPath)
-            .publishOn(Schedulers.boundedElastic())
-            .map { createThumbNail() }
-            .map(::writeFile)
+        return BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB).apply {
+            createGraphics().apply {
+                background = Color.WHITE
+                clearRect(0, 0, targetWidth, targetHeight)
+                drawImage(originalImage, 0, 0, targetWidth, targetHeight, null)
+                dispose()
+            }
+        }
     }
+
+    private fun writeFile(out: Path, image: BufferedImage): Boolean =
+        out.outputStream()
+            .use { ImageIO.write(image, configuration.thumbnailType, it) }
 
     companion object : LoggerCompanion(ImageService::class) {
         const val IMAGES_DIR = "images"
