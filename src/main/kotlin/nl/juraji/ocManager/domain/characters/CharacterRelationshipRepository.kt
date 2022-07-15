@@ -53,7 +53,7 @@ class CharacterRelationshipRepository(
         neo4jClient
             .query(
                 """
-                    MATCH (:OcCharacter)-[rel:RELATED_TO {id: $ relId}]->(OcCharacter)
+                    MATCH (:OcCharacter)-[rel:RELATED_TO {id: $ relId}]->(:OcCharacter)
                     DELETE rel
                 """.trimIndent()
             )
